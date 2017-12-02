@@ -1,4 +1,4 @@
-## Note: This is a work in progress
+## Note: Work in Progress
 
 # Develop Enterprise-grade Hybrid Mobile App with Cloud-native Backend
 
@@ -17,6 +17,8 @@ When you have completed this pattern, you will understand:
 * How to customize the Ionic app logo and splash, and build the release apk/ipa for uploading to public/private app stores.
 
 # Flow
+
+<img src="doc/source/images/Architecture.png" alt="Architecture diagram" width="800" border="10" />
 
 1. User launches the mobile app, enters his/her credentials on the login screen and clicks `Login`.
 2. Mobile app sends the user credentials to MFP server for validation.
