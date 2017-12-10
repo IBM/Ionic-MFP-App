@@ -675,3 +675,112 @@ export class AuthHandlerProvider {
 }
 </code></pre>
 
+
+### 4.3 Wait for MobileFirst SDK to load before showing UI and then initialize AuthHandler
+
+Update `IonicMobileApp/src/app/app.component.ts` as below:
+
+<pre><code>
+import { Component<b>, Renderer</b> } from '@angular/core';
+import { Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+
+<b>import { AuthHandlerProvider } from '../providers/auth-handler/auth-handler';</b>
+
+@Component({
+  templateUrl: 'app.html'
+})
+export class MyApp {
+  <b>rootPage:any;</b>
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen<b>,
+    private renderer: Renderer, private authHandler: AuthHandlerProvider</b>) {
+    <b>console.log('--> MyApp constructor() called');
+    renderer.listenGlobal('document', 'mfpjsloaded', () => {
+      console.log('--> MyApp mfpjsloaded');
+      this.rootPage = 'LoginPage';
+      this.authHandler.init();
+    })</b>
+
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      <b>console.log('--> MyApp platform.ready() called');</b>
+      statusBar.styleDefault();
+      splashScreen.hide();
+    });
+  }
+
+}
+</code></pre>
+
+
+#### 6.4.2 Update Login controller to use MFP based user authentication
+Add the code for handling pre-emptive login
+
+Update `IonicMobileApp/src/pages/login/login.ts` as below:
+
+<pre><code>
+...
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+<b>import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
+import { HomePage } from '../home/home';</b>
+
+@IonicPage()
+@Component({
+  ...
+})
+export class LoginPage {
+  form;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams<b>,
+      public alertCtrl: AlertController<b>, private authHandler:AuthHandlerProvider</b>) {
+    console.log('--> LoginPage constructor() called');
+
+    this.form = new FormGroup({
+      username: new FormControl("", Validators.required),
+      password: new FormControl("", Validators.required)
+    });
+
+    <b>this.authHandler.setCallbacks(
+      () =>  {
+        let view = this.navCtrl.getActive();
+        if (!(view.instance instanceof HomePage )) {
+          this.navCtrl.setRoot(HomePage);
+        }
+        this.peopleServiceProvider.setupDBSync();
+      }, (error) => {
+        if (error.failure !== null) {
+          this.showAlert(error.failure);
+        } else {
+          this.showAlert("Failed to login.");
+        }
+      }, () => {
+        // this.navCtrl.setRoot(Login);
+      });</b>
+  }
+
+  processForm() {
+    // Reference: https://github.com/driftyco/ionic-preview-app/blob/master/src/pages/inputs/basic/pages.ts
+    let username = this.form.value.username;
+    let password = this.form.value.password;
+    if (username === "" || password === "") {
+      this.showAlert('Username and password are required');
+      return;
+    }
+    console.log('--> Sign-in with user: ', username);
+    <b>this.authHandler.login(username, password);</b>
+  }
+
+  showAlert(alertMessage) {
+    ...
+  }
+
+  ionViewDidLoad() {
+    ...
+  }
+
+}
+</code></pre>
+
