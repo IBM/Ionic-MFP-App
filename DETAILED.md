@@ -183,6 +183,7 @@ $ ionic cordova resources
 
 For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
 
+## Step 6. Add pre-emptive login
 
 ### 6.4 Create login page
 
@@ -355,3 +356,64 @@ import { HomePage } from './home';
 })
 export class HomePageModule {}</b>
 </code></pre>
+
+### 3.2 Create Bluemix Mobile Foundation service and configure MFP CLI
+* Log in to [Bluemix Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
+
+* Back on your local machine, configure MFP CLI to work with Bluemix Mobile Foundation server by running following command in console.
+
+```
+$ mfpdev server add
+? Enter the name of the new server profile: Bluemix-MFP
+? Enter the fully qualified URL of this server: https://mobilefoundation-71-hb-server.mybluemix.net:443
+? Enter the MobileFirst Server administrator login ID: admin
+? Enter the MobileFirst Server administrator password: **********
+? Save the administrator password for this server?: Yes
+? Enter the context root of the MobileFirst administration services: mfpadmin
+? Enter the MobileFirst Server connection timeout in seconds: 30
+? Make this server the default?: No
+Verifying server configuration...
+The following runtimes are currently installed on this server: mfp
+Server profile 'Bluemix-MFP' added successfully.
+
+$ mfpdev server info
+Name         URL
+--------------------------------------------------------------------------------------
+Bluemix-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Default]
+--------------------------------------------------------------------------------------
+```
+
+### 6.1 Add Security Adapter
+
+https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/security-check/
+
+Create directory for MFP Adapters
+```
+$ cd ..
+$ mkdir MobileFoundationAdapters
+$ cd MobileFoundationAdapters
+```
+
+Download UserLogin adapter from https://github.com/MobileFirst-Platform-Developer-Center/SecurityCheckAdapters/tree/release80/UserLogin
+```
+$ curl -LOk https://github.com/MobileFirst-Platform-Developer-Center/SecurityCheckAdapters/archive/release80.zip
+$ unzip release80.zip
+$ mv SecurityCheckAdapters-release80/UserLogin/ .
+$ rm -rf SecurityCheckAdapters-release80/ release80.zip
+$ ls
+UserLogin
+```
+
+Build and deploy the UserLogin sample adapter
+```
+$ cd ./UserLogin
+$ mfpdev adapter build
+Building adapter...
+Successfully built adapter
+
+$ mfpdev adapter deploy
+Verifying server configuration...
+Deploying adapter to runtime mfp on https://mobilefoundation-71-hb-server.mybluemix.net:443/mfpadmin...
+Successfully deployed adapter
+```
+
