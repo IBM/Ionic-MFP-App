@@ -737,8 +737,8 @@ export class LoginPage {
   form;
   <b>loader: any;</b>
 
-  constructor(public navCtrl: NavController, public navParams: NavParams<b>,
-      public alertCtrl: AlertController, public authHandler:AuthHandlerProvider, public loadingCtrl: LoadingController</b>) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+      public alertCtrl: AlertController<b>, public authHandler:AuthHandlerProvider, public loadingCtrl: LoadingController</b>) {
     console.log('--> LoginPage constructor() called');
 
     this.form = new FormGroup({
