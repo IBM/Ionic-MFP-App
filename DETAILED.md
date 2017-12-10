@@ -672,6 +672,7 @@ export class MyApp {
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen<b>,
     private renderer: Renderer, private authHandler: AuthHandlerProvider</b>) {
     <b>console.log('--> MyApp constructor() called');
+
     renderer.listenGlobal('document', 'mfpjsloaded', () => {
       console.log('--> MyApp mfpjsloaded');
       this.authHandler.init();
@@ -728,7 +729,6 @@ export class LoginPage {
         if (!(view.instance instanceof HomePage )) {
           this.navCtrl.setRoot(HomePage);
         }
-        this.peopleServiceProvider.setupDBSync();
       }, (error) => {
         this.loader.dismiss();
         if (error.failure !== null) {
