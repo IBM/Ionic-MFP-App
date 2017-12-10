@@ -232,7 +232,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
 <b>import { FormGroup, FormControl, Validators } from '@angular/forms';</b>
 
-@IonicPage()
+<b> // @IonicPage() </b>
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -286,11 +286,14 @@ Update `IonicMobileApp/src/app/app.module.ts` as below:
 <pre><code>
 ...
 import { MyApp } from './app.component';
-<b>import { LoginPageModule } from '../pages/login/login.module'</b>
+<b>import { LoginPage } from '../pages/login/login'</b>
+import { HomePage } from '../pages/home/home'
 
 @NgModule({
   <b>declarations: [
-    MyApp
+    MyApp,
+    <b>LoginPage,</b>
+    HomePage
   ]</b>,
   imports: [
     BrowserModule,
@@ -299,6 +302,8 @@ import { MyApp } from './app.component';
   bootstrap: [IonicApp],
   <b>entryComponents: [
     MyApp
+    <b>LoginPage,</b>
+    HomePage
   ]</b>,
   providers: [
     ...
@@ -312,49 +317,18 @@ Update `IonicMobileApp/src/app/app.component.ts` as below:
 <pre><code>
 ...
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { <b>LoginPage</b> } from '<b>../pages/login/login</b>'
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  <b>rootPage:any = 'LoginPage';</b>
+  <b>rootPage:any = LoginPage;</b>
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     ...
   }
 }
-</code></pre>
-
-Configure HomePage for lazy loading:
-
-Update `IonicMobileApp/src/pages/home/home.ts` as below:
-
-<pre><code>
-import { Component } from '@angular/core';
-import { <b>IonicPage,</b> NavController } from 'ionic-angular';
-
-<b>@IonicPage()</b>
-@Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
-})
-export class HomePage {
-  ...
-}
-</code></pre>
-
-Create file `IonicMobileApp/src/pages/home/home.module.ts` as below:
-
-<pre><code>
-<b>import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { HomePage } from './home';
-
-@NgModule({
-  declarations: [ HomePage ],
-  imports: [ IonicPageModule.forChild(HomePage) ]
-})
-export class HomePageModule {}</b>
 </code></pre>
 
 
@@ -676,7 +650,7 @@ export class AuthHandlerProvider {
 </code></pre>
 
 
-### 4.3 Wait for MobileFirst SDK to load before showing UI and then initialize AuthHandler
+### 4.3 Initialize AuthHandler after MobileFirst SDK is loaded
 
 Update `IonicMobileApp/src/app/app.component.ts` as below:
 
@@ -686,20 +660,20 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { LoginPage } from '../pages/login/login'
 <b>import { AuthHandlerProvider } from '../providers/auth-handler/auth-handler';</b>
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  <b>rootPage:any;</b>
+  rootPage:any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen<b>,
     private renderer: Renderer, private authHandler: AuthHandlerProvider</b>) {
     <b>console.log('--> MyApp constructor() called');
     renderer.listenGlobal('document', 'mfpjsloaded', () => {
       console.log('--> MyApp mfpjsloaded');
-      this.rootPage = 'LoginPage';
       this.authHandler.init();
     })</b>
 
@@ -725,10 +699,11 @@ Update `IonicMobileApp/src/pages/login/login.ts` as below:
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController<b>, LoadingController</b> } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 <b>import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 import { HomePage } from '../home/home';</b>
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
