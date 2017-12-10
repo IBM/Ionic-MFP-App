@@ -425,7 +425,7 @@ Update `IonicMobileApp/config.xml` as below:
 <pre><code>
 ...
 &lt;widget id=...&gt;
-  &lt;preference name="SplashScreenDelay" value="<b>30000</b>" /&gt;
+  &lt;preference name="SplashScreenDelay" value="3000" /&gt;
   <b>&lt;preference name="AutoHideSplashScreen" value="false" /&gt;
   &lt;preference name="FadeSplashScreen" value="false" /&gt;</b>
   ...
@@ -567,7 +567,7 @@ export class AuthHandlerProvider {
     <b>console.log('--> AuthHandlerProvider constructor() called');</b>
   }
 
-  // Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/credentials-validation/javascript/
+  <b>// Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/credentials-validation/javascript/
   init() {
     if (this.initialized) {
       return;
