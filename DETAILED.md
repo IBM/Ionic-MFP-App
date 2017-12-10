@@ -1,6 +1,6 @@
 
 ## Step 1. Setup Ionic and MFP CLI
-* Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 6.x or above)
+* Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
 ```
 $ node --version
 v8.6.0
@@ -182,3 +182,176 @@ $ ionic cordova resources
 ```
 
 For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
+
+
+### 6.4 Create login page
+
+#### 6.4.1 Add Login UI
+
+```
+$ ionic generate page login
+[OK] Generated a page named login!
+```
+
+Update `IonicMobileApp/src/pages/login/login.html` as below:
+
+<pre><code>
+&lt;ion-header&gt;
+  &lt;ion-navbar&gt;
+    &lt;ion-title&gt;<b>Login</b>&lt;/ion-title&gt;
+  &lt;/ion-navbar&gt;
+&lt;/ion-header&gt;
+
+&lt;ion-content&gt;
+  <b>&lt;form (submit)="processForm()" [formGroup]="form"&gt;
+    &lt;ion-list&gt;
+      &lt;ion-item&gt;
+        &lt;ion-label fixed&gt;Username&lt;/ion-label&gt;
+        &lt;ion-input formControlName="username" type="text"&gt;&lt;/ion-input&gt;
+      &lt;/ion-item&gt;
+      &lt;ion-item&gt;
+        &lt;ion-label fixed&gt;Password&lt;/ion-label&gt;
+        &lt;ion-input formControlName="password" type="password"&gt;&lt;/ion-input&gt;
+      &lt;/ion-item&gt;
+    &lt;/ion-list&gt;
+    &lt;div padding&gt;
+      &lt;button ion-button block type="submit"&gt;Sign In&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;</b>
+&lt;/ion-content&gt;
+</code></pre>
+
+#### 6.4.2 Handle login action
+Add the code for handling pre-emptive login
+
+Update `IonicMobileApp/src/pages/login/login.ts` as below:
+
+<pre><code>
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
+<b>import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+@IonicPage()
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html',
+})
+export class LoginPage {
+  <b>form;</b>
+
+  constructor(public navCtrl: NavController, public navParams: NavParams<b>,
+      public alertCtrl: AlertController</b>) {
+    <b>console.log('--> LoginPage constructor() called');
+
+    this.form = new FormGroup({
+      username: new FormControl("", Validators.required),
+      password: new FormControl("", Validators.required)
+    });
+
+  <b>processForm() {
+    // Reference: https://github.com/driftyco/ionic-preview-app/blob/master/src/pages/inputs/basic/pages.ts
+    let username = this.form.value.username;
+    let password = this.form.value.password;
+    if (username === "" || password === "") {
+      this.showAlert('Login Failure', 'Username and password are required');
+      return;
+    }
+    console.log('--> Sign-in with user: ' + username);
+    this.showAlert('Login', 'Signing-in as ' + username);
+  }
+
+  showAlert(alertTitle, alertMessage) {
+    let prompt = this.alertCtrl.create({
+      title: alertTitle,
+      message: alertMessage,
+      buttons: [{
+        text: 'Ok',
+      }]
+    });
+    prompt.present();
+  }</b>
+
+  ionViewDidLoad() {
+    console.log(<b>'--> LoginPage ionViewDidLoad() called'</b>);
+  }
+
+}
+</code></pre>
+
+#### 6.4.3 Show login page upon app launch
+
+Update `IonicMobileApp/src/app/app.module.ts` as below:
+
+<pre><code>
+...
+import { MyApp } from './app.component';
+<b>import { LoginPageModule } from '../pages/login/login.module'</b>
+
+@NgModule({
+  <b>declarations: [
+    MyApp
+  ]</b>,
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp)
+  ],
+  bootstrap: [IonicApp],
+  <b>entryComponents: [
+    MyApp
+  ]</b>,
+  providers: [
+    ...
+  ]
+})
+export class AppModule {}
+</code></pre>
+
+Update `IonicMobileApp/src/app/app.component.ts` as below:
+
+<pre><code>
+...
+import { SplashScreen } from '@ionic-native/splash-screen';
+
+@Component({
+  templateUrl: 'app.html'
+})
+export class MyApp {
+  <b>rootPage:any = 'LoginPage';</b>
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    ...
+  }
+}
+</code></pre>
+
+Configure HomePage for lazy loading:
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below:
+
+<pre><code>
+import { Component } from '@angular/core';
+import { <b>IonicPage,</b> NavController } from 'ionic-angular';
+
+<b>@IonicPage()</b>
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  ...
+}
+</code></pre>
+
+Create file `IonicMobileApp/src/pages/home/home.module.ts` as below:
+
+<pre><code>
+<b>import { NgModule } from '@angular/core';
+import { IonicPageModule } from 'ionic-angular';
+import { HomePage } from './home';
+
+@NgModule({
+  declarations: [ HomePage ],
+  imports: [ IonicPageModule.forChild(HomePage) ]
+})
+export class HomePageModule {}</b>
+</code></pre>
