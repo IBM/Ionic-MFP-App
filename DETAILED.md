@@ -36,8 +36,8 @@ git version 2.9.3 ...
 ```
 
 * Install Maven:
-```
 On Mac, you can use `brew install` for installing Maven as shown below:
+```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 $ brew install maven
 $ mvn --version
@@ -65,49 +65,18 @@ Create a new Ionic project with blank starter template
 ```
 $ ionic start IonicMobileApp blank
 ✔ Creating directory ./IonicMobileApp - done!
-✔ Downloading and extracting blank starter - done!
-
-? Would you like to integrate your new app with Cordova to target native iOS and Android? Yes
-✔ Personalizing ionic.config.json and package.json - done!
-> ionic integrations enable cordova --quiet
-✔ Downloading integration cordova - done!
-✔ Copying integrations files to project - done!
-[OK] Added cordova integration!
-
-Installing dependencies may take several minutes.
-
-  ✨   IONIC  DEVAPP  ✨
-
- Speed up development with the Ionic DevApp, our fast, on-device testing mobile app
-
-  -  🔑   Test on iOS and Android without Native SDKs
-  -  🚀   LiveReload for instant style and JS updates
-
- ️-->    Install DevApp: https://bit.ly/ionic-dev-app    <--
-
+...
+? Would you like to integrate your new app with Cordova to target native iOS and Android? <b>Yes</b>
+...
 > npm i
-✔ Running command - done!
+...
 > git init
 
-  🔥   IONIC  PRO  🔥
-
- Supercharge your Ionic development with the Ionic Pro SDK
-
-  -  ⚠️   Track runtime errors in real-time, back to your original TypeScript
-  -  📲   Push remote updates and skip the app store queue
-
-Learn more about Ionic Pro: https://ionicframework.com/products
-
-? Install the free Ionic Pro SDK and connect your app? No
-
------------------------------------
-
+? Install the free Ionic Pro SDK and connect your app? <b>No</b>
+...
 > git add -A
 > git commit -m "Initial commit" --no-gpg-sign
-
-Next Steps:
-* Go to your newly created project: cd ./IonicMobileApp
-* Get Ionic DevApp for easy device testing: https://bit.ly/ionic-dev-app
+...
 ```
 
 Change directory to the newly created project:
