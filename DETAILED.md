@@ -229,7 +229,7 @@ Update `IonicMobileApp/src/pages/login/login.ts` as below:
 <pre><code>
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
-<b>import { FormGroup, FormControl, Validators } from '@angular/forms';
+<b>import { FormGroup, FormControl, Validators } from '@angular/forms';</b>
 
 @IonicPage()
 @Component({
@@ -242,11 +242,11 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams<b>,
       public alertCtrl: AlertController</b>) {
     <b>console.log('--> LoginPage constructor() called');
-
     this.form = new FormGroup({
       username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required)
-    });
+    });</b>
+  }
 
   <b>processForm() {
     // Reference: https://github.com/driftyco/ionic-preview-app/blob/master/src/pages/inputs/basic/pages.ts
