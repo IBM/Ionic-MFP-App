@@ -164,7 +164,7 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 <pre><code>
 &lt;?xml version='1.0' encoding='utf-8'?&gt;
 &lt;widget <b>id="org.mycity.myward"</b> version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:mfp="http://www.ibm.com/mobilefirst/cordova-plugin-mfp"&gt;
-    <b>&lt;name&gt;My Ward - My Responsibility &lt;/name&gt;
+    <b>&lt;name&gt;MyWard&lt;/name&gt;
     &lt;description&gt;Get your civic issues resolved by posting through this app.&lt;/description&gt;
     &lt;author email="shivahr@gmail.com" href="https://developer.ibm.com/code/author/shivahr/"&gt;Shiva Kumar H R&lt;/author&gt;</b>
 ...
@@ -357,6 +357,97 @@ import { HomePage } from './home';
 export class HomePageModule {}</b>
 </code></pre>
 
+
+### 2.4 Run application on Android phone
+
+#### 2.4.1 Install Android Studio and Android SDK platform
+* Download and install Android Studio from https://developer.android.com/studio/index.html
+* Install Android SDK Platform 23 (or higher)
+  - Launch Android Studio.
+  - Click on *Configure* -> *SDK Manager*
+  - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23*. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
+ 
+#### 2.4.2 Enable developer options and USB debugging on your Android phone
+* Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
+  - Launch the Settings app on your phone. Select *About Device* -> *Software Info* . Tap *Build number* 7 times to enable developer options.
+  - Return to Settings list. Select *Developer options* and enable *USB debugging*.
+* If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
+* Connect the Android phone to your development machine by USB cable, and accept *allow* access on your phone.
+
+#### 2.4.3 Enable Android platform for Ionic application
+
+* Add [Cordova platform for Android](https://cordova.apache.org/docs/en/latest/guide/platforms/android/)
+```
+$ ionic cordova platform add android@6.3.0
+> cordova platform add android@6.3.0 --save
+...
+```
+
+  Note: Make sure the Cordova platform version being added is supported by the MobileFirst plug-ins. Site https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/application-development/sdk/cordova/ lists the supported levels.
+```
+$ cordova platform version
+Installed platforms:
+  android 6.3.0
+Available platforms: 
+  blackberry10 ~3.8.0 (deprecated)
+  browser ~4.1.0
+  ios ~4.4.0
+  osx ~4.0.1
+  webos ~3.7.0
+```
+
+[Cordova Android 6.3.0](https://cordova.apache.org/announcements/2017/09/27/android-release.html) targets the latest Android API level of API 26. If you want to [target API 23 instead](https://stackoverflow.com/questions/35573485/ionic-add-platform-android-with-custom-android-target), then edit `IonicMobileApp/config.xml` and add preference for `android-targetSdkVersion` as shown below.
+```
+  <preference name="android-minSdkVersion" value="16" />
+  <preference name="android-targetSdkVersion" value="23" />
+```
+
+#### 2.4.4 Build/Run the Ionic application on Android phone
+
+* Build Android application
+```
+$ ionic cordova build android
+```
+
+* Run application on Android device
+```
+$ ionic cordova run android
+```
+
+<img src="doc/source/images/SampleIonicAppRunningOnAndroid.png" alt="Snapshot of app running on Android device" width="240" border="10" />
+
+
+### 8.4 Fix issue where you see a blank screen after your splash screen disappears
+
+Reference: http://www.codingandclimbing.co.uk/blog/ionic-2-fix-splash-screen-white-screen-issue
+
+Update `IonicMobileApp/config.xml` as below:
+<pre><code>
+...
+&lt;widget id=...&gt;
+  &lt;preference name="SplashScreenDelay" value="<b>30000</b>" /&gt;
+  <b>&lt;preference name="AutoHideSplashScreen" value="false" /&gt;
+  &lt;preference name="FadeSplashScreen" value="false" /&gt;</b>
+  ...
+</code></pre>
+
+Update `IonicMobileApp/src/app/app.component.ts` as below:
+<pre><code>
+...
+export class MyApp {
+  ...
+    platform.ready().then(() => {
+      ...
+      statusBar.styleDefault();
+      <b>setTimeout(() => {
+        splashScreen.hide();
+      }, 100);</b>
+    });
+  }
+}
+</code></pre>
+
+
 ### 3.2 Create Bluemix Mobile Foundation service and configure MFP CLI
 * Log in to [Bluemix Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
 
@@ -416,4 +507,171 @@ Verifying server configuration...
 Deploying adapter to runtime mfp on https://mobilefoundation-71-hb-server.mybluemix.net:443/mfpadmin...
 Successfully deployed adapter
 ```
+
+## Step 4. Update Ionic app to leverage MFP security adapter for user authentication
+
+### 4.1 Add Cordova plugin for MFP
+
+Make sure you have enabled Android/iOS platform for the Ionic application as mentioned in [Step 2.4.3](#243-enable-android-platform-for-ionic-application) before continuing with the below steps.
+
+  Add Cordova plugin for MFP as shown below.
+```
+$ cd ../../IonicMobileApp/
+$ cordova plugin add cordova-plugin-mfp
+Installing "cordova-plugin-mfp" for android
+...
+```
+
+### 4.2 Register the app to MobileFirst Server
+```
+$ mfpdev app register
+Verifying server configuration...
+Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' runtime:'mfp'
+Updated config.xml file located at: .../Ionic-MFP-App/IonicMobileApp/config.xml
+Run 'cordova prepare' to propagate changes.
+Registered app for platform: android
+```
+
+  Propogate changes by running `cordova prepare`
+```
+$ cordova prepare
+```
+
+### 6.3 Create a new provider in Ionic mobile app to assist in handling MFP security challenges
+
+Generate a new provider using Ionic CLI
+
+```
+$ ionic generate provider AuthHandler
+[OK] Generated a provider named AuthHandler!
+```
+
+Update `IonicMobileApp/src/providers/auth-handler.ts` as below:
+
+<pre><code>
+/// <b>&lt;reference path="../../../plugins/cordova-plugin-mfp/typings/worklight.d.ts" /&gt;</b>
+import { Injectable } from '@angular/core';
+
+<b>var isChallenged = false;
+var handleChallengeCallback = null;
+var loginSuccessCallback = null;
+var loginFailureCallback = null;</b>
+
+@Injectable()
+export class AuthHandlerProvider {
+  <b>securityCheckName = 'UserLogin';
+  userLoginChallengeHandler;
+  initialized = false;</b>
+
+  constructor() {
+    <b>console.log('--> AuthHandlerProvider constructor() called');</b>
+  }
+
+  // Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/credentials-validation/javascript/
+  init() {
+    if (this.initialized) {
+      return;
+    }
+    this.initialized = true;
+    console.log('--> AuthHandler init() called');
+
+    this.userLoginChallengeHandler = WL.Client.createSecurityCheckChallengeHandler(this.securityCheckName);
+
+    this.userLoginChallengeHandler.handleChallenge = function(challenge) {
+      console.log('--> AuthHandler handleChallenge called');
+      isChallenged = true;
+
+      console.log('--> remainingAttempts: ', challenge.remainingAttempts);
+      var statusMsg = 'Remaining attempts: ' + challenge.remainingAttempts;
+      if (challenge.errorMsg !== null) {
+        console.log('--> errorMsg: ', challenge.errorMsg);
+        statusMsg += '<br>' + challenge.errorMsg;
+        if (loginFailureCallback != null) {
+          loginFailureCallback({'failure': statusMsg});
+        }
+      }
+
+      if (handleChallengeCallback != null) {
+        handleChallengeCallback();
+      } else {
+        console.log('--> handleChallengeCallback not set!');
+      }
+    };
+
+    this.userLoginChallengeHandler.handleSuccess = function(data) {
+      console.log('--> AuthHandler handleSuccess called');
+      isChallenged = false;
+
+      if (loginSuccessCallback != null) {
+        loginSuccessCallback();
+      } else {
+        console.log('--> loginSuccessCallback not set!');
+      }
+    };
+
+    this.userLoginChallengeHandler.handleFailure = function(error) {
+      console.log('--> AuthHandler handleFailure called' + error.failure);
+      isChallenged = false;
+
+      if (loginFailureCallback != null) {
+        loginFailureCallback(error);
+      } else {
+        console.log('--> loginFailureCallback not set!');
+      }
+    };
+  }
+
+  setCallbacks(onSuccess, onFailure, onHandleChallenge) {
+    console.log('--> AuthHandler setCallbacks called');
+    loginSuccessCallback = onSuccess;
+    loginFailureCallback = onFailure;
+    handleChallengeCallback = onHandleChallenge;
+  }
+
+  // Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/javascript/
+  checkIsLoggedIn() {
+    console.log('--> AuthHandler checkIsLoggedIn called');
+    WLAuthorizationManager.obtainAccessToken('UserLogin')
+    .then(
+      (accessToken) => {
+        console.log('--> obtainAccessToken onSuccess');
+      },
+      (error) => {
+        console.log('--> obtainAccessToken onFailure: ' + JSON.stringify(error));
+      }
+    );
+  }
+
+  login(username, password) {
+    console.log('--> AuthHandler login called');
+    console.log('--> isChallenged: ', isChallenged);
+    if (isChallenged) {
+      this.userLoginChallengeHandler.submitChallengeAnswer({'username':username, 'password':password});
+    } else {
+      WLAuthorizationManager.login(this.securityCheckName, {'username':username, 'password':password})
+      .then(
+        (success) => {
+          console.log('--> login success');
+        },
+        (failure) => {
+          console.log('--> login failure: ' + JSON.stringify(failure));
+        }
+      );
+    }
+  }
+
+  logout() {
+    console.log('--> AuthHandler logout called');
+    WLAuthorizationManager.logout(this.securityCheckName)
+    .then(
+      (success) => {
+        console.log('--> logout success');
+      },
+      (failure) => {
+        console.log('--> logout failure: ' + JSON.stringify(failure));
+      }
+    );
+  }</b>
+}
+</code></pre>
 
