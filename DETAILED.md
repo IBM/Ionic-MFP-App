@@ -722,20 +722,23 @@ Add the code for handling pre-emptive login
 Update `IonicMobileApp/src/pages/login/login.ts` as below:
 
 <pre><code>
-...
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController<b>, LoadingController</b> } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 <b>import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 import { HomePage } from '../home/home';</b>
 
 @IonicPage()
 @Component({
-  ...
+  selector: 'page-login',
+  templateUrl: 'login.html',
 })
 export class LoginPage {
   form;
+  <b>loader: any;</b>
 
   constructor(public navCtrl: NavController, public navParams: NavParams<b>,
-      public alertCtrl: AlertController, private authHandler:AuthHandlerProvider</b>) {
+      public alertCtrl: AlertController, public authHandler:AuthHandlerProvider, public loadingCtrl: LoadingController</b>) {
     console.log('--> LoginPage constructor() called');
 
     this.form = new FormGroup({
@@ -745,16 +748,18 @@ export class LoginPage {
 
     <b>this.authHandler.setCallbacks(
       () =>  {
+        this.loader.dismiss();
         let view = this.navCtrl.getActive();
         if (!(view.instance instanceof HomePage )) {
           this.navCtrl.setRoot(HomePage);
         }
         this.peopleServiceProvider.setupDBSync();
       }, (error) => {
+        this.loader.dismiss();
         if (error.failure !== null) {
-          this.showAlert(error.failure);
+          this.showAlert('Login Failure', error.failure);
         } else {
-          this.showAlert("Failed to login.");
+          this.showAlert('Login Failure', 'Failed to login.');
         }
       }, () => {
         // this.navCtrl.setRoot(Login);
@@ -766,14 +771,19 @@ export class LoginPage {
     let username = this.form.value.username;
     let password = this.form.value.password;
     if (username === "" || password === "") {
-      this.showAlert('Username and password are required');
+      this.showAlert('Login Failure', 'Username and password are required');
       return;
     }
     console.log('--> Sign-in with user: ', username);
-    <b>this.authHandler.login(username, password);</b>
+    <b>this.loader = this.loadingCtrl.create({
+      content: 'Signining in. Please wait ...',
+    });
+    this.loader.present().then(() => {
+      this.authHandler.login(username, password);
+    });</b>
   }
 
-  showAlert(alertMessage) {
+  showAlert(alertTitle, alertMessage) {
     ...
   }
 
@@ -784,3 +794,10 @@ export class LoginPage {
 }
 </code></pre>
 
+
+Install the StatusBar plugin
+```
+$ ionic cordova plugin add cordova-plugin-statusbar
+> cordova plugin add cordova-plugin-statusbar --save
+Installing "cordova-plugin-statusbar" for android
+```
