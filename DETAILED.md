@@ -312,7 +312,7 @@ Update `IonicMobileApp/src/pages/login/login.ts` as below:
 
 <pre><code>
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
+import { NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
 <b>import { FormGroup, FormControl, Validators } from '@angular/forms';</b>
 
 <b> // @IonicPage() </b>
@@ -660,7 +660,7 @@ export class MyApp {
   rootPage:any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen<b>,
-    private renderer: Renderer, private authHandler: AuthHandlerProvider</b>) {
+    renderer: Renderer, private authHandler: AuthHandlerProvider</b>) {
     <b>console.log('--> MyApp constructor() called');
 
     renderer.listenGlobal('document', 'mfpjsloaded', () => {
@@ -687,13 +687,12 @@ Update `IonicMobileApp/src/pages/login/login.ts` as below:
 
 <pre><code>
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController<b>, LoadingController</b> } from 'ionic-angular';
+import { NavController, NavParams, AlertController<b>, LoadingController</b> } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 <b>import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 import { HomePage } from '../home/home';</b>
 
-// @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
