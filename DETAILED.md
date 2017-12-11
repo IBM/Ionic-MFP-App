@@ -804,5 +804,5 @@ Once the database is created, the dashboard will update to show the documents in
 
 Click *Create Document* to create/save the document.
 
-* Repeat the above steps and create documents for the remaining grievances as shown in (SampleData/MyWardGrievances.json).
+* Repeat the above steps and create documents for the remaining grievances as shown in [SampleData/MyWardGrievances.json](SampleData/MyWardGrievances.json).
 
