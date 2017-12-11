@@ -16,13 +16,15 @@
     - 3.1.1 [Add Login UI](#311-add-login-ui)
     - 3.1.2 [Handle login action](#312-handle-login-action)
     - 3.1.3 [Show login page upon app launch](#313-show-login-page-upon-app-launch)
-  - 3.2 [Create Bluemix Mobile Foundation service and configure MFP CLI](#32-create-bluemix-mobile-foundation-service-and-configure-mfp-cli)
+  - 3.2 [Create Mobile Foundation service and configure MFP CLI](#32-create-mobile-foundation-service-and-configure-mfp-cli)
   - 3.3 [Add MFP Security Adapter](#33-add-mfp-security-adapter)
   - 3.4 [Add the Cordova plugin for MFP](#34-add-the-cordova-plugin-for-mfp)
   - 3.5 [Register the app to MobileFirst Server](#35-register-the-app-to-mobilefirst-server)
   - 3.6 [Create a new provider in Ionic mobile app to assist in handling MFP security challenges](#36-create-a-new-provider-in-ionic-mobile-app-to-assist-in-handling-mfp-security-challenges)
   - 3.7 [Initialize AuthHandler after MobileFirst SDK is loaded](#37-initialize-authhandler-after-mobilefirst-sdk-is-loaded)
   - 3.8 [Update Login controller to use MFP based user authentication](#38-update-login-controller-to-use-mfp-based-user-authentication)
+4. [Fetch data from Cloudant database via MFP Adapter](#step-4-fetch-data-from-cloudant-database-via-mfp-adapter)
+  - 4.1 [Create Cloudant database and populate it with sample data](#41-create-cloudant-database-and-populate-it-with-sample-data)
 
 
 ## Step 1. Setup Ionic and MFP CLI
@@ -414,14 +416,14 @@ export class MyApp {
 }
 </code></pre>
 
-### 3.2 Create Bluemix Mobile Foundation service and configure MFP CLI
-* Log in to [Bluemix Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
+### 3.2 Create Mobile Foundation service and configure MFP CLI
+* Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
 
-* Back on your local machine, configure MFP CLI to work with Bluemix Mobile Foundation server by running following command in console.
+* Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
 
 ```
 $ mfpdev server add
-? Enter the name of the new server profile: Bluemix-MFP
+? Enter the name of the new server profile: Cloud-MFP
 ? Enter the fully qualified URL of this server: https://mobilefoundation-71-hb-server.mybluemix.net:443
 ? Enter the MobileFirst Server administrator login ID: admin
 ? Enter the MobileFirst Server administrator password: **********
@@ -431,12 +433,12 @@ $ mfpdev server add
 ? Make this server the default?: No
 Verifying server configuration...
 The following runtimes are currently installed on this server: mfp
-Server profile 'Bluemix-MFP' added successfully.
+Server profile 'Cloud-MFP' added successfully.
 
 $ mfpdev server info
 Name         URL
 --------------------------------------------------------------------------------------
-Bluemix-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Default]
+Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Default]
 --------------------------------------------------------------------------------------
 ```
 
@@ -770,7 +772,7 @@ Installing "cordova-plugin-statusbar" for android
 
 ### 4.1 Create Cloudant database and populate it with sample data
 
-* Log in to [Bluemix Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
+* Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
 * From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
 * In the Cloudant dashboard, click on *Databases*.
 * Click on *Create Database*. Specify name of database as `myward` as shown below. Click *Create*.
