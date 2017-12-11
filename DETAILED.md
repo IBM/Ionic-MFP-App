@@ -808,3 +808,19 @@ Click *Create Document* to create/save the document.
 
 * Repeat the above steps and create documents for the remaining grievances as shown in [SampleData/MyWardGrievances.json](SampleData/MyWardGrievances.json).
 
+### 4.2 Create MFP adapter to query Cloudant data
+
+Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/adapters/cloudant/#java-adapters
+
+Download MFP Java adapter for Cloudant from https://github.com/MobileFirst-Platform-Developer-Center/CloudantAdapter/tree/release80/Adapters/CloudantJava
+
+```
+$ cd ../MobileFoundationAdapters/
+$ curl -LOk https://github.com/MobileFirst-Platform-Developer-Center/CloudantAdapter/archive/release80.zip
+$ unzip release80.zip
+$ mv CloudantAdapter-release80/Adapters/CloudantJava/ ./MyWardData
+$ rm -rf CloudantAdapter-release80/ release80.zip
+$ ls
+MyWardData	UserLogin
+```
+
