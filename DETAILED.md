@@ -765,3 +765,44 @@ $ ionic cordova plugin add cordova-plugin-statusbar
 > cordova plugin add cordova-plugin-statusbar --save
 Installing "cordova-plugin-statusbar" for android
 ```
+
+## Step 4. Fetch data from Cloudant database via MFP Adapter
+
+### 4.1 Create Cloudant database and populate it with sample data
+
+* Log in to [Bluemix Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
+* From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
+* In the Cloudant dashboard, click on *Databases*.
+* Click on *Create Database*. Specify name of database as `myward` as shown below. Click *Create*.
+
+<img src="doc/source/images/CreateCloudantDatabase.png" alt="Create Database in Cloudant NoSQL DB" width="800" border="10" />
+
+Once the database is created, the dashboard will update to show the documents inside `myward` database (which, as expected, will be empty to begin with).
+
+* Click *Create Document*. Under document content, after the auto populated `_id` field, enter grievance details as shown below.
+
+```
+{
+  "_id": "7fc63023799dfda9582609e75127b4fa",
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_152627",
+  "picture": {
+    "large": "IMG-20171125-WA0012.jpeg",
+    "thumbnail": "thumbnail_IMG-20171125-WA0012.jpg"
+  },
+  "problemDescription": "Car parking on busy market road chocking movement of other vehicles and pedestrians",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7893168,
+      13.0773568
+    ]
+  },
+  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"
+}
+```
+
+Click *Create Document* to create/save the document.
+
+* Repeat the above steps and create documents for the remaining grievances as shown in (SampleData/MyWardGrievances.json).
+
