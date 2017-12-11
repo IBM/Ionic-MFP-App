@@ -551,7 +551,7 @@ export class AuthHandlerProvider {
         console.log('--> errorMsg: ', challenge.errorMsg);
         statusMsg += '<br>' + challenge.errorMsg;
         if (loginFailureCallback != null) {
-          loginFailureCallback({'failure': statusMsg});
+          loginFailureCallback(statusMsg);
         }
       }
 
@@ -578,7 +578,7 @@ export class AuthHandlerProvider {
       isChallenged = false;
 
       if (loginFailureCallback != null) {
-        loginFailureCallback(error);
+        loginFailureCallback(error.failure);
       } else {
         console.log('--> loginFailureCallback not set!');
       }
@@ -633,6 +633,7 @@ export class AuthHandlerProvider {
       },
       (failure) => {
         console.log('--> logout failure: ' + JSON.stringify(failure));
+        loginFailureCallback(failure.errorMsg);
       }
     );
   }</b>
@@ -719,8 +720,8 @@ export class LoginPage {
         }
       }, (error) => {
         this.loader.dismiss();
-        if (error.failure !== null) {
-          this.showAlert('Login Failure', error.failure);
+        if (error !== null) {
+          this.showAlert('Login Failure', error);
         } else {
           this.showAlert('Login Failure', 'Failed to login.');
         }
