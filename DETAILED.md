@@ -26,6 +26,8 @@
 4. [Fetch data from Cloudant database via MFP Adapter](#step-4-fetch-data-from-cloudant-database-via-mfp-adapter)
   - 4.1 [Create Cloudant database and populate it with sample data](#41-create-cloudant-database-and-populate-it-with-sample-data)
   - 4.2 [Create MFP adapter to query Cloudant data](#42-create-mfp-adapter-to-query-cloudant-data)
+    - 4.2.1 [Download sample MFP Java adapter for Cloudant]()
+    - 4.2.2 [Point the MFP adapter to your Cloudant service instance]()
 
 
 ## Step 1. Setup Ionic and MFP CLI
@@ -813,6 +815,7 @@ Click *Create Document* to create/save the document.
 
 Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/adapters/cloudant/#java-adapters
 
+#### 4.2.1 Download sample MFP Java adapter for Cloudant
 Download MFP Java adapter for Cloudant from https://github.com/MobileFirst-Platform-Developer-Center/CloudantAdapter/tree/release80/Adapters/CloudantJava
 
 ```
@@ -824,4 +827,18 @@ $ rm -rf CloudantAdapter-release80/ release80.zip
 $ ls
 MyWardData	UserLogin
 ```
+
+#### 4.2.2 Point the MFP adapter to your Cloudant service instance
+
+Generate Cloudant API Key
+ * In the Cloudant dashboard, under `my ward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
+ * Make a note of the Key and Password generated.
+ * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
+
+  <img src="doc/source/images/CloudantGenerateAPIKey.png" alt="Generate Cloudant API Key" width="800" border="10" />
+
+Specify Cloudant credentials in MFP adapter
+ * Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the properties `key` and `password` as per the newly generated API key.
+ * For property `account`, specify the Cloudant dashboard URL portion after *https://* and upto (and including) *-bluemix.cloudant.com* .
+ * For property `DBName`, specify value `myward`.
 
