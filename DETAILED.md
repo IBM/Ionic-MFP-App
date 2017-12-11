@@ -882,3 +882,8 @@ Test adapter REST API
 
   <img src="doc/source/images/SwaggerToolsForTestingMobileFirstAdapter.png" alt="Swagger UI for testing MobileFirst Adapters" width="800" border="10" />
 
+Delete the temporary credentials after testing adapter REST API
+  * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`.
+  * Delete the `Client ID` created previously.
+
+
