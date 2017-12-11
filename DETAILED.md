@@ -28,6 +28,9 @@
   - 4.2 [Create MFP adapter to query Cloudant data](#42-create-mfp-adapter-to-query-cloudant-data)
     - 4.2.1 [Download sample MFP Java adapter for Cloudant](#421-download-sample-mfp-java-adapter-for-cloudant)
     - 4.2.2 [Point the MFP adapter to your Cloudant service instance](#422-point-the-mfp-adapter-to-your-cloudant-service-instance)
+    - 4.2.3 [Update adapter methods to return MyWard Grievances data](#423-update-adapter-methods-to-return-myward-grievances-data)
+    - 4.2.4 [Build and Deploy the MFP adapter](#424-build-and-deploy-the-mfp-adapter)
+    - 4.2.5 [Test the newly created MFP adapter](#425-test-the-newly-created-mfp-adapter)
 
 
 ## Step 1. Setup Ionic and MFP CLI
