@@ -26,8 +26,8 @@
 4. [Fetch data from Cloudant database via MFP Adapter](#step-4-fetch-data-from-cloudant-database-via-mfp-adapter)
   - 4.1 [Create Cloudant database and populate it with sample data](#41-create-cloudant-database-and-populate-it-with-sample-data)
   - 4.2 [Create MFP adapter to query Cloudant data](#42-create-mfp-adapter-to-query-cloudant-data)
-    - 4.2.1 [Download sample MFP Java adapter for Cloudant]()
-    - 4.2.2 [Point the MFP adapter to your Cloudant service instance]()
+    - 4.2.1 [Download sample MFP Java adapter for Cloudant](#421-download-sample-mfp-java-adapter-for-cloudant)
+    - 4.2.2 [Point the MFP adapter to your Cloudant service instance](#422-point-the-mfp-adapter-to-your-cloudant-service-instance)
 
 
 ## Step 1. Setup Ionic and MFP CLI
@@ -839,6 +839,6 @@ Generate Cloudant API Key
 
 Specify Cloudant credentials in MFP adapter
  * Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the properties `key` and `password` as per the newly generated API key.
- * For property `account`, specify the Cloudant dashboard URL portion after *https://* and upto (and including) *-bluemix.cloudant.com* .
+ * For property `account`, specify the Cloudant dashboard URL portion after *https://* and upto (and including) *-bluemix.cloudant.com* as shown in snapshot above.
  * For property `DBName`, specify value `myward`.
 
