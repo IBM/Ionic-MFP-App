@@ -842,3 +842,40 @@ Specify Cloudant credentials in MFP adapter
  * For property `account`, specify the Cloudant dashboard URL portion upto (and including) *-bluemix.cloudant.com* as shown in the snapshot above.
  * For property `DBName`, specify value `myward`.
 
+
+#### 4.2.3 Update adapter methods to return MyWard Grievances data
+
+* Open `MobileFoundationAdapters/MyWardData/pom.xml` and change the value of fields `artifactId` and `name` to `MyWardData`.
+* Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and change the value of `mfp:adapter name`, `displayName` and `description` to `MyWardData`.
+
+
+#### 4.2.4 Build and Deploy the MFP adapter
+
+```
+$ cd MyWardData/
+$ mfpdev adapter build
+...
+$ mfpdev adapter deploy
+...
+```
+
+#### 4.2.5 Test the newly created MFP adapter
+
+Launch MFP Dashboard
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you had created in [Step 3.2](#32-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
+  * Inside the MFP dashboard, in the list on the left, you will see the `MyWard` application, and `MyWardData` and `UserLogin` adapters listed.
+
+Create credentials to test adapter REST API
+  * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
+  * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter \*\* and click on `Add`. Finally click on `Save`.
+
+  <img src="doc/source/images/MFP_CreateCredentialsToTestAdapter.png" alt="MFP - Create Confidential Client to test Adapter REST APIs" width="800" border="10" />
+
+Test adapter REST API
+  * Inside the MFP dashboard, click on the `MyWardData` adapter. Click on `Resources` and then click on `View Swagger Docs`. The Swagger UI for adapter REST APIs will get shown in a new window/tab.
+  * Inside the Swagger UI, click on `Expand Operations`.
+  * To test the `GET /` API, first click on `OFF` toggle button to enable authentication. Select `Default Scope` and click on `Authorize`. Enter the `ID` and `Secret` created above against `Username` and `Password`. Press enter. If authentication is successful, the toggle button will switch to `ON` position.
+  * Now click on `Try it out` button to run the `GET /` API. The API response should get shown in the `Response Body` as shown in snapshot below.
+
+  <img src="doc/source/images/SwaggerToolsForTestingMobileFirstAdapter.png" alt="Swagger UI for testing MobileFirst Adapters" width="800" border="10" />
+
