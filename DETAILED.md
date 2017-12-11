@@ -619,6 +619,7 @@ export class AuthHandlerProvider {
         },
         (failure) => {
           console.log('--> login failure: ' + JSON.stringify(failure));
+          loginFailureCallback(failure.errorMsg);
         }
       );
     }
@@ -633,7 +634,6 @@ export class AuthHandlerProvider {
       },
       (failure) => {
         console.log('--> logout failure: ' + JSON.stringify(failure));
-        loginFailureCallback(failure.errorMsg);
       }
     );
   }</b>
