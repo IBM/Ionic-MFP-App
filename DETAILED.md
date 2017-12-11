@@ -839,6 +839,6 @@ Generate Cloudant API Key
 
 Specify Cloudant credentials in MFP adapter
  * Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the properties `key` and `password` as per the newly generated API key.
- * For property `account`, specify the Cloudant dashboard URL portion after *https://* and upto (and including) *-bluemix.cloudant.com* as shown in snapshot above.
+ * For property `account`, specify the Cloudant dashboard URL portion upto (and including) *-bluemix.cloudant.com* as shown in the snapshot above.
  * For property `DBName`, specify value `myward`.
 
