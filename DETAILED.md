@@ -25,6 +25,7 @@
   - 3.8 [Update Login controller to use MFP based user authentication](#38-update-login-controller-to-use-mfp-based-user-authentication)
 4. [Fetch data from Cloudant database via MFP Adapter](#step-4-fetch-data-from-cloudant-database-via-mfp-adapter)
   - 4.1 [Create Cloudant database and populate it with sample data](#41-create-cloudant-database-and-populate-it-with-sample-data)
+  - 4.2 [Create MFP adapter to query Cloudant data](#42-create-mfp-adapter-to-query-cloudant-data)
 
 
 ## Step 1. Setup Ionic and MFP CLI
