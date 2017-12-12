@@ -834,7 +834,7 @@ MyWardData	UserLogin
 #### 4.2.2 Point the MFP adapter to your Cloudant service instance
 
 Generate Cloudant API Key
- * In the Cloudant dashboard, under `my ward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
+ * In the Cloudant dashboard, under `myward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
  * Make a note of the Key and Password generated.
  * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
 
@@ -877,7 +877,10 @@ Create credentials to test adapter REST API
 Test adapter REST API
   * Inside the MFP dashboard, click on the `MyWardData` adapter. Click on `Resources` and then click on `View Swagger Docs`. The Swagger UI for adapter REST APIs will get shown in a new window/tab.
   * Inside the Swagger UI, click on `Expand Operations`.
-  * To test the `GET /` API, first click on `OFF` toggle button to enable authentication. Select `Default Scope` and click on `Authorize`. Enter the `ID` and `Secret` created above against `Username` and `Password`. Press enter. If authentication is successful, the toggle button will switch to `ON` position.
+  * To test the `GET /` API, first click on `OFF` toggle button to enable authentication. Select `Default Scope` and click on `Authorize` as shown below. Enter the `ID` and `Secret` created above against `Username` and `Password`. Press enter. If authentication is successful, the toggle button will switch to `ON` position.
+
+  <img src="doc/source/images/AuthorizeSwaggerUI.png" alt="Authorize Swagger UI for running MFP Adapter REST APIs" width="800" border="10" />
+
   * Now click on `Try it out` button to run the `GET /` API. The API response should get shown in the `Response Body` as shown in snapshot below.
 
   <img src="doc/source/images/SwaggerToolsForTestingMobileFirstAdapter.png" alt="Swagger UI for testing MobileFirst Adapters" width="800" border="10" />
