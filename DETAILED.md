@@ -851,6 +851,74 @@ Specify Cloudant credentials in MFP adapter
 * Open `MobileFoundationAdapters/MyWardData/pom.xml` and change the value of fields `artifactId` and `name` to `MyWardData`.
 * Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and change the value of `mfp:adapter name`, `displayName` and `description` to `MyWardData`.
 
+* Create new file `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/MyWardGrievance.java` with following contents:
+
+```
+package com.sample;
+
+public class MyWardGrievance {
+	public String _id, _rev;
+	public String reportedBy;
+	public String reportedDateTime;
+	public static class PictureInfo {
+		public String large;
+		public String thumbnail;
+	}
+	public PictureInfo picture;
+	public String problemDescription;
+	public static class GeoLocation {
+		public String type = "Point";
+		public Number[] coordinates = new Number[2];
+	}
+	public GeoLocation geoLocation;
+	public String address;
+}
+```
+
+* Update `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/CloudantJavaResource.java` as below:
+<pre><code>
+...
+@Path("/")
+public class CloudantJavaResource {
+	...
+
+	private Database getDB() throws Exception {
+		...
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addEntry(<b>MyWardGrievance myWardGrievance</b>) throws Exception {
+		<b>if (myWardGrievance != null) {
+			getDB().save(myWardGrievance);</b>
+			return Response.ok().build();
+		} else {
+			return Response.status(418).build();
+		}
+	}
+
+	@DELETE
+	@Path("/{id}")
+	public Response deleteEntry(@PathParam("id") String id) throws Exception {
+		try {
+			<b>MyWardGrievance myWardGrievance = getDB().find(MyWardGrievance.class, id);
+			getDB().remove(myWardGrievance);</b>
+			return Response.ok().build();
+		} catch (NoDocumentException e) {
+			return Response.status(404).build();
+		}
+	}
+
+	@GET
+	@Produces("application/json")
+	public Response getAllEntries() throws Exception {
+		<b>List<MyWardGrievance> entries = getDB().view("_all_docs").includeDocs(true).query(MyWardGrievance.class);</b>
+		return Response.ok(entries).build();
+	}
+}
+</code></pre>
+
+* Delete `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/User.java`
 
 #### 4.2.4 Build and Deploy the MFP adapter
 
