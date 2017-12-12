@@ -893,7 +893,7 @@ public class CloudantJavaResource {
 			getDB().save(myWardGrievance);</b>
 			return Response.ok().build();
 		} else {
-			return Response.status(418).build();
+			return Response.status(400).build();
 		}
 	}
 
@@ -958,3 +958,52 @@ Delete the temporary credentials after testing adapter REST API
   * Delete the `Client ID` created previously.
 
 
+### Step 4.3 Update Ionic app to fetch and display data from MFP Adapter
+
+#### 4.3.1 Create a new provider in Ionic app for calling MFP adapter API
+
+Generate a new provider in Ionic app:
+
+```
+$ cd ../../IonicMobileApp/
+$ ionic generate provider MyWardDataProvider
+[OK] Generated a provider named MyWardDataProvider!
+```
+
+Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below:
+
+<pre><code>
+<b>/// &lt;reference path="../../../plugins/cordova-plugin-mfp/typings/worklight.d.ts" /&gt; </b>
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class MyWardDataProvider {
+  <b>data: any = null;
+
+  constructor() {
+    console.log('--> MyWardDataProvider constructor() called');
+  }
+
+  load() {
+    if (this.data) {
+      // already loaded data
+      return Promise.resolve(this.data);
+    }
+
+    // don't have the data yet
+    return new Promise(resolve => {
+      let dataRequest = new WLResourceRequest("/adapters/MyWardData/", WLResourceRequest.GET);
+      dataRequest.send().then(
+        (response) => {
+          console.log('--> data loaded from adapter', response);
+          this.data = response.responseJSON.rows;
+          resolve(this.data)
+        }, (failure) => {
+          console.log('--> failed to load data', failure);
+          resolve('error')
+        })
+    });
+  }</b>
+
+}
+</code></pre>
