@@ -991,15 +991,16 @@ export class MyWardDataProvider {
     }
 
     // don't have the data yet
+    console.log('--> MyWardDataProvider loading data from adapter ...');
     return new Promise(resolve => {
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> data loaded from adapter', response);
-          this.data = response.responseJSON.rows;
+          console.log('--> MyWardDataProvider loaded data from adapter', response);
+          this.data = response.responseJSON;
           resolve(this.data)
         }, (failure) => {
-          console.log('--> failed to load data', failure);
+          console.log('--> MyWardDataProvider failed to load data', failure);
           resolve('error')
         })
     });
@@ -1014,7 +1015,7 @@ export class MyWardDataProvider {
 
 <pre><code>
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController<b>, LoadingController</b> } from 'ionic-angular';
 <b>import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';</b>
 
 @Component({
@@ -1022,16 +1023,24 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  <b>grievances: any;</b>
+  <b>grievances: any;
+  loader: any;</b>
 
-  constructor(public navCtrl: NavController<b>, public myWardDataProvider: MyWardDataProvider</b>) {
+  constructor(public navCtrl: NavController<b>, public loadingCtrl: LoadingController,
+    public myWardDataProvider: MyWardDataProvider</b>) {
     <b>console.log('--> HomePage constructor() called');</b>
   }
 
   <b>ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
-    this.myWardDataProvider.load().then(data => {
-      this.grievances = data;
+    this.loader = this.loadingCtrl.create({
+      content: 'Loading data. Please wait ...',
+    });
+    this.loader.present().then(() => {
+      this.myWardDataProvider.load().then(data => {
+        this.loader.dismiss();
+        this.grievances = data;
+      });
     });
   }</b>
 
