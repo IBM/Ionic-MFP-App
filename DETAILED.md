@@ -1007,3 +1007,57 @@ export class MyWardDataProvider {
 
 }
 </code></pre>
+
+#### 4.3.2 Modify home page to display the list of problems reported
+
+  - Update `src/pages/home/home.ts` as below:
+
+<pre><code>
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+<b>import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';</b>
+
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  <b>grievances: any;</b>
+
+  constructor(public navCtrl: NavController<b>, public myWardDataProvider: MyWardDataProvider</b>) {
+    <b>console.log('--> HomePage constructor() called');</b>
+  }
+
+  <b>ionViewDidLoad() {
+    console.log('--> HomePage ionViewDidLoad() called');
+    this.myWardDataProvider.load().then(data => {
+      this.grievances = data;
+    });
+  }</b>
+
+}
+</code></pre>
+
+  - Update `src/pages/home/home.html` as below:
+
+<pre><code>
+&lt;ion-header&gt;
+  &lt;ion-navbar&gt;
+    &lt;ion-title&gt;
+      <b>Problems Reported</b>
+    &lt;/ion-title&gt;
+  &lt;/ion-navbar&gt;
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  <b>&lt;ion-list&gt;
+    &lt;ion-item *ngFor="let grievance of grievances"&gt;
+      &lt;ion-thumbnail item-left&gt;
+        &lt;img src="{{grievance.picture.thumbnail}}"&gt;
+      &lt;/ion-thumbnail&gt;
+      &lt;h2 text-wrap&gt;{{grievance.problemDescription}}&lt;/h2&gt;
+      &lt;p&gt;@ {{grievance.address}}&lt;/p&gt;
+    &lt;/ion-item&gt;
+  &lt;/ion-list&gt;</b>
+&lt;/ion-content&gt;
+</code></pre>
