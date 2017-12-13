@@ -23,6 +23,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login'
 import { HomePage } from '../pages/home/home'
 import { AuthHandlerProvider } from '../providers/auth-handler/auth-handler';
+import { MyWardDataProvider } from '../providers/my-ward-data/my-ward-data';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AuthHandlerProvider } from '../providers/auth-handler/auth-handler';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthHandlerProvider
+    AuthHandlerProvider,
+    MyWardDataProvider
   ]
 })
 export class AppModule {}

@@ -16,14 +16,19 @@ limitations under the License.
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Problems Reported
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  Welcome to app created by Shiva Kumar H R @ IBM
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-list>
+    <ion-item *ngFor="let grievance of grievances">
+      <ion-thumbnail item-left>
+        <img src="{{grievance.picture.thumbnail}}">
+      </ion-thumbnail>
+      <h2 text-wrap>{{grievance.problemDescription}}</h2>
+      <p>@ {{grievance.address}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>
