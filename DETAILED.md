@@ -31,6 +31,9 @@
     - 4.2.3 [Update adapter methods to return MyWard Grievances data](#423-update-adapter-methods-to-return-myward-grievances-data)
     - 4.2.4 [Build and Deploy the MFP adapter](#424-build-and-deploy-the-mfp-adapter)
     - 4.2.5 [Test the newly created MFP adapter](#425-test-the-newly-created-mfp-adapter)
+  - 4.3 [Update Ionic app to fetch and display data from MFP Adapter](#step-43-update-ionic-app-to-fetch-and-display-data-from-mfp-adapter)
+    - 4.3.1 [Create a new provider in Ionic app for calling MFP adapter API](#431-create-a-new-provider-in-ionic-app-for-calling-mfp-adapter-api)
+    - 4.3.2 [Modify home page to display the list of problems reported](#432-modify-home-page-to-display-the-list-of-problems-reported)
 
 
 ## Step 1. Setup Ionic and MFP CLI
@@ -996,7 +999,7 @@ export class MyWardDataProvider {
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> MyWardDataProvider loaded data from adapter', response);
+          console.log('--> MyWardDataProvider loaded data from adapter ', response);
           this.data = response.responseJSON;
           resolve(this.data)
         }, (failure) => {
