@@ -1026,8 +1026,8 @@ import { NavController<b>, LoadingController</b> } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  <b>grievances: any;
-  loader: any;</b>
+  <b>loader: any;
+  grievances: any;</b>
 
   constructor(public navCtrl: NavController<b>, public loadingCtrl: LoadingController,
     public myWardDataProvider: MyWardDataProvider</b>) {
