@@ -36,7 +36,7 @@ export class MyWardDataProvider {
       let dataRequest = new WLResourceRequest("/adapters/MyWardData", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> MyWardDataProvider loaded data from adapter', response);
+          console.log('--> MyWardDataProvider loaded data from adapter ', response);
           this.data = response.responseJSON;
           resolve(this.data)
         }, (failure) => {

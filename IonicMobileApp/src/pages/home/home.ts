@@ -23,8 +23,8 @@ import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  grievances: any;
   loader: any;
+  grievances: any;
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
     public myWardDataProvider: MyWardDataProvider) {
