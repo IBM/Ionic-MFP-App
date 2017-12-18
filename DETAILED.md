@@ -34,6 +34,9 @@
   - 4.3 [Update Ionic app to fetch and display data from MFP Adapter](#step-43-update-ionic-app-to-fetch-and-display-data-from-mfp-adapter)
     - 4.3.1 [Create a new provider in Ionic app for calling MFP adapter API](#431-create-a-new-provider-in-ionic-app-for-calling-mfp-adapter-api)
     - 4.3.2 [Modify home page to display the list of problems reported](#432-modify-home-page-to-display-the-list-of-problems-reported)
+5. [Use IBM Cloud Object Storage for storing and retrieving images](#step-5-use-ibm-cloud-object-storage-for-storing-and-retrieving-images)
+  - 5.1 [Create IBM Cloud Object Storage service and populate it with sample data](#51-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
+  - 5.2 [Create Service ID and API Key for accessing objects](#52-create-service-id-and-api-key-for-accessing-objects)
 
 
 ## Step 1. Setup Ionic and MFP CLI
@@ -1090,14 +1093,15 @@ export class HomePage {
 
   <img src="doc/source/images/COS_UploadObjects.png" alt="Upload objects to IBM Cloud Object Storage" width="800" border="10" />
 
-### 5.2 Create ServiceID and API key for accessing objects
+### 5.2 Create Service ID and API Key for accessing objects
 
 * Create Service ID
   - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://console.bluemix.net/iam/. 
   - In case you have multiple IBM Cloud accounts, then select the target Account, Region, Organization and Space.
-  - Under `Identity & Access` (on the left side of the page), select `Service IDs` and click `Create`. Give a name and description as shown below and click `Create`.
+  - Under `Identity & Access` (on the left side of the page), select `Service IDs` and click `Create`. Give a name and description, and click `Create`.
+  - Make a note of the Service ID as shown below.
 
-  <img src="doc/source/images/IAM_CreateServiceID.png" alt="Create a service ID in IBM Cloud Identity and Access Management" width="800" border="10" />
+  <img src="doc/source/images/IAM_CopyServiceID.png" alt="Copy Service ID from IBM Cloud Identity and Access Management dashboard" width="800" border="10" />
 
 * Add Cloud Object Storage *Writer* role to that service ID
   - Back in *IBM Cloud Object Storage* dashboard, select `Bucket permissions` under `Buckets and objects`.
@@ -1113,8 +1117,4 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
   - Finally click on `Close`.
 
   <img src="doc/source/images/IAM_DownloadAPIKey.png" alt="Create API key and download in IBM Cloud Identity and Access Management" width="800" border="10" />
-
-* Make a note of the service ID from *IBM Cloud Identity & Access Management* dashboard as shown below.
-
-  <img src="doc/source/images/IAM_CopyServiceID.png" alt="Copy Service ID from IBM Cloud Identity and Access Management dashboard" width="800" border="10" />
 
