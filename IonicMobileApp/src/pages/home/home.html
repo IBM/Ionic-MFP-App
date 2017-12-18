@@ -25,7 +25,7 @@ limitations under the License.
   <ion-list>
     <ion-item *ngFor="let grievance of grievances">
       <ion-thumbnail item-left>
-        <img src="{{grievance.picture.thumbnail}}">
+        <img img-cache img-cache-src="{{objectStorageAccess.baseUrl}}{{grievance.picture.thumbnail}}">
       </ion-thumbnail>
       <h2 text-wrap>{{grievance.problemDescription}}</h2>
       <p>@ {{grievance.address}}</p>

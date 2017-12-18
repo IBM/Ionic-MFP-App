@@ -20,6 +20,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MyWardDataProvider {
   data: any = null;
+  objectStorageAccess: any = null;
 
   constructor() {
     console.log('--> MyWardDataProvider constructor() called');
@@ -45,4 +46,26 @@ export class MyWardDataProvider {
         })
     });
   }
+
+  getObjectStorageAccess() {
+    if (this.objectStorageAccess) {
+      // already loaded data
+      return Promise.resolve(this.objectStorageAccess);
+    }
+    // don't have the data yet
+    console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
+    return new Promise(resolve => {
+      let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
+      dataRequest.send().then(
+        (response) => {
+          console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
+          this.objectStorageAccess = response.responseJSON;
+          resolve(this.objectStorageAccess)
+        }, (failure) => {
+          console.log('--> MyWardDataProvider failed to get Object Storage AuthToken from adapter', failure);
+          resolve('error')
+        })
+    });
+  }
+
 }

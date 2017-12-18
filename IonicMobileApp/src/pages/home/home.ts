@@ -15,6 +15,7 @@
 
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
+import { ImgCacheService } from 'ng-imgcache';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 
@@ -25,9 +26,10 @@ import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 export class HomePage {
   loader: any;
   grievances: any;
+  objectStorageAccess: any;
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
-    public myWardDataProvider: MyWardDataProvider) {
+    public myWardDataProvider: MyWardDataProvider, public imgCache: ImgCacheService) {
     console.log('--> HomePage constructor() called');
   }
 
@@ -38,8 +40,18 @@ export class HomePage {
     });
     this.loader.present().then(() => {
       this.myWardDataProvider.load().then(data => {
-        this.loader.dismiss();
-        this.grievances = data;
+        this.myWardDataProvider.getObjectStorageAccess().then(objectStorageAccess => {
+          this.objectStorageAccess = objectStorageAccess;
+          this.imgCache.init({
+            headers: {
+              'Authorization': this.objectStorageAccess.authorizationHeader
+            }
+          }).then( () => {
+            console.log('--> HomePage initialized imgCache');
+            this.loader.dismiss();
+            this.grievances = data;
+          });
+        });
       });
     });
   }
