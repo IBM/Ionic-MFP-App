@@ -20,8 +20,8 @@ public class ObjectStorageAccess {
 	public String baseUrl;
 	public String authorizationHeader;
 
-	public ObjectStorageAccess(String baseUrl, String authorizationHeader) {
+	public ObjectStorageAccess(String baseUrl, String authToken) {
 		this.baseUrl = baseUrl;
-		this.authorizationHeader = authorizationHeader;
+		this.authorizationHeader = "Bearer " + authToken;
 	}
 }
