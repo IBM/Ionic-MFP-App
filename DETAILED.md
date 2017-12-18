@@ -1176,9 +1176,9 @@ public class ObjectStorageAccess {
 	public String baseUrl;
 	public String authorizationHeader;
 
-	public ObjectStorageAccess(String baseUrl, String authorizationHeader) {
+	public ObjectStorageAccess(String baseUrl, String authToken) {
 		this.baseUrl = baseUrl;
-		this.authorizationHeader = authorizationHeader;
+		this.authorizationHeader = "Bearer " + authToken;
 	}
 }</b>
 </code></pre>
@@ -1278,6 +1278,46 @@ import { MyApp } from './app.component';
 export class AppModule {}
 </code></pre>
 
+Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below:
+
+<pre><code>
+...
+@Injectable()
+export class MyWardDataProvider {
+  data: any = null;
+  <b>objectStorageAccess: any = null;</b>
+
+  constructor() {
+    ...
+  }
+
+  load() {
+    ...
+  }
+
+  <b>getObjectStorageAccess() {
+    if (this.objectStorageAccess) {
+      // already loaded data
+      return Promise.resolve(this.objectStorageAccess);
+    }
+    // don't have the data yet
+    console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
+    return new Promise(resolve => {
+      let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
+      dataRequest.send().then(
+        (response) => {
+          console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
+          this.objectStorageAccess = response.responseJSON;
+          resolve(this.objectStorageAccess)
+        }, (failure) => {
+          console.log('--> MyWardDataProvider failed to get Object Storage AuthToken from adapter', failure);
+          resolve('error')
+        })
+    });
+  }</b>
+}
+</code></pre>
+
 Update `IonicMobileApp/src/pages/home/home.ts` as below:
 <pre><code>
 import { Component } from '@angular/core';
@@ -1293,6 +1333,7 @@ import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 export class HomePage {
   loader: any;
   grievances: any;
+  <b>objectStorageAccess: any;</b>
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
     public myWardDataProvider: MyWardDataProvider<b>, public imgCache: ImgCacheService</b>) {
@@ -1306,14 +1347,17 @@ export class HomePage {
     });
     this.loader.present().then(() => {
       this.myWardDataProvider.load().then(data => {
-        <b>this.imgCache.init({
-          headers: {
-            'Authorization': this.myWardDataProvider.authToken
-          }
-        }).then( () => {
-          console.log('--> HomePage initialized imgCache');
-          this.loader.dismiss();
-          this.grievances = data;
+        <b>this.myWardDataProvider.getObjectStorageAccess().then(objectStorageAccess => {
+          this.objectStorageAccess = objectStorageAccess;
+          this.imgCache.init({
+            headers: {
+              'Authorization': this.objectStorageAccess.authorizationHeader
+            }
+          }).then( () => {
+            console.log('--> HomePage initialized imgCache');
+            this.loader.dismiss();
+            this.grievances = data;
+          });
         });</b>
       });
     });
@@ -1332,7 +1376,7 @@ Update `IonicMobileApp/src/pages/home/home.html` as below:
   &lt;ion-list&gt;
     &lt;ion-item *ngFor="let grievance of grievances"&gt;
       &lt;ion-thumbnail item-left&gt;
-        <b>&lt;img img-cache img-cache-src="{{imagesBaseUrl}}{{grievance.picture.thumbnail}}"&gt;</b>
+        <b>&lt;img img-cache img-cache-src="{{objectStorageAccess.baseUrl}}{{grievance.picture.thumbnail}}"&gt;</b>
       &lt;/ion-thumbnail&gt;
       &lt;h2 text-wrap&gt;{{grievance.problemDescription}}&lt;/h2&gt;
       &lt;p&gt;@ {{grievance.address}}&lt;/p&gt;
