@@ -16,14 +16,19 @@
 
 package com.sample;
 
+import java.util.logging.Logger;
+
+import javax.ws.rs.core.Context;
+
+import org.lightcouch.CouchDbException;
+
+import com.amazonaws.SDKGlobalConfiguration;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.ibm.mfp.adapter.api.ConfigurationAPI;
 import com.ibm.mfp.adapter.api.MFPJAXRSApplication;
-import org.lightcouch.CouchDbException;
-
-import javax.ws.rs.core.Context;
-import java.util.logging.Logger;
+import com.ibm.oauth.BasicIBMOAuthCredentials;
+import com.ibm.oauth.IBMOAuthCredentials;
 
 public class CloudantJavaApplication extends MFPJAXRSApplication{
 
@@ -33,6 +38,9 @@ public class CloudantJavaApplication extends MFPJAXRSApplication{
 	ConfigurationAPI configurationAPI;
 
 	public Database db = null;
+
+	private IBMOAuthCredentials oAuthCreds = null;
+	private String baseUrl = "";
 
 	protected void init() throws Exception {
 		logger.info("Adapter initialized!");
@@ -49,8 +57,21 @@ public class CloudantJavaApplication extends MFPJAXRSApplication{
 				throw new Exception("Unable to connect to Cloudant DB, check the configuration.");
 			}
 		}
+
+		String endpointURL = configurationAPI.getPropertyValue("endpointURL");
+		String bucketName = configurationAPI.getPropertyValue("bucketName");
+		String serviceID = configurationAPI.getPropertyValue("serviceID");
+		String apiKey = configurationAPI.getPropertyValue("apiKey");
+
+		SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.bluemix.net/oidc/token";
+		oAuthCreds = new BasicIBMOAuthCredentials(apiKey, serviceID);
+		oAuthCreds.getTokenManager().getToken(); // initialize fetching and caching of token
+		this.baseUrl = endpointURL + "/" + bucketName + "/";
 	}
 
+	public ObjectStorageAccess getObjectStorageAccess() {
+		return new ObjectStorageAccess(this.baseUrl, oAuthCreds.getTokenManager().getToken());
+	}
 
 	protected void destroy() throws Exception {
 		logger.info("Adapter destroyed!");

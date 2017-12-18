@@ -29,4 +29,9 @@ limitations under the License.
 	<property name="password" displayName="Cloudant password" defaultValue=""  />
 	<property name="DBName" displayName="Cloudant DB name" defaultValue="myward"/>
 
+	<property name="endpointURL" displayName="Cloud Object Storage Endpoint Public URL" defaultValue="https://s3-api.us-geo.objectstorage.softlayer.net"/>
+	<property name="bucketName" displayName="Cloud Object Storage Bucket Name" defaultValue=""/>
+	<property name="serviceId" displayName="Cloud Object Storage Service ID" defaultValue=""  />
+	<property name="apiKey" displayName="Cloud Object Storage API Key" defaultValue=""/>
+
 </mfp:adapter>

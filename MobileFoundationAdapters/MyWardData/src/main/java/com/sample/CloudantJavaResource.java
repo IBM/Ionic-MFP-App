@@ -28,10 +28,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.ibm.mfp.adapter.api.AdaptersAPI;
 import org.lightcouch.NoDocumentException;
 
 import com.cloudant.client.api.Database;
+import com.ibm.mfp.adapter.api.AdaptersAPI;
 
 @Path("/")
 public class CloudantJavaResource {
@@ -78,5 +78,13 @@ public class CloudantJavaResource {
 	public Response getAllEntries() throws Exception {
 		List<MyWardGrievance> entries = getDB().view("_all_docs").includeDocs(true).query(MyWardGrievance.class);
 		return Response.ok(entries).build();
+	}
+
+	@GET
+	@Path("/objectStorage")
+	@Produces("application/json")
+	public Response getObjectStorageAccess() throws Exception {
+		CloudantJavaApplication app = adaptersAPI.getJaxRsApplication(CloudantJavaApplication.class);
+		return Response.ok(app.getObjectStorageAccess()).build();
 	}
 }
