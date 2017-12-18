@@ -35,9 +35,11 @@
     - 4.3.1 [Create a new provider in Ionic app for calling MFP adapter API](#431-create-a-new-provider-in-ionic-app-for-calling-mfp-adapter-api)
     - 4.3.2 [Modify home page to display the list of problems reported](#432-modify-home-page-to-display-the-list-of-problems-reported)
 5. [Use IBM Cloud Object Storage for storing and retrieving images](#step-5-use-ibm-cloud-object-storage-for-storing-and-retrieving-images)
-  - 5.1 [Create IBM Cloud Object Storage service and populate it with sample data](#51-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
-  - 5.2 [Create Service ID and API Key for accessing objects](#52-create-service-id-and-api-key-for-accessing-objects)
-
+  - 5.1 [Create IBM Cloud Object Storage service and API key](#51-create-ibm-cloud-object-storage-service-and-api-key)
+    - 5.1.1 [Create IBM Cloud Object Storage service and populate it with sample data](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
+    - 5.1.2 [Create Service ID and API Key for accessing objects](#512-create-service-id-and-api-key-for-accessing-objects)
+  - 5.2 [Add function in MFP Adapter to fetch Authorization token from IBM Cloud Object Storage](#52-add-function-in-mfp-adapter-to-fetch-authorization-token-from-ibm-cloud-object-storage)
+  - 5.3 [Modify Ionic App to display images](#53-modify-ionic-app-to-display-images)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
@@ -1079,7 +1081,9 @@ export class HomePage {
 
 ## Step 5. Use IBM Cloud Object Storage for storing and retrieving images
 
-### 5.1 Create IBM Cloud Object Storage service and populate it with sample data
+### 5.1 Create IBM Cloud Object Storage service and API key
+
+#### 5.1.1 Create IBM Cloud Object Storage service and populate it with sample data
 
 * In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [*Object Storage*](https://console.bluemix.net/catalog/infrastructure/cloud-object-storage) service under `Infrastructure` -> `Storage`. Click on `Create` as shown below.
 
@@ -1093,7 +1097,7 @@ export class HomePage {
 
   <img src="doc/source/images/COS_UploadObjects.png" alt="Upload objects to IBM Cloud Object Storage" width="800" border="10" />
 
-### 5.2 Create Service ID and API Key for accessing objects
+#### 5.1.2 Create Service ID and API Key for accessing objects
 
 * Create Service ID
   - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://console.bluemix.net/iam/. 
@@ -1118,9 +1122,132 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
   <img src="doc/source/images/IAM_DownloadAPIKey.png" alt="Create API key and download in IBM Cloud Identity and Access Management" width="800" border="10" />
 
-### 5.3 Update MFP Adapter to fetch Authorization token from IBM Cloud Object Storage
+### 5.2 Add function in MFP Adapter to fetch Authorization token from IBM Cloud Object Storage
 
-### 5.4 Modify Ionic App to display images
+Add [ibm-cos-java-sdk](https://github.com/IBM/ibm-cos-sdk-java) dependency to `MobileFoundationAdapters/MyWardData/pom.xml` as below:
+
+<pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project ...&gt;
+  ...
+  &lt;dependencies&gt;
+    ...
+    <b>&lt;dependency&gt;
+      &lt;groupId&gt;com.ibm.cos&lt;/groupId&gt;
+      &lt;artifactId&gt;ibm-cos-java-sdk&lt;/artifactId&gt;
+      &lt;version&gt;1.1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+      &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+      &lt;version&gt;4.5.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+      &lt;artifactId&gt;httpcore&lt;/artifactId&gt;
+      &lt;version&gt;4.4.5&lt;/version&gt;
+    &lt;/dependency&gt;</b>
+  &lt;/dependencies&gt;
+  ...
+&lt;/project&gt;
+</code></pre>
+
+
+Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below:
+
+<pre><code>
+&lt;mfp:adapter name="MyWardData" ...&gt;
+  ...
+  &lt;property name="DBName" displayName="Cloudant DB name" defaultValue="myward"/&gt;
+
+  <b>&lt;property name="endpointURL" displayName="Cloud Object Storage Endpoint Public URL" defaultValue="https://s3-api.us-geo.objectstorage.softlayer.net"/&gt;
+  &lt;property name="bucketName" displayName="Cloud Object Storage Bucket Name" defaultValue=""/&gt;
+  &lt;property name="serviceId" displayName="Cloud Object Storage Service ID" defaultValue=""  /&gt;
+  &lt;property name="apiKey" displayName="Cloud Object Storage API Key" defaultValue=""/&gt;</b>
+&lt;/mfp:adapter&gt;
+</code></pre>
+
+Add file `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/ObjectStorageAccess.java` with contents as below:
+
+<pre><code>
+<b>package com.sample;
+
+public class ObjectStorageAccess {
+	public String baseUrl;
+	public String authorizationHeader;
+
+	public ObjectStorageAccess(String baseUrl, String authorizationHeader) {
+		this.baseUrl = baseUrl;
+		this.authorizationHeader = authorizationHeader;
+	}
+}</b>
+</code></pre>
+
+Edit `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/CloudantJavaApplication.java` as below:
+
+<pre><code>
+package com.sample;
+...
+<b>import com.amazonaws.SDKGlobalConfiguration;
+import com.ibm.oauth.BasicIBMOAuthCredentials;
+import com.ibm.oauth.IBMOAuthCredentials;</b>
+
+public class CloudantJavaApplication extends MFPJAXRSApplication{
+	...
+	@Context
+	ConfigurationAPI configurationAPI;
+
+	public Database db = null;
+
+	<b>private IBMOAuthCredentials oAuthCreds = null;
+	private String baseUrl = "";</b>
+
+	protected void init() throws Exception {
+		logger.info("Adapter initialized!");
+		...
+
+		<b>String endpointURL = configurationAPI.getPropertyValue("endpointURL");
+		String bucketName = configurationAPI.getPropertyValue("bucketName");
+		String serviceID = configurationAPI.getPropertyValue("serviceID");
+		String apiKey = configurationAPI.getPropertyValue("apiKey");
+
+		SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.bluemix.net/oidc/token";
+		oAuthCreds = new BasicIBMOAuthCredentials(apiKey, serviceID);
+		oAuthCreds.getTokenManager().getToken(); // initialize fetching and caching of token
+		this.baseUrl = endpointURL + "/" + bucketName + "/";</b>
+	}
+
+	<b>public ObjectStorageAccess getObjectStorageAccess() {
+		return new ObjectStorageAccess(this.baseUrl, oAuthCreds.getTokenManager().getToken());
+	}</b>
+	...
+}
+</code></pre>
+
+Edit `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/CloudantJavaResource.java` as below:
+
+<pre><code>
+...
+@Path("/")
+public class CloudantJavaResource {
+
+	@Context
+	AdaptersAPI adaptersAPI;
+
+	...
+
+	<b>@GET
+	@Path("/objectStorage")
+	@Produces("application/json")
+	public Response getObjectStorageAccess() throws Exception {
+		CloudantJavaApplication app = adaptersAPI.getJaxRsApplication(CloudantJavaApplication.class);
+		return Response.ok(app.getObjectStorageAccess()).build();
+	}</b>
+}
+</code></pre>
+
+
+### 5.3 Modify Ionic App to display images
 
 For downloading and caching images in the Ionic App, we will use the [ng-imgcache](https://github.com/fiznool/ng-imgcache) library. *ng-imgcache* uses the popular [imgcache.js](https://github.com/chrisben/imgcache.js) library that is based on [cordova-plugin-file](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/) and [cordova-plugin-file-transfer](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file-transfer/) plugins.
 
