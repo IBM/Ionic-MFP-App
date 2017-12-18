@@ -1118,3 +1118,99 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
   <img src="doc/source/images/IAM_DownloadAPIKey.png" alt="Create API key and download in IBM Cloud Identity and Access Management" width="800" border="10" />
 
+### 5.3 Update MFP Adapter to fetch Authorization token from IBM Cloud Object Storage
+
+### 5.4 Modify Ionic App to display images
+
+For downloading and caching images in the Ionic App, we will use the [ng-imgcache](https://github.com/fiznool/ng-imgcache) library. *ng-imgcache* uses the popular [imgcache.js](https://github.com/chrisben/imgcache.js) library that is based on [cordova-plugin-file](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/) and [cordova-plugin-file-transfer](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file-transfer/) plugins.
+
+```
+$ npm install ng-imgcache --save
+$ ionic cordova plugin add cordova-plugin-file
+$ ionic cordova plugin add cordova-plugin-file-transfer
+```
+
+Update `IonicMobileApp/src/app/app.module.ts` as below:
+
+<pre><code>
+...
+import { StatusBar } from '@ionic-native/status-bar';
+<b>import { ImgCacheModule } from 'ng-imgcache';</b>
+
+import { MyApp } from './app.component';
+...
+@NgModule({
+  ...
+  imports: [
+    BrowserModule,
+    <b>ImgCacheModule,</b>
+    IonicModule.forRoot(MyApp)
+  ],
+  ...
+})
+export class AppModule {}
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below:
+<pre><code>
+import { Component } from '@angular/core';
+import { NavController, LoadingController } from 'ionic-angular';
+<b>import { ImgCacheService } from 'ng-imgcache';</b>
+
+import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  loader: any;
+  grievances: any;
+
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
+    public myWardDataProvider: MyWardDataProvider<b>, public imgCache: ImgCacheService</b>) {
+    console.log('--> HomePage constructor() called');
+  }
+
+  ionViewDidLoad() {
+    console.log('--> HomePage ionViewDidLoad() called');
+    this.loader = this.loadingCtrl.create({
+      content: 'Loading data. Please wait ...',
+    });
+    this.loader.present().then(() => {
+      this.myWardDataProvider.load().then(data => {
+        <b>this.imgCache.init({
+          headers: {
+            'Authorization': this.myWardDataProvider.authToken
+          }
+        }).then( () => {
+          console.log('--> HomePage initialized imgCache');
+          this.loader.dismiss();
+          this.grievances = data;
+        });</b>
+      });
+    });
+  }
+}
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.html` as below:
+
+<pre><code>
+&lt;ion-header&gt;
+...
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  &lt;ion-list&gt;
+    &lt;ion-item *ngFor="let grievance of grievances"&gt;
+      &lt;ion-thumbnail item-left&gt;
+        <b>&lt;img img-cache img-cache-src="{{imagesBaseUrl}}{{grievance.picture.thumbnail}}"&gt;</b>
+      &lt;/ion-thumbnail&gt;
+      &lt;h2 text-wrap&gt;{{grievance.problemDescription}}&lt;/h2&gt;
+      &lt;p&gt;@ {{grievance.address}}&lt;/p&gt;
+    &lt;/ion-item&gt;
+  &lt;/ion-list&gt;
+&lt;/ion-content&gt;
+</code></pre>
+
