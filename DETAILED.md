@@ -1073,3 +1073,48 @@ export class HomePage {
   &lt;/ion-list&gt;</b>
 &lt;/ion-content&gt;
 </code></pre>
+
+## Step 5. Use IBM Cloud Object Storage for storing and retrieving images
+
+### 5.1 Create IBM Cloud Object Storage service and populate it with sample data
+
+* In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [*Object Storage*](https://console.bluemix.net/catalog/infrastructure/cloud-object-storage) service under `Infrastructure` -> `Storage`. Click on `Create` as shown below.
+
+  <img src="doc/source/images/COS_CreateService.png" alt="Create IBM Cloud Object Storage service" width="800" border="10" />
+
+* The *IBM Cloud Object Storage* dashboard will get shown. In the `Buckets and objects` page, click on `Create bucket`. Give a unique name for the bucket. Leave the default selections as-is for *Resiliency* (`Cross Region`), *Location* (`us-geo`) and *Storage class* (`Standard`), and click on `Create` as shown below.
+
+  <img src="doc/source/images/COS_CreateBucket.png" alt="Create a bucket in IBM Cloud Object Storage" width="800" border="10" />
+
+* The *Bucket overview* page for the newly created bucket will get shown. Click on `Add objects`. In `Upload obects` dialog, click on `Add files` and select all the images under [SampleData](SampleData) directory (the six images and their thumbnails). Click `Open`. Click on `Upload` as shown below. Once upload is complete, you should see the images listed under your bucket.
+
+  <img src="doc/source/images/COS_UploadObjects.png" alt="Upload objects to IBM Cloud Object Storage" width="800" border="10" />
+
+### 5.2 Create ServiceID and API key for accessing objects
+
+* Create Service ID
+  - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://console.bluemix.net/iam/. 
+  - In case you have multiple IBM Cloud accounts, then select the target Account, Region, Organization and Space.
+  - Under `Identity & Access` (on the left side of the page), select `Service IDs` and click `Create`. Give a name and description as shown below and click `Create`.
+
+  <img src="doc/source/images/IAM_CreateServiceID.png" alt="Create a service ID in IBM Cloud Identity and Access Management" width="800" border="10" />
+
+* Add Cloud Object Storage *Writer* role to that service ID
+  - Back in *IBM Cloud Object Storage* dashboard, select `Bucket permissions` under `Buckets and objects`.
+  - Click on `Service IDs` tab. Under `Select a service ID`, select the service ID created in the above step. Under `Assign a role to this service ID for this bucket`, select `Writer`. Click `Create policy` as shown below. You should get a confirmation dialog saying “Service permission created“.
+
+  <img src="doc/source/images/COS_CreatePolicyForServiceID.png" alt="Add Writer role to the Service ID in IBM Cloud Object Storage" width="800" border="10" />
+
+* Create API Key
+  - Back in *IBM Cloud Identity & Access Management* dashboard, under `Service IDs`, click on the service ID created earlier.
+Under `Access policies`, you should see the `Writer` role for your bucket. 
+  - Click on `API keys` tab and then click on `Create` button. In the `Create API key` dialog, give a name and description for the API key and click on `Create`. You should get a confirmation dialog saying `API key successfully created` as shown below.
+  - Click on `Download` and save the API key as shown below. Note: This is the only time you will see the key. You cannot retrieve it later.
+  - Finally click on `Close`.
+
+  <img src="doc/source/images/IAM_DownloadAPIKey.png" alt="Create API key and download in IBM Cloud Identity and Access Management" width="800" border="10" />
+
+* Make a note of the service ID from *IBM Cloud Identity & Access Management* dashboard as shown below.
+
+  <img src="doc/source/images/IAM_CopyServiceID.png" alt="Copy Service ID from IBM Cloud Identity and Access Management dashboard" width="800" border="10" />
+
