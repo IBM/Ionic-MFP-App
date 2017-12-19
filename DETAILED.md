@@ -41,6 +41,7 @@
   - 5.2 [Add function in MFP Adapter to fetch Authorization token from IBM Cloud Object Storage](#52-add-function-in-mfp-adapter-to-fetch-authorization-token-from-ibm-cloud-object-storage)
   - 5.3 [Modify Ionic App to display images](#53-modify-ionic-app-to-display-images)
 6. [Show problem details page with location marked on Google Maps](#step-6-show-problem-details-page-with-location-marked-on-google-maps)
+7. [Capture image and geolocation and upload to server](#step-7-capture-image-and-geolocation-and-upload-to-server)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
