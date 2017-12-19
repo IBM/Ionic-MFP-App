@@ -1625,3 +1625,95 @@ Upon clicking of on any of the problems reported on the home page, a detail page
 
   <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Home Page" width="240" border="10" />
 
+## Step 7. Capture image and geolocation and upload to server
+
+Capture photo using Cordova plugin for Camera https://ionicframework.com/docs/native/camera/
+
+```
+$ ionic cordova plugin add cordova-plugin-camera
+$ npm install --save @ionic-native/camera
+```
+
+Generate a new page for reporting new problem.
+
+```
+$ ionic generate page ReportNew
+[OK] Generated a page named ReportNew!
+```
+
+Update `IonicMobileApp/src/pages/home/home.html` as below.
+
+<pre><code>
+&lt;ion-header&gt;
+  &lt;ion-navbar&gt;
+    &lt;ion-title&gt;
+      Problems Reported
+    &lt;/ion-title&gt;
+  &lt;/ion-navbar&gt;
+  <b>&lt;ion-buttons end&gt;
+    &lt;button ion-button icon-only (click)="reportNewProblem()"&gt;
+      &lt;ion-icon name="add"&gt;&lt;/ion-icon&gt;
+    &lt;/button&gt;
+  &lt;/ion-buttons&gt;</b>
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  ...
+&lt;/ion-content&gt;
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below.
+
+<pre><code>
+...
+<b>import { ReportNewPage } from '../report-new/report-new';</b>
+...
+export class HomePage {
+  ...
+
+  <b>reportNewProblem(){
+    this.navCtrl.push(ReportNewPage);
+  }</b>
+}
+</code></pre>
+
+Update `IonicMobileApp/src/app/app.module.ts` as below.
+
+<pre><code>
+...
+<b>import { Camera } from '@ionic-native/camera';
+import { ReportNewPage } from '../pages/report-new/report-new';</b>
+@NgModule({
+  declarations: [
+    MyApp,
+    LoginPage,
+    HomePage,
+    ProblemDetailPage<b>,
+    ReportNewPage</b>
+  ],
+  imports: [
+    BrowserModule,
+    ImgCacheModule,
+    IonicModule.forRoot(MyApp)
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    LoginPage,
+    HomePage,
+    ProblemDetailPage<b>,
+    ReportNewPage</b>
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthHandlerProvider,
+    MyWardDataProvider,
+    GoogleMaps<b>,
+    Camera</b>
+  ]
+})
+export class AppModule {}
+</code></pre>
+
