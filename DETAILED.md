@@ -1601,3 +1601,15 @@ import { ProblemDetailPage } from '../pages/problem-detail/problem-detail';</b>
 })
 export class AppModule {}
 </code></pre>
+
+Build/Run the Ionic application on Android phone
+
+```
+$ ionic cordova build android
+$ ionic cordova run android
+```
+
+Upon clicking of on any of the problems reported on the home page, a detail page should open up showing bigger image and the location should be marked on Google Maps as shown below.
+
+  <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Home Page" width="240" border="10" />
+
