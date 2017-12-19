@@ -1414,3 +1414,187 @@ $ ionic cordova run android
 After login, the home page should display the list of problems reported along with image thumbnails as shown below.
 
   <img src="doc/source/images/MyWardAppHomePage.png" alt="MyWard App - Home Page" width="240" border="10" />
+
+## Step 6. Show problem details page with location marked on Google Maps
+
+Generate a new page for ProblemDetail
+
+```
+$ ionic generate page ProblemDetail
+[OK] Generated a page named ProblemDetail!
+```
+
+Install Cordova plugin for Google Maps
+https://ionicframework.com/docs/native/google-maps/
+
+```
+$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your-Google-Maps-API-Key-for-Android>"
+$ npm install --save @ionic-native/google-maps
+```
+
+Update `IonicMobileApp/src/pages/home/home.html` as below:
+
+<pre><code>
+&lt;ion-header&gt;
+...
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  &lt;ion-list&gt;
+    <b>&lt;button ion-item (click)="itemClick(grievance)" *ngFor="let grievance of grievances"&gt;</b>
+      &lt;ion-thumbnail item-left&gt;
+        &lt;img img-cache img-cache-src="{{objectStorageAccess.baseUrl}}{{grievance.picture.thumbnail}}"&gt;
+      &lt;/ion-thumbnail&gt;
+      &lt;h2 text-wrap&gt;{{grievance.problemDescription}}&lt;/h2&gt;
+      &lt;p&gt;@ {{grievance.address}}&lt;/p&gt;
+    <b>&lt;/button&gt;</b>
+  &lt;/ion-list&gt;
+&lt;/ion-content&gt;
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below:
+
+<pre><code>
+...
+import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+<b>import { ProblemDetailPage } from '../problem-detail/problem-detail';</b>
+...
+export class HomePage {
+  ...
+
+  ionViewDidLoad() {
+    ...
+  }
+
+  // https://www.joshmorony.com/a-simple-guide-to-navigation-in-ionic-2/
+  <b>itemClick(grievance) {
+    this.navCtrl.push(ProblemDetailPage, { grievance: grievance, baseUrl: this.objectStorageAccess.baseUrl });
+  }</b>
+}
+</code></pre>
+
+Update `IonicMobileApp/src/pages/problem-detail/problem-detail.ts` as below.
+
+<pre><code>
+import { Component } from '@angular/core';
+<b>import { NavController, NavParams } from 'ionic-angular';
+import { GoogleMaps, GoogleMap, GoogleMapsEvent, Marker, LatLng } from '@ionic-native/google-maps';</b>
+
+<b>// @IonicPage()</b>
+@Component({
+  selector: 'page-problem-detail',
+  templateUrl: 'problem-detail.html',
+})
+export class ProblemDetailPage {
+  <b>grievance: any;
+  baseUrl: any;
+  map: GoogleMap;</b>
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    <b>console.log('--> ProblemDetailPage constructor() called');
+    this.grievance = navParams.get('grievance');
+    this.baseUrl = navParams.get('baseUrl');</b>
+  }
+
+  ionViewDidLoad() {
+    <b>console.log('--> ProblemDetailPage ionViewDidLoad() called');
+    this.loadMap();</b>
+  }
+
+  <b>loadMap() {
+    let loc = new LatLng(this.grievance.geoLocation.coordinates[1], this.grievance.geoLocation.coordinates[0]);
+    let mapOptions = {
+      camera: {
+        target: loc,
+        zoom: 15,
+        tilt: 10
+      }
+    };
+    this.map = GoogleMaps.create('map', mapOptions);
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      this.createMarker(loc, 'Home');
+    });
+  }
+
+  createMarker(loc: LatLng, title: String) {
+    let markerOptions: any = {
+      position: loc,
+      title: title
+    }
+    return this.map.addMarker(markerOptions).then((marker: Marker) => {
+      // marker.showInfoWindow();
+    }).catch(err => {
+      console.log(err);
+    });
+  }</b>
+}
+</code></pre>
+
+Delete file `IonicMobileApp/src/pages/problem-detail/problem-detail.module.ts`.
+
+Update `IonicMobileApp/src/pages/problem-detail/problem-detail.html` as below:
+
+<pre><code>
+&lt;ion-header&gt;
+  &lt;ion-navbar&gt;
+    &lt;ion-title&gt;
+      <b>MyWard Problem Details</b>
+    &lt;/ion-title&gt;
+  &lt;/ion-navbar&gt;
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  <b>&lt;h2 text-wrap&gt;{{grievance.problemDescription}}&lt;/h2&gt;
+  &lt;p&gt;Reported on: {{grievance.reportedDateTime}}&lt;/p&gt;
+  &lt;img img-cache img-cache-src="{{baseUrl}}{{grievance.picture.large}}"&gt;
+  &lt;p text-wrap&gt;@ {{grievance.address}}&lt;/p&gt;
+  &lt;div id="map">&lt;/div&gt;</b>
+&lt;/ion-content&gt;
+</code></pre>
+
+Update `IonicMobileApp/src/pages/problem-detail/problem-detail.scss` as below.
+
+<pre><code>
+page-problem-detail {
+  <b>#map {
+    height: 90%;
+  }</b>
+}
+</code></pre>
+
+Update `IonicMobileApp/src/app/app.module.ts` as below.
+
+<pre><code>
+...
+<b>import { GoogleMaps } from '@ionic-native/google-maps';
+import { ProblemDetailPage } from '../pages/problem-detail/problem-detail';</b>
+@NgModule({
+  declarations: [
+    MyApp,
+    LoginPage,
+    HomePage<b>,
+    ProblemDetailPage</b>
+  ],
+  imports: [
+    BrowserModule,
+    ImgCacheModule,
+    IonicModule.forRoot(MyApp)
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    LoginPage,
+    HomePage<b>,
+    ProblemDetailPage</b>
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthHandlerProvider,
+    MyWardDataProvider<b>,
+    GoogleMaps</b>
+  ]
+})
+export class AppModule {}
+</code></pre>
