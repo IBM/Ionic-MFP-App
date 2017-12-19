@@ -431,6 +431,18 @@ export class MyApp {
 }
 </code></pre>
 
+#### 3.1.4 Build/Run the Ionic application on Android phone
+
+```
+$ ionic cordova build android
+$ ionic cordova run android
+```
+
+Upon app launch, the login page should get displayed as shown below.
+
+  <img src="doc/source/images/MyWardAppLoginPage.png" alt="MyWard App - Home Page" width="240" border="10" />
+
+
 ### 3.2 Create Mobile Foundation service and configure MFP CLI
 * Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
 
