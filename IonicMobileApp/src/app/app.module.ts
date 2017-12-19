@@ -19,10 +19,12 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { ImgCacheModule } from 'ng-imgcache';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login'
 import { HomePage } from '../pages/home/home'
+import { ProblemDetailPage } from '../pages/problem-detail/problem-detail';
 import { AuthHandlerProvider } from '../providers/auth-handler/auth-handler';
 import { MyWardDataProvider } from '../providers/my-ward-data/my-ward-data';
 
@@ -30,7 +32,8 @@ import { MyWardDataProvider } from '../providers/my-ward-data/my-ward-data';
   declarations: [
     MyApp,
     LoginPage,
-    HomePage
+    HomePage,
+    ProblemDetailPage
   ],
   imports: [
     BrowserModule,
@@ -41,14 +44,16 @@ import { MyWardDataProvider } from '../providers/my-ward-data/my-ward-data';
   entryComponents: [
     MyApp,
     LoginPage,
-    HomePage
+    HomePage,
+    ProblemDetailPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthHandlerProvider,
-    MyWardDataProvider
+    MyWardDataProvider,
+    GoogleMaps
   ]
 })
 export class AppModule {}

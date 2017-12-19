@@ -18,6 +18,7 @@ import { NavController, LoadingController } from 'ionic-angular';
 import { ImgCacheService } from 'ng-imgcache';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+import { ProblemDetailPage } from '../problem-detail/problem-detail';
 
 @Component({
   selector: 'page-home',
@@ -55,4 +56,10 @@ export class HomePage {
       });
     });
   }
+
+  // https://www.joshmorony.com/a-simple-guide-to-navigation-in-ionic-2/
+  itemClick(grievance) {
+    this.navCtrl.push(ProblemDetailPage, { grievance: grievance, baseUrl: this.objectStorageAccess.baseUrl });
+  }
+
 }

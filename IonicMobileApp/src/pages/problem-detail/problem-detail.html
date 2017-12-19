@@ -15,20 +15,14 @@ limitations under the License.
 
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Problems Reported
-    </ion-title>
+    <ion-title>MyWard Problem Details</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <button ion-item (click)="itemClick(grievance)" *ngFor="let grievance of grievances">
-      <ion-thumbnail item-left>
-        <img img-cache img-cache-src="{{objectStorageAccess.baseUrl}}{{grievance.picture.thumbnail}}">
-      </ion-thumbnail>
-      <h2 text-wrap>{{grievance.problemDescription}}</h2>
-      <p>@ {{grievance.address}}</p>
-    </button>
-  </ion-list>
+  <h2 text-wrap>{{grievance.problemDescription}}</h2>
+  <p>Reported on: {{grievance.reportedDateTime}}</p>
+  <img img-cache img-cache-src="{{baseUrl}}{{grievance.picture.large}}">
+  <p text-wrap>@ {{grievance.address}}</p>
+  <div id="map"></div>
 </ion-content>
