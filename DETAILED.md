@@ -40,6 +40,7 @@
     - 5.1.2 [Create Service ID and API Key for accessing objects](#512-create-service-id-and-api-key-for-accessing-objects)
   - 5.2 [Add function in MFP Adapter to fetch Authorization token from IBM Cloud Object Storage](#52-add-function-in-mfp-adapter-to-fetch-authorization-token-from-ibm-cloud-object-storage)
   - 5.3 [Modify Ionic App to display images](#53-modify-ionic-app-to-display-images)
+6. [Show problem details page with location marked on Google Maps](#step-6-show-problem-details-page-with-location-marked-on-google-maps)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
@@ -1417,12 +1418,7 @@ After login, the home page should display the list of problems reported along wi
 
 ## Step 6. Show problem details page with location marked on Google Maps
 
-Generate a new page for ProblemDetail
-
-```
-$ ionic generate page ProblemDetail
-[OK] Generated a page named ProblemDetail!
-```
+Generate Google Maps API Key and specify the same in `IonicMobileApp/config.xml` and `IonicMobileApp/package.json`.
 
 Install Cordova plugin for Google Maps
 https://ionicframework.com/docs/native/google-maps/
@@ -1430,6 +1426,13 @@ https://ionicframework.com/docs/native/google-maps/
 ```
 $ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your-Google-Maps-API-Key-for-Android>"
 $ npm install --save @ionic-native/google-maps
+```
+
+Generate a new page for ProblemDetail
+
+```
+$ ionic generate page ProblemDetail
+[OK] Generated a page named ProblemDetail!
 ```
 
 Update `IonicMobileApp/src/pages/home/home.html` as below:
