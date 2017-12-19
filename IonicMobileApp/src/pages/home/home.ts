@@ -19,6 +19,7 @@ import { ImgCacheService } from 'ng-imgcache';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 import { ProblemDetailPage } from '../problem-detail/problem-detail';
+import { ReportNewPage } from '../report-new/report-new';
 
 @Component({
   selector: 'page-home',
@@ -60,6 +61,10 @@ export class HomePage {
   // https://www.joshmorony.com/a-simple-guide-to-navigation-in-ionic-2/
   itemClick(grievance) {
     this.navCtrl.push(ProblemDetailPage, { grievance: grievance, baseUrl: this.objectStorageAccess.baseUrl });
+  }
+
+  reportNewProblem(){
+    this.navCtrl.push(ReportNewPage);
   }
 
 }

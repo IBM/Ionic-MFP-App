@@ -15,25 +15,19 @@ limitations under the License.
 
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Problems Reported
-    </ion-title>
+    <ion-title>Report New Problem</ion-title>
   </ion-navbar>
-  <ion-buttons end>
-    <button ion-button icon-only (click)="reportNewProblem()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-buttons>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <button ion-item (click)="itemClick(grievance)" *ngFor="let grievance of grievances">
-      <ion-thumbnail item-left>
-        <img img-cache img-cache-src="{{objectStorageAccess.baseUrl}}{{grievance.picture.thumbnail}}">
-      </ion-thumbnail>
-      <h2 text-wrap>{{grievance.problemDescription}}</h2>
-      <p>@ {{grievance.address}}</p>
-    </button>
-  </ion-list>
+  <img [src]="base64Image" *ngIf="base64Image" />
+  <button ion-button full (click)="takePhoto()" >
+    <ion-icon name="camera"></ion-icon>
+    Take Photo
+  </button>
+  <div id="map"></div>
+  <button ion-button full (click)="captureLocation()">
+    <ion-icon name="locate"></ion-icon>
+    Capture current location
+  </button>
 </ion-content>
