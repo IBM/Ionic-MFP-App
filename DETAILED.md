@@ -1153,7 +1153,7 @@ Add [ibm-cos-java-sdk](https://github.com/IBM/ibm-cos-sdk-java) dependency to `M
 </code></pre>
 
 
-Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below:
+Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below. Update values for `endpointURL`, `bucketName`, `serviceId` and `apiKey`.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
@@ -1246,12 +1246,25 @@ public class CloudantJavaResource {
 }
 </code></pre>
 
+Build and deploy the modified MFP adapter
+
+```
+$ cd ../MobileFoundationAdapters/MyWardData/
+$ mfpdev adapter build
+$ mfpdev adapter deploy
+```
+
+Test the newly added API as per instructions in [Step 4.2.5](#425-test-the-newly-created-mfp-adapter). The GET API on `/objectStorage` should return a JSON object containing `baseUrl` and `authorizationHeader` as shown below.
+
+  <img src="doc/source/images/TestMFPAdapter_ObjectStorageAccess.png" alt="Test the newly added API in MFP Adapter for getting Cloud Object Storage Authorization token" width="800" border="10" />
+
 
 ### 5.3 Modify Ionic App to display images
 
 For downloading and caching images in the Ionic App, we will use the [ng-imgcache](https://github.com/fiznool/ng-imgcache) library. *ng-imgcache* uses the popular [imgcache.js](https://github.com/chrisben/imgcache.js) library that is based on [cordova-plugin-file](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/) and [cordova-plugin-file-transfer](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file-transfer/) plugins.
 
 ```
+$ cd ../../IonicMobileApp/
 $ npm install ng-imgcache --save
 $ ionic cordova plugin add cordova-plugin-file
 $ ionic cordova plugin add cordova-plugin-file-transfer
@@ -1385,3 +1398,8 @@ Update `IonicMobileApp/src/pages/home/home.html` as below:
 &lt;/ion-content&gt;
 </code></pre>
 
+Build/Run the Ionic application on Android phone
+```
+$ ionic cordova build android
+$ ionic cordova run android
+```
