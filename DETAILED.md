@@ -1152,8 +1152,7 @@ Add [ibm-cos-java-sdk](https://github.com/IBM/ibm-cos-sdk-java) dependency to `M
 &lt;/project&gt;
 </code></pre>
 
-
-Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below. Update values for `endpointURL`, `bucketName`, `serviceId` and `apiKey`.
+Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below. Specify values for `bucketName`, `serviceId` and `apiKey`. While creating the bucket in [step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
@@ -1254,12 +1253,14 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-Test the newly added API as per instructions in [Step 4.2.5](#425-test-the-newly-created-mfp-adapter). The GET API on `/objectStorage` should return a JSON object containing `baseUrl` and `authorizationHeader` as shown below.
+Test the newly added API as per instructions in [step 4.2.5](#425-test-the-newly-created-mfp-adapter). The GET API on `/objectStorage` should return a JSON object containing `baseUrl` and `authorizationHeader` as shown below.
 
-  <img src="doc/source/images/TestMFPAdapter_ObjectStorageAccess.png" alt="Test the newly added API in MFP Adapter for getting Cloud Object Storage Authorization token" width="800" border="10" />
+  <img src="doc/source/images/TestMFPAdapter_ObjectStorageAccess.png" alt="Test the newly added API in MFP Adapter for getting Cloud Object Storage Authorization token" width="1024" border="10" />
 
 
 ### 5.3 Modify Ionic App to display images
+
+#### 5.3.1 Use imgcache.js for downloading and caching images
 
 For downloading and caching images in the Ionic App, we will use the [ng-imgcache](https://github.com/fiznool/ng-imgcache) library. *ng-imgcache* uses the popular [imgcache.js](https://github.com/chrisben/imgcache.js) library that is based on [cordova-plugin-file](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/) and [cordova-plugin-file-transfer](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file-transfer/) plugins.
 
@@ -1291,7 +1292,9 @@ import { MyApp } from './app.component';
 export class AppModule {}
 </code></pre>
 
-Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below:
+#### 5.3.2 Add additional function in MyWardDataProvider to call the new MFP adapter function
+
+Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below.
 
 <pre><code>
 ...
@@ -1331,7 +1334,10 @@ export class MyWardDataProvider {
 }
 </code></pre>
 
-Update `IonicMobileApp/src/pages/home/home.ts` as below:
+#### 5.3.3 Update Home page to display images
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below.
+
 <pre><code>
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
@@ -1398,8 +1404,13 @@ Update `IonicMobileApp/src/pages/home/home.html` as below:
 &lt;/ion-content&gt;
 </code></pre>
 
-Build/Run the Ionic application on Android phone
+#### 5.3.4 Build/Run the Ionic application on Android phone
+
 ```
 $ ionic cordova build android
 $ ionic cordova run android
 ```
+
+After login, the home page should display the list of problems reported along with image thumbnails as shown below.
+
+  <img src="doc/source/images/MyWardAppHomePage.png" alt="MyWard App - Home Page" width="240" border="10" />
