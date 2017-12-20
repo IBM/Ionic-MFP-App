@@ -14,7 +14,7 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
 
@@ -28,14 +28,14 @@ export class ReportNewPage {
   mapReady: boolean = false;
   map: GoogleMap;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera : Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private camera : Camera, private alertCtrl: AlertController) {
     console.log('--> ReportNewPage constructor() called');
   }
 
   ionViewDidLoad() {
     console.log('--> ReportNewPage ionViewDidLoad() called');
     this.createMap();
-    // this.captureLocation();
   }
 
   // https://ionicframework.com/docs/native/camera/
@@ -55,87 +55,73 @@ export class ReportNewPage {
   }
 
   createMap() {
-    let loc = new LatLng(13.0768342, 77.7886087);
+    let prevLoc = new LatLng(13.0768342, 77.7886087);
     let mapOptions: GoogleMapOptions = {
-      camera: this.getCameraOptions(loc)
+      camera: {
+        target: prevLoc,
+        zoom: 15,
+        tilt: 10
+      }
     };
     this.map = GoogleMaps.create('map', mapOptions);
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      console.log('--> Map is Ready To Use');
+      console.log('--> ReportNewPage: Map is Ready To Use');
       this.mapReady = true;
-    });
-    // https://stackoverflow.com/questions/4537164/google-maps-v3-set-single-marker-point-on-map-click
-    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe( event => {
-      console.log('--> ' + event[0]);
-      this.map.clear();
-      this.createMarker(event[0], 'User selection');
+      // https://stackoverflow.com/questions/4537164/google-maps-v3-set-single-marker-point-on-map-click
+      this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe( event => {
+        console.log('--> ReportNewPage: User clicked location = ' + event[0]);
+        this.map.clear();
+        this.map.addMarker({
+          title: 'Selected location',
+          position: event[0]
+        }).then((marker: Marker) => {
+          marker.showInfoWindow();
+        });
+      });
     });
   }
 
   captureLocation() {
     if (!this.mapReady) {
-      this.showToast('Map is not ready yet. Please try again.');
+      this.showAlert('Map is not yet ready', 'Map is not ready yet. Please try again.');
       return;
     }
     this.map.clear();
 
     // Get the location of you
-    this.map.getMyLocation()
-      .then((location: MyLocation) => {
-        console.log(JSON.stringify(location, null, 2));
-
-        // Move the map camera to the location with animation
-        return this.map.animateCamera({
-          target: location.latLng,
-          zoom: 17,
-          tilt: 30
-        }).then(() => {
-          // add a marker
-          return this.map.addMarker({
-            title: '@ionic-native/google-maps plugin!',
-            snippet: 'This plugin is awesome!',
-            position: location.latLng,
-            animation: 'BOUNCE'
-          });
-        })
-      }).then((marker: Marker) => {
-        // show the infoWindow
-        marker.showInfoWindow();
-
-        // If clicked it, display the alert
-        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-          this.showToast('clicked!');
+    this.map.getMyLocation().then((location: MyLocation) => {
+      console.log('--> ReportNewPage: Device Location = ' + JSON.stringify(location, null, 2));
+      // Move the map camera to the location with animation
+      this.map.animateCamera({
+        target: location.latLng,
+        zoom: 17,
+        tilt: 30
+      }).then(() => {
+        // add a marker
+        this.map.addMarker({
+          title: 'Your device location',
+          snippet: 'Accurate to ' + location.accuracy + ' meters!',
+          position: location.latLng,
+          animation: 'BOUNCE'
+        }).then((marker: Marker) => {
+          marker.showInfoWindow();
         });
-      });
-  }
-
-  showToast(message: string) {
-    console.log('--> Toast: ' + message);
-  }
-
-  getCameraOptions(loc: LatLng) {
-    let options: any = {
-      target: loc,
-      zoom: 15,
-      tilt: 10
-    }
-    return options;
-  }
-
-  moveCamera(loc: LatLng) {
-    this.map.moveCamera(this.getCameraOptions(loc));
-  }
-
-  createMarker(loc: LatLng, title: String) {
-    let markerOptions: any = {
-      position: loc,
-      title: title
-    }
-    return this.map.addMarker(markerOptions).then((marker: Marker) => {
-      // marker.showInfoWindow();
+      })
     }).catch(err => {
+      this.showAlert('Try again', err.error_message);
       console.log(err);
     });
+  }
+
+  showAlert(alertTitle, alertMessage) {
+    let prompt = this.alertCtrl.create({
+      title: alertTitle,
+      message: alertMessage,
+      buttons: [{
+        text: 'Ok',
+      }]
+    });
+    prompt.present();
   }
 
 }
