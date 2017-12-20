@@ -20,14 +20,36 @@ limitations under the License.
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label fixed>Description</ion-label>
+      <ion-input type="text" [(ngModel)]="description"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Address</ion-label>
+      <ion-input type="text" [(ngModel)]="address"></ion-input>
+    </ion-item>
+  </ion-list>
   <img [src]="base64Image" *ngIf="base64Image" />
-  <button ion-button full (click)="takePhoto()" >
-    <ion-icon name="camera"></ion-icon>
-    Take Photo
-  </button>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button full (click)="takePhoto()" >
+          <ion-icon name="camera"></ion-icon>
+          Take Photo
+        </button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button full (click)="captureLocation()">
+          <ion-icon name="locate"></ion-icon>
+          Get My Location
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <div id="map"></div>
-  <button ion-button full (click)="captureLocation()">
-    <ion-icon name="locate"></ion-icon>
-    Capture current location
+  <button ion-button full (click)="submit()">
+    <ion-icon name="cloud-upload"></ion-icon>
+    Submit
   </button>
 </ion-content>

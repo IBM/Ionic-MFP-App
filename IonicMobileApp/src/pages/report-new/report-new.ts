@@ -24,9 +24,12 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLn
   templateUrl: 'report-new.html',
 })
 export class ReportNewPage {
-  base64Image : string;
+  base64Image: string = null;
   mapReady: boolean = false;
   map: GoogleMap;
+  description: string = '';
+  address: string = '';
+  location: LatLng = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private camera : Camera, private alertCtrl: AlertController) {
@@ -70,6 +73,7 @@ export class ReportNewPage {
       this.mapReady = true;
       // https://stackoverflow.com/questions/4537164/google-maps-v3-set-single-marker-point-on-map-click
       this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe( event => {
+        this.location = event[0];
         console.log('--> ReportNewPage: User clicked location = ' + event[0]);
         this.map.clear();
         this.map.addMarker({
@@ -91,6 +95,7 @@ export class ReportNewPage {
 
     // Get the location of you
     this.map.getMyLocation().then((location: MyLocation) => {
+      this.location = location.latLng;
       console.log('--> ReportNewPage: Device Location = ' + JSON.stringify(location, null, 2));
       // Move the map camera to the location with animation
       this.map.animateCamera({
@@ -123,6 +128,28 @@ export class ReportNewPage {
       }]
     });
     prompt.present();
+  }
+
+  submit() {
+    if (this.description === "") {
+      this.showAlert('Missing Description', 'Please add a description for the problem you are reporting.');
+      return;
+    }
+    if (this.address === "") {
+      this.showAlert('Missing Address', 'Please specify the address of problem location.');
+      return;
+    }
+    if (this.base64Image === null) {
+      this.showAlert('Missing Photo', 'Please take a photo of the problem location.');
+      return;
+    }
+    if (this.location === null) {
+      this.showAlert('Missing Geo Location', 'Please mark the location of problem on Maps.');
+      return;
+    }
+    console.log('description = ' + this.description);
+    console.log('address = ' + this.address);
+    console.log('location = ' + this.location);
   }
 
 }
