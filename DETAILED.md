@@ -1569,6 +1569,7 @@ Update `IonicMobileApp/src/pages/problem-detail/problem-detail.scss` as below.
 page-problem-detail {
   <b>#map {
     height: 90%;
+    width: 90%;
   }</b>
 }
 </code></pre>
