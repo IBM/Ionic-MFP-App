@@ -1494,7 +1494,7 @@ Update `IonicMobileApp/src/pages/problem-detail/problem-detail.ts` as below.
 <pre><code>
 import { Component } from '@angular/core';
 <b>import { NavController, NavParams } from 'ionic-angular';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, Marker, LatLng } from '@ionic-native/google-maps';</b>
+import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng } from '@ionic-native/google-maps';</b>
 
 <b>// @IonicPage()</b>
 @Component({
@@ -1519,7 +1519,7 @@ export class ProblemDetailPage {
 
   <b>loadMap() {
     let loc = new LatLng(this.grievance.geoLocation.coordinates[1], this.grievance.geoLocation.coordinates[0]);
-    let mapOptions = {
+    let mapOptions: GoogleMapOptions= {
       camera: {
         target: loc,
         zoom: 15,
@@ -1528,19 +1528,14 @@ export class ProblemDetailPage {
     };
     this.map = GoogleMaps.create('map', mapOptions);
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      this.createMarker(loc, 'Home');
-    });
-  }
-
-  createMarker(loc: LatLng, title: String) {
-    let markerOptions: any = {
-      position: loc,
-      title: title
-    }
-    return this.map.addMarker(markerOptions).then((marker: Marker) => {
-      // marker.showInfoWindow();
-    }).catch(err => {
-      console.log(err);
+      this.map.addMarker({
+        title: 'Problem Location',
+        position: loc
+      }).then((marker: Marker) => {
+        marker.showInfoWindow();
+      }).catch(err => {
+        console.log(err);
+      });
     });
   }</b>
 }
