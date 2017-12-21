@@ -14,9 +14,10 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 
 // @IonicPage()
 @Component({
@@ -30,9 +31,11 @@ export class ReportNewPage {
   description: string = '';
   address: string = '';
   location: LatLng = null;
+  loader: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private camera : Camera, private alertCtrl: AlertController) {
+    private camera : Camera, private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController, private myWardDataProvider: MyWardDataProvider) {
     console.log('--> ReportNewPage constructor() called');
   }
 
@@ -150,6 +153,30 @@ export class ReportNewPage {
     console.log('description = ' + this.description);
     console.log('address = ' + this.address);
     console.log('location = ' + this.location);
+    let grievance = {
+      "problemDescription": this.description,
+      "geoLocation": {
+        "type": "Point",
+        "coordinates": [
+          this.location.lng,
+          this.location.lat
+        ]
+      },
+      "address": this.address
+    }
+    this.loader = this.loadingCtrl.create({
+      content: 'Uploading data to server. Please wait ...',
+    });
+    this.loader.present().then(() => {
+      this.myWardDataProvider.uploadNewGrievance(grievance).then(
+        (response) => {
+          this.loader.dismiss();
+          this.showAlert('Upload Successful', 'Successfully created new problem report on server');
+        }, (failure) => {
+          this.loader.dismiss();
+          this.showAlert('Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+        });
+    });
   }
 
 }

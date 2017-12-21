@@ -68,4 +68,19 @@ export class MyWardDataProvider {
     });
   }
 
+  uploadNewGrievance(grievance) {
+    return new Promise( (resolve,reject) => {
+      console.log('--> MyWardDataProvider: Uploading new grievance to server ...');
+      let dataRequest = new WLResourceRequest("/adapters/MyWardData", WLResourceRequest.POST);
+      dataRequest.setHeader("Content-Type","application/json");
+      dataRequest.send(grievance).then(
+        (response) => {
+          console.log('--> MyWardDataProvider: Upload successful:\n', response);
+          resolve(response)
+        }, (failure) => {
+          console.log('--> MyWardDataProvider: Upload failed:\n', failure);
+          reject(failure)
+        })
+    });
+  }
 }
