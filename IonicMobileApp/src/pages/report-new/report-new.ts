@@ -17,7 +17,9 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 
 // @IonicPage()
 @Component({
@@ -34,8 +36,8 @@ export class ReportNewPage {
   loader: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private camera : Camera, private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController, private myWardDataProvider: MyWardDataProvider) {
+    private camera : Camera, private alertCtrl: AlertController, private loadingCtrl: LoadingController,
+    private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider) {
     console.log('--> ReportNewPage constructor() called');
   }
 
@@ -162,7 +164,9 @@ export class ReportNewPage {
           this.location.lat
         ]
       },
-      "address": this.address
+      "address": this.address,
+      "reportedBy": this.authHandler.username,
+      "reportedDateTime": this.getDateTime()
     }
     this.loader = this.loadingCtrl.create({
       content: 'Uploading data to server. Please wait ...',
@@ -177,6 +181,19 @@ export class ReportNewPage {
           this.showAlert('Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
         });
     });
+  }
+
+  getDateTime() {
+    // https://stackoverflow.com/questions/10211145/getting-current-date-and-time-in-javascript
+    let currentdate = new Date();
+    let fullYear = currentdate.getFullYear();
+    let month = (((currentdate.getMonth()+1) < 10)? "0" : "") + (currentdate.getMonth()+1);
+    let date = ((currentdate.getDate() < 10)? "0" : "") + currentdate.getDate();
+    let hours = ((currentdate.getHours() < 10)? "0" : "") + currentdate.getHours();
+    let minutes = ((currentdate.getMinutes() < 10)? "0" : "") + currentdate.getMinutes();
+    let seconds = ((currentdate.getSeconds() < 10)? "0" : "") + currentdate.getSeconds();
+    let datetime = fullYear + month + date + "_" + hours + minutes + seconds;
+    return datetime;
   }
 
 }

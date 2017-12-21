@@ -27,6 +27,7 @@ export class AuthHandlerProvider {
   securityCheckName = 'UserLogin';
   userLoginChallengeHandler;
   initialized = false;
+  username = null;
 
   constructor() {
     console.log('--> AuthHandlerProvider constructor() called');
@@ -110,6 +111,7 @@ export class AuthHandlerProvider {
   login(username, password) {
     console.log('--> AuthHandler login called');
     console.log('--> isChallenged: ', isChallenged);
+    this.username = username;
     if (isChallenged) {
       this.userLoginChallengeHandler.submitChallengeAnswer({'username':username, 'password':password});
     } else {
