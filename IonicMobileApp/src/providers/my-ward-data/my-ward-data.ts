@@ -16,13 +16,14 @@
 /// <reference path="../../../plugins/cordova-plugin-mfp/typings/worklight.d.ts" />
 
 import { Injectable } from '@angular/core';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 @Injectable()
 export class MyWardDataProvider {
   data: any = null;
   objectStorageAccess: any = null;
 
-  constructor() {
+  constructor(private transfer: FileTransfer) {
     console.log('--> MyWardDataProvider constructor() called');
   }
 
@@ -69,8 +70,8 @@ export class MyWardDataProvider {
   }
 
   uploadNewGrievance(grievance) {
-    return new Promise( (resolve,reject) => {
-      console.log('--> MyWardDataProvider: Uploading new grievance to server ...');
+    return new Promise( (resolve, reject) => {
+      console.log('--> MyWardDataProvider: Uploading following new grievance to server ...\n' + JSON.stringify(grievance));
       let dataRequest = new WLResourceRequest("/adapters/MyWardData", WLResourceRequest.POST);
       dataRequest.setHeader("Content-Type","application/json");
       dataRequest.send(grievance).then(
@@ -81,6 +82,33 @@ export class MyWardDataProvider {
           console.log('--> MyWardDataProvider: Upload failed:\n', failure);
           reject(failure)
         })
+    });
+  }
+
+  uploadImage(fileName, filePath) {
+    return new Promise( (resolve, reject) => {
+    let serverUrl = this.objectStorageAccess.baseUrl + fileName
+    console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
+    let options: FileUploadOptions = {
+      fileKey: 'file',
+      fileName: fileName,
+      httpMethod: 'PUT',
+      headers: {
+        'Authorization': this.objectStorageAccess.authorizationHeader,
+        'Content-Type': 'image/jpeg'
+      }
+    }
+    let fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.upload(filePath, serverUrl, options)
+     .then((data) => {
+       // success
+      console.log('--> MyWardDataProvider: Image upload successful:\n', data);
+      resolve(data)
+     }, (err) => {
+      // error
+      console.log('--> MyWardDataProvider: Image upload failed:\n', err);
+      reject(err)
+     })
     });
   }
 }

@@ -14,7 +14,7 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
 
@@ -27,7 +27,7 @@ import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
   templateUrl: 'report-new.html',
 })
 export class ReportNewPage {
-  base64Image: string = null;
+  capturedImage: string = null;
   mapReady: boolean = false;
   map: GoogleMap;
   description: string = '';
@@ -36,7 +36,8 @@ export class ReportNewPage {
   loader: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private camera : Camera, private alertCtrl: AlertController, private loadingCtrl: LoadingController,
+    private camera : Camera, private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController, private toastCtrl: ToastController,
     private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider) {
     console.log('--> ReportNewPage constructor() called');
   }
@@ -49,14 +50,15 @@ export class ReportNewPage {
   // https://ionicframework.com/docs/native/camera/
   takePhoto() {
     const options : CameraOptions = {
-      quality: 50, // picture quality
-      destinationType: this.camera.DestinationType.DATA_URL,
+      quality: 90, // picture quality
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true
     }
     this.camera.getPicture(options) .then((imageData) => {
-        this.base64Image = "data:image/jpeg;base64," + imageData;
+        // this.capturedImage = "data:image/jpeg;base64," + imageData;
+        this.capturedImage = imageData;
       }, (err) => {
         console.log(err);
       }
@@ -135,6 +137,15 @@ export class ReportNewPage {
     prompt.present();
   }
 
+  showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present(toast);
+  }
+
   submit() {
     if (this.description === "") {
       this.showAlert('Missing Description', 'Please add a description for the problem you are reporting.');
@@ -144,7 +155,7 @@ export class ReportNewPage {
       this.showAlert('Missing Address', 'Please specify the address of problem location.');
       return;
     }
-    if (this.base64Image === null) {
+    if (this.capturedImage === null) {
       this.showAlert('Missing Photo', 'Please take a photo of the problem location.');
       return;
     }
@@ -152,10 +163,17 @@ export class ReportNewPage {
       this.showAlert('Missing Geo Location', 'Please mark the location of problem on Maps.');
       return;
     }
-    console.log('description = ' + this.description);
-    console.log('address = ' + this.address);
-    console.log('location = ' + this.location);
+
+    let username = this.authHandler.username;
+    let timestamp = this.getDateTime();
+    let imageFilename = timestamp + '_' + username + '.jpeg';
     let grievance = {
+      "reportedBy": username,
+      "reportedDateTime": timestamp,
+      "picture": {
+        "large": imageFilename,
+        "thumbnail": 'thumbnail_' + imageFilename
+      },
       "problemDescription": this.description,
       "geoLocation": {
         "type": "Point",
@@ -164,21 +182,33 @@ export class ReportNewPage {
           this.location.lat
         ]
       },
-      "address": this.address,
-      "reportedBy": this.authHandler.username,
-      "reportedDateTime": this.getDateTime()
+      "address": this.address
     }
+
     this.loader = this.loadingCtrl.create({
-      content: 'Uploading data to server. Please wait ...',
+      content: 'Uploading image to server. Please wait ...',
     });
     this.loader.present().then(() => {
-      this.myWardDataProvider.uploadNewGrievance(grievance).then(
+      this.myWardDataProvider.uploadImage(imageFilename, this.capturedImage).then(
         (response) => {
           this.loader.dismiss();
-          this.showAlert('Upload Successful', 'Successfully created new problem report on server');
+          this.showToast('Image Uploaded Successfully');
+          this.loader = this.loadingCtrl.create({
+            content: 'Uploading data to server. Please wait ...',
+          });
+          this.loader.present().then(() => {
+            this.myWardDataProvider.uploadNewGrievance(grievance).then(
+              (response) => {
+                this.loader.dismiss();
+                this.showToast('Data Uploaded Successfully');
+              }, (failure) => {
+                this.loader.dismiss();
+                this.showAlert('Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+              });
+          });
         }, (failure) => {
           this.loader.dismiss();
-          this.showAlert('Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+          this.showAlert('Image upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
         });
     });
   }
