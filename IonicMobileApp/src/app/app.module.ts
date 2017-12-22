@@ -22,6 +22,7 @@ import { ImgCacheModule } from 'ng-imgcache';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Camera } from '@ionic-native/camera';
 import { FileTransfer } from '@ionic-native/file-transfer';
+import { ImageResizer } from '@ionic-native/image-resizer';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login'
@@ -60,7 +61,8 @@ import { MyWardDataProvider } from '../providers/my-ward-data/my-ward-data';
     MyWardDataProvider,
     GoogleMaps,
     Camera,
-    FileTransfer
+    FileTransfer,
+    ImageResizer
   ]
 })
 export class AppModule {}

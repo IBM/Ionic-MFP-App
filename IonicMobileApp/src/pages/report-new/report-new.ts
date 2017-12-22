@@ -17,6 +17,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
@@ -36,7 +37,7 @@ export class ReportNewPage {
   loader: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private camera : Camera, private alertCtrl: AlertController,
+    private camera : Camera, private alertCtrl: AlertController, private imageResizer: ImageResizer,
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
     private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider) {
     console.log('--> ReportNewPage constructor() called');
@@ -167,12 +168,13 @@ export class ReportNewPage {
     let username = this.authHandler.username;
     let timestamp = this.getDateTime();
     let imageFilename = timestamp + '_' + username + '.jpeg';
+    let thumbnailImageFilename = 'thumbnail_' + imageFilename;
     let grievance = {
       "reportedBy": username,
       "reportedDateTime": timestamp,
       "picture": {
         "large": imageFilename,
-        "thumbnail": 'thumbnail_' + imageFilename
+        "thumbnail": thumbnailImageFilename
       },
       "problemDescription": this.description,
       "geoLocation": {
@@ -191,26 +193,48 @@ export class ReportNewPage {
     this.loader.present().then(() => {
       this.myWardDataProvider.uploadImage(imageFilename, this.capturedImage).then(
         (response) => {
-          this.loader.dismiss();
-          this.showToast('Image Uploaded Successfully');
-          this.loader = this.loadingCtrl.create({
-            content: 'Uploading data to server. Please wait ...',
-          });
-          this.loader.present().then(() => {
-            this.myWardDataProvider.uploadNewGrievance(grievance).then(
-              (response) => {
-                this.loader.dismiss();
-                this.showToast('Data Uploaded Successfully');
-              }, (failure) => {
-                this.loader.dismiss();
-                this.showAlert('Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+          this.imageResizer.resize(this.getImageResizerOptions()).then(
+            (filePath: string) => {
+              this.myWardDataProvider.uploadImage(thumbnailImageFilename, filePath).then(
+                (response) => {
+                  this.loader.dismiss();
+                  this.showToast('Image Uploaded Successfully');
+                  this.loader = this.loadingCtrl.create({
+                    content: 'Uploading data to server. Please wait ...',
+                  });
+                  this.loader.present().then(() => {
+                    this.myWardDataProvider.uploadNewGrievance(grievance).then(
+                      (response) => {
+                        this.loader.dismiss();
+                        this.showToast('Data Uploaded Successfully');
+                      }, (failure) => {
+                        this.loader.dismiss();
+                        this.showAlert('Data Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+                      });
+                  });
+                }, (failure) => {
+                  this.loader.dismiss();
+                  this.showAlert('Thumbnail Upload Failed', 'Encountered following error while uploading thumbnail image to server:\n' + failure.errorMsg);
               });
-          });
+            }).catch(e => {
+              console.log(e)
+              this.showAlert('Error Creating Thumbnail', 'Encountered following error while creating thumbnail:\n' + JSON.stringify(e));
+            });
         }, (failure) => {
           this.loader.dismiss();
-          this.showAlert('Image upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
+          this.showAlert('Image Upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
         });
     });
+  }
+
+  getImageResizerOptions() {
+    let options = {
+      uri: this.capturedImage,
+      quality: 90,
+      width: 400,
+      height: 400
+    } as ImageResizerOptions;
+    return options;
   }
 
   getDateTime() {
