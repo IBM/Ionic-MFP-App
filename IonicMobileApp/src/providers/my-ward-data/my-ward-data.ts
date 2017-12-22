@@ -28,10 +28,10 @@ export class MyWardDataProvider {
   }
 
   load() {
-    if (this.data) {
-      // already loaded data
-      return Promise.resolve(this.data);
-    }
+    // if (this.data) {
+    //   // already loaded data
+    //   return Promise.resolve(this.data);
+    // }
     // don't have the data yet
     console.log('--> MyWardDataProvider loading data from adapter ...');
     return new Promise(resolve => {

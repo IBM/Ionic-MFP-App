@@ -37,6 +37,10 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
+    this.refresh();
+  }
+
+  refresh() {
     this.loader = this.loadingCtrl.create({
       content: 'Loading data. Please wait ...',
     });

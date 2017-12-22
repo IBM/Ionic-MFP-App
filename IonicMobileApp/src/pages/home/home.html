@@ -15,15 +15,20 @@ limitations under the License.
 
 <ion-header>
   <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       Problems Reported
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="reportNewProblem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-  <ion-buttons end>
-    <button ion-button icon-only (click)="reportNewProblem()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-buttons>
 </ion-header>
 
 <ion-content padding>
