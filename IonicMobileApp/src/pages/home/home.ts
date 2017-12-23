@@ -37,10 +37,14 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
-    this.refresh();
   }
 
-  refresh() {
+  ionViewWillEnter() {
+    console.log('--> HomePage ionViewWillEnter() called');
+    this.loadData();
+  }
+
+  loadData() {
     this.loader = this.loadingCtrl.create({
       content: 'Loading data. Please wait ...',
     });
@@ -71,4 +75,8 @@ export class HomePage {
     this.navCtrl.push(ReportNewPage);
   }
 
+  refresh() {
+    this.myWardDataProvider.data = null;
+    this.loadData();
+  }
 }

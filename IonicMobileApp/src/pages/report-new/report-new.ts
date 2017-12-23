@@ -127,13 +127,15 @@ export class ReportNewPage {
     });
   }
 
-  showAlert(alertTitle, alertMessage) {
+  showAlert(alertTitle, alertMessage, enableBackdropDismiss: boolean = true, okHandler?) {
     let prompt = this.alertCtrl.create({
       title: alertTitle,
       message: alertMessage,
       buttons: [{
         text: 'Ok',
-      }]
+        handler: okHandler
+      }],
+      enableBackdropDismiss: enableBackdropDismiss
     });
     prompt.present();
   }
@@ -207,6 +209,11 @@ export class ReportNewPage {
                       (response) => {
                         this.loader.dismiss();
                         this.showToast('Data Uploaded Successfully');
+                        this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
+                          // force reload of data in HomePage
+                          this.myWardDataProvider.data = null;
+                          this.navCtrl.pop();
+                        })
                       }, (failure) => {
                         this.loader.dismiss();
                         this.showAlert('Data Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
