@@ -2095,6 +2095,7 @@ page-report-new {
 }
 </code></pre>
 
+Delete file `IonicMobileApp/src/pages/report-new/report-new.module.ts`.
 
 Build/Run the Ionic application on Android phone
 
