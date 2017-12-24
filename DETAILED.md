@@ -1055,6 +1055,10 @@ export class HomePage {
 
   <b>ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
+    this.loadData();
+  }
+
+  loadData() {
     this.loader = this.loadingCtrl.create({
       content: 'Loading data. Please wait ...',
     });
@@ -1375,6 +1379,10 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
+    this.loadData();
+  }
+
+  loadData() {
     this.loader = this.loadingCtrl.create({
       content: 'Loading data. Please wait ...',
     });
@@ -1472,18 +1480,13 @@ Update `IonicMobileApp/src/pages/home/home.ts` as below:
 
 <pre><code>
 ...
-import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 <b>import { ProblemDetailPage } from '../problem-detail/problem-detail';</b>
 ...
 export class HomePage {
   ...
 
-  ionViewDidLoad() {
-    ...
-  }
-
-  // https://www.joshmorony.com/a-simple-guide-to-navigation-in-ionic-2/
-  <b>itemClick(grievance) {
+  <b>// https://www.joshmorony.com/a-simple-guide-to-navigation-in-ionic-2/
+  itemClick(grievance) {
     this.navCtrl.push(ProblemDetailPage, { grievance: grievance, baseUrl: this.objectStorageAccess.baseUrl });
   }</b>
 }
