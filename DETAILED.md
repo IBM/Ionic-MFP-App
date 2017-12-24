@@ -1740,7 +1740,10 @@ Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below.
 @Injectable()
 export class MyWardDataProvider {
   ...
-
+  constructor(<b>private transfer: FileTransfer</b>) {
+    console.log('--> MyWardDataProvider constructor() called');
+  }
+  ...
   <b>uploadNewGrievance(grievance) {
     return new Promise( (resolve, reject) => {
       console.log('--> MyWardDataProvider: Uploading following new grievance to server ...\n' + JSON.stringify(grievance));
@@ -1759,28 +1762,27 @@ export class MyWardDataProvider {
 
   uploadImage(fileName, filePath) {
     return new Promise( (resolve, reject) => {
-    let serverUrl = this.objectStorageAccess.baseUrl + fileName
-    console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
-    let options: FileUploadOptions = {
-      fileKey: 'file',
-      fileName: fileName,
-      httpMethod: 'PUT',
-      headers: {
-        'Authorization': this.objectStorageAccess.authorizationHeader,
-        'Content-Type': 'image/jpeg'
+      let serverUrl = this.objectStorageAccess.baseUrl + fileName;
+      console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
+      let options: FileUploadOptions = {
+        fileKey: 'file',
+        fileName: fileName,
+        httpMethod: 'PUT',
+        headers: {
+          'Authorization': this.objectStorageAccess.authorizationHeader,
+          'Content-Type': 'image/jpeg'
+        }
       }
-    }
-    let fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.upload(filePath, serverUrl, options)
-     .then((data) => {
-       // success
-      console.log('--> MyWardDataProvider: Image upload successful:\n', data);
-      resolve(data)
-     }, (err) => {
-      // error
-      console.log('--> MyWardDataProvider: Image upload failed:\n', err);
-      reject(err)
-     })
+      let fileTransfer: FileTransferObject = this.transfer.create();
+      fileTransfer.upload(filePath, serverUrl, options).then((data) => {
+        // success
+        console.log('--> MyWardDataProvider: Image upload successful:\n', data);
+        resolve(data);
+      }, (err) => {
+        // error
+        console.log('--> MyWardDataProvider: Image upload failed:\n', err);
+        reject(err);
+      })
     });
   }</b>
 }
@@ -1992,8 +1994,8 @@ export class ReportNewPage {
 
     let username = this.authHandler.username;
     let timestamp = this.getDateTime();
-    let imageFilename = timestamp + '\_' + username + '.jpeg';
-    let thumbnailImageFilename = 'thumbnail\_' + imageFilename;
+    let imageFilename = timestamp + '_' + username + '.jpeg';
+    let thumbnailImageFilename = 'thumbnail_' + imageFilename;
     let grievance = {
       "reportedBy": username,
       "reportedDateTime": timestamp,
@@ -2033,7 +2035,7 @@ export class ReportNewPage {
                         this.loader.dismiss();
                         this.showToast('Data Uploaded Successfully');
                         this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
-                          this.myWardDataProvider.data.push(grievance)
+                          this.myWardDataProvider.data.push(grievance);
                           this.navCtrl.pop();
                         })
                       }, (failure) => {
@@ -2075,7 +2077,7 @@ export class ReportNewPage {
     let hours = ((currentdate.getHours() &lt; 10)? "0" : "") + currentdate.getHours();
     let minutes = ((currentdate.getMinutes() &lt; 10)? "0" : "") + currentdate.getMinutes();
     let seconds = ((currentdate.getSeconds() &lt; 10)? "0" : "") + currentdate.getSeconds();
-    let datetime = fullYear + month + date + "\_" + hours + minutes + seconds;
+    let datetime = fullYear + month + date + "_" + hours + minutes + seconds;
     return datetime;
   } </b>
 
