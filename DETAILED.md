@@ -2107,3 +2107,44 @@ $ ionic cordova run android
 Upon clicking the + button on the home page, the `Report New Problem` page should show up, allowing the user to specify problem description and address as shown below. User should be able to take a photo of the problem and specify the location of problem either by grabbing device's geo-location or by marking the location on Maps.
 
   <img src="doc/source/images/MyWardAppReportNewPage.png" alt="MyWard App - Report New Problem Page" width="240" border="10" />
+
+Add refresh button in Home page:
+
+Update `IonicMobileApp/src/pages/home/home.html` as below.
+
+<pre><code>
+&lt;ion-header&gt;
+  &lt;ion-navbar&gt;
+    <b>&lt;ion-buttons start&gt;
+      &lt;button ion-button icon-only (click)="refresh()"&gt;
+        &lt;ion-icon name="refresh"&gt;&lt;/ion-icon&gt;
+      &lt;/button&gt;
+    &lt;/ion-buttons&gt;</b>
+    &lt;ion-title&gt;
+      Problems Reported
+    &lt;/ion-title&gt;
+    &lt;ion-buttons end&gt;
+      &lt;button ion-button icon-only (click)="reportNewProblem()"&gt;
+        &lt;ion-icon name="add"&gt;&lt;/ion-icon&gt;
+      &lt;/button&gt;
+    &lt;/ion-buttons&gt;
+  &lt;/ion-navbar&gt;
+&lt;/ion-header&gt;
+
+&lt;ion-content padding&gt;
+  ...
+&lt;/ion-content&gt;
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below.
+
+<pre><code>
+...
+export class HomePage {
+  ...
+  <b>refresh() {
+    this.myWardDataProvider.data = null;
+    this.loadData();
+  }</b>
+}
+</code></pre>
