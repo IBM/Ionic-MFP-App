@@ -555,7 +555,8 @@ var loginFailureCallback = null;</b>
 export class AuthHandlerProvider {
   <b>securityCheckName = 'UserLogin';
   userLoginChallengeHandler;
-  initialized = false;</b>
+  initialized = false;
+  username = null</b>
 
   constructor() {
     <b>console.log('--> AuthHandlerProvider constructor() called');</b>
@@ -639,6 +640,7 @@ export class AuthHandlerProvider {
   login(username, password) {
     console.log('--> AuthHandler login called');
     console.log('--> isChallenged: ', isChallenged);
+    this.username = username;
     if (isChallenged) {
       this.userLoginChallengeHandler.submitChallengeAnswer({'username':username, 'password':password});
     } else {
@@ -1335,12 +1337,12 @@ export class MyWardDataProvider {
       return Promise.resolve(this.objectStorageAccess);
     }
     // don't have the data yet
-    console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
+    // console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
     return new Promise(resolve => {
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
+          // console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
           this.objectStorageAccess = response.responseJSON;
           resolve(this.objectStorageAccess)
         }, (failure) => {
@@ -1627,11 +1629,19 @@ Upon clicking of on any of the problems reported on the home page, a detail page
 
 ## Step 7. Capture image and geolocation and upload to server
 
-Capture photo using Cordova plugin for Camera https://ionicframework.com/docs/native/camera/
+* Capture photo using Cordova Camera plugin https://ionicframework.com/docs/native/camera/
+* Create thumbnail image using Cordova plugin For Image Resize https://ionicframework.com/docs/native/image-resizer/
+* Upload image to Object Storage using Cordova File Transfer plugin https://ionicframework.com/docs/native/file-transfer/
 
 ```
 $ ionic cordova plugin add cordova-plugin-camera
 $ npm install --save @ionic-native/camera
+
+$ ionic cordova plugin add info.protonet.imageresizer
+$ npm install --save @ionic-native/image-resizer
+
+$ ionic cordova plugin add cordova-plugin-file-transfer
+$ npm install --save @ionic-native/file-transfer
 ```
 
 Generate a new page for reporting new problem.
@@ -1682,6 +1692,8 @@ Update `IonicMobileApp/src/app/app.module.ts` as below.
 <pre><code>
 ...
 <b>import { Camera } from '@ionic-native/camera';
+import { ImageResizer } from '@ionic-native/image-resizer';
+import { FileTransfer } from '@ionic-native/file-transfer';
 import { ReportNewPage } from '../pages/report-new/report-new';</b>
 @NgModule({
   declarations: [
@@ -1711,11 +1723,69 @@ import { ReportNewPage } from '../pages/report-new/report-new';</b>
     AuthHandlerProvider,
     MyWardDataProvider,
     GoogleMaps<b>,
-    Camera</b>
+    Camera,
+    ImageResizer,
+    FileTransfer</b>
   ]
 })
 export class AppModule {}
 </code></pre>
+
+Update `IonicMobileApp/src/providers/my-ward-data/my-ward-data.ts` as below.
+
+<pre><code>
+...
+<b>import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';</b>
+
+@Injectable()
+export class MyWardDataProvider {
+  ...
+
+  <b>uploadNewGrievance(grievance) {
+    return new Promise( (resolve, reject) => {
+      console.log('--> MyWardDataProvider: Uploading following new grievance to server ...\n' + JSON.stringify(grievance));
+      let dataRequest = new WLResourceRequest("/adapters/MyWardData", WLResourceRequest.POST);
+      dataRequest.setHeader("Content-Type","application/json");
+      dataRequest.send(grievance).then(
+        (response) => {
+          console.log('--> MyWardDataProvider: Upload successful:\n', response);
+          resolve(response)
+        }, (failure) => {
+          console.log('--> MyWardDataProvider: Upload failed:\n', failure);
+          reject(failure)
+        })
+    });
+  }
+
+  uploadImage(fileName, filePath) {
+    return new Promise( (resolve, reject) => {
+    let serverUrl = this.objectStorageAccess.baseUrl + fileName
+    console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
+    let options: FileUploadOptions = {
+      fileKey: 'file',
+      fileName: fileName,
+      httpMethod: 'PUT',
+      headers: {
+        'Authorization': this.objectStorageAccess.authorizationHeader,
+        'Content-Type': 'image/jpeg'
+      }
+    }
+    let fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.upload(filePath, serverUrl, options)
+     .then((data) => {
+       // success
+      console.log('--> MyWardDataProvider: Image upload successful:\n', data);
+      resolve(data)
+     }, (err) => {
+      // error
+      console.log('--> MyWardDataProvider: Image upload failed:\n', err);
+      reject(err)
+     })
+    });
+  }</b>
+}
+</code></pre>
+
 
 Update `IonicMobileApp/src/pages/report-new/report-new.html` as below.
 
@@ -1737,7 +1807,7 @@ Update `IonicMobileApp/src/pages/report-new/report-new.html` as below.
       &lt;ion-input type="text" [(ngModel)]="address"&gt;&lt;/ion-input&gt;
     &lt;/ion-item&gt;
   &lt;/ion-list&gt;
-  &lt;img [src]="base64Image" *ngIf="base64Image" /&gt;
+  &lt;img [src]="capturedImage" *ngIf="capturedImage" /&gt;
   &lt;ion-grid&gt;
     &lt;ion-row&gt;
       &lt;ion-col col-6&gt;
@@ -1766,9 +1836,13 @@ Update `IonicMobileApp/src/pages/report-new/report-new.ts` as below.
 
 <pre><code>
 import { Component } from '@angular/core';
-import { NavController, NavParams<b>, AlertController</b> } from 'ionic-angular';
+import { NavController, NavParams<b>, AlertController, LoadingController, ToastController</b> } from 'ionic-angular';
 <b>import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
+
+import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 
 // @IonicPage()</b>
 @Component({
@@ -1776,15 +1850,18 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLn
   templateUrl: 'report-new.html',
 })
 export class ReportNewPage {
-  <b>base64Image: string = null;
+  <b>capturedImage: string = null;
   mapReady: boolean = false;
   map: GoogleMap;
   description: string = '';
   address: string = '';
-  location: LatLng = null;</b>
+  location: LatLng = null;
+  loader: any;</b>
 
   constructor(public navCtrl: NavController, public navParams: NavParams<b>,
-    private camera: Camera, private alertCtrl: AlertController</b>) {
+    private camera: Camera, private alertCtrl: AlertController, private imageResizer: ImageResizer,
+    private loadingCtrl: LoadingController, private toastCtrl: ToastController,
+    private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider</b>) {
     console.log(<b>'--> ReportNewPage constructor() called'</b>);
   }
 
@@ -1793,17 +1870,18 @@ export class ReportNewPage {
     this.createMap();</b>
   }
 
-  // https://ionicframework.com/docs/native/camera/
-  <b>takePhoto() {
-    const options: CameraOptions = {
-      quality: 50, // picture quality
-      destinationType: this.camera.DestinationType.DATA_URL,
+  <b>// https://ionicframework.com/docs/native/camera/
+  takePhoto() {
+    const options : CameraOptions = {
+      quality: 90, // picture quality
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true
     }
     this.camera.getPicture(options) .then((imageData) => {
-        this.base64Image = "data:image/jpeg;base64," + imageData;
+        // this.capturedImage = "data:image/jpeg;base64," + imageData;
+        this.capturedImage = imageData;
       }, (err) => {
         console.log(err);
       }
@@ -1811,6 +1889,7 @@ export class ReportNewPage {
   }
 
   createMap() {
+    // TODO need to store/retrieve prevLoc in app preferences/local storage
     let prevLoc = new LatLng(13.0768342, 77.7886087);
     let mapOptions: GoogleMapOptions = {
       camera: {
@@ -1871,15 +1950,26 @@ export class ReportNewPage {
     });
   }
 
-  showAlert(alertTitle, alertMessage) {
+  showAlert(alertTitle, alertMessage, enableBackdropDismiss: boolean = true, okHandler?) {
     let prompt = this.alertCtrl.create({
       title: alertTitle,
       message: alertMessage,
       buttons: [{
         text: 'Ok',
-      }]
+        handler: okHandler
+      }],
+      enableBackdropDismiss: enableBackdropDismiss
     });
     prompt.present();
+  }
+
+  showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present(toast);
   }
 
   submit() {
@@ -1891,7 +1981,7 @@ export class ReportNewPage {
       this.showAlert('Missing Address', 'Please specify the address of problem location.');
       return;
     }
-    if (this.base64Image === null) {
+    if (this.capturedImage === null) {
       this.showAlert('Missing Photo', 'Please take a photo of the problem location.');
       return;
     }
@@ -1899,10 +1989,95 @@ export class ReportNewPage {
       this.showAlert('Missing Geo Location', 'Please mark the location of problem on Maps.');
       return;
     }
-    console.log('description = ' + this.description);
-    console.log('address = ' + this.address);
-    console.log('location = ' + this.location);
-  }</b>
+
+    let username = this.authHandler.username;
+    let timestamp = this.getDateTime();
+    let imageFilename = timestamp + '\_' + username + '.jpeg';
+    let thumbnailImageFilename = 'thumbnail\_' + imageFilename;
+    let grievance = {
+      "reportedBy": username,
+      "reportedDateTime": timestamp,
+      "picture": {
+        "large": imageFilename,
+        "thumbnail": thumbnailImageFilename
+      },
+      "problemDescription": this.description,
+      "geoLocation": {
+        "type": "Point",
+        "coordinates": [
+          this.location.lng,
+          this.location.lat
+        ]
+      },
+      "address": this.address
+    }
+
+    this.loader = this.loadingCtrl.create({
+      content: 'Uploading image to server. Please wait ...',
+    });
+    this.loader.present().then(() => {
+      this.myWardDataProvider.uploadImage(imageFilename, this.capturedImage).then(
+        (response) => {
+          this.imageResizer.resize(this.getImageResizerOptions()).then(
+            (filePath: string) => {
+              this.myWardDataProvider.uploadImage(thumbnailImageFilename, filePath).then(
+                (response) => {
+                  this.loader.dismiss();
+                  this.showToast('Image Uploaded Successfully');
+                  this.loader = this.loadingCtrl.create({
+                    content: 'Uploading data to server. Please wait ...',
+                  });
+                  this.loader.present().then(() => {
+                    this.myWardDataProvider.uploadNewGrievance(grievance).then(
+                      (response) => {
+                        this.loader.dismiss();
+                        this.showToast('Data Uploaded Successfully');
+                        this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
+                          this.myWardDataProvider.data.push(grievance)
+                          this.navCtrl.pop();
+                        })
+                      }, (failure) => {
+                        this.loader.dismiss();
+                        this.showAlert('Data Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
+                      });
+                  });
+                }, (failure) => {
+                  this.loader.dismiss();
+                  this.showAlert('Thumbnail Upload Failed', 'Encountered following error while uploading thumbnail image to server:\n' + failure.errorMsg);
+              });
+            }).catch(e => {
+              console.log(e)
+              this.showAlert('Error Creating Thumbnail', 'Encountered following error while creating thumbnail:\n' + JSON.stringify(e));
+            });
+        }, (failure) => {
+          this.loader.dismiss();
+          this.showAlert('Image Upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
+        });
+    });
+  }
+
+  getImageResizerOptions() {
+    let options = {
+      uri: this.capturedImage,
+      quality: 90,
+      width: 400,
+      height: 400
+    } as ImageResizerOptions;
+    return options;
+  }
+
+  getDateTime() {
+    // https://stackoverflow.com/questions/10211145/getting-current-date-and-time-in-javascript
+    let currentdate = new Date();
+    let fullYear = currentdate.getFullYear();
+    let month = (((currentdate.getMonth()+1) &lt; 10)? "0" : "") + (currentdate.getMonth()+1);
+    let date = ((currentdate.getDate() &lt; 10)? "0" : "") + currentdate.getDate();
+    let hours = ((currentdate.getHours() &lt; 10)? "0" : "") + currentdate.getHours();
+    let minutes = ((currentdate.getMinutes() &lt; 10)? "0" : "") + currentdate.getMinutes();
+    let seconds = ((currentdate.getSeconds() &lt; 10)? "0" : "") + currentdate.getSeconds();
+    let datetime = fullYear + month + date + "\_" + hours + minutes + seconds;
+    return datetime;
+  } </b>
 
 }
 </code></pre>
