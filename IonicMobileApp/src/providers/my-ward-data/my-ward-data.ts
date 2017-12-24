@@ -54,12 +54,12 @@ export class MyWardDataProvider {
       return Promise.resolve(this.objectStorageAccess);
     }
     // don't have the data yet
-    console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
+    // console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
     return new Promise(resolve => {
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
+          // console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
           this.objectStorageAccess = response.responseJSON;
           resolve(this.objectStorageAccess)
         }, (failure) => {
@@ -87,28 +87,27 @@ export class MyWardDataProvider {
 
   uploadImage(fileName, filePath) {
     return new Promise( (resolve, reject) => {
-    let serverUrl = this.objectStorageAccess.baseUrl + fileName
-    console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
-    let options: FileUploadOptions = {
-      fileKey: 'file',
-      fileName: fileName,
-      httpMethod: 'PUT',
-      headers: {
-        'Authorization': this.objectStorageAccess.authorizationHeader,
-        'Content-Type': 'image/jpeg'
+      let serverUrl = this.objectStorageAccess.baseUrl + fileName;
+      console.log('--> MyWardDataProvider: Uploading image (' + filePath + ') to server (' + serverUrl + ') ...');
+      let options: FileUploadOptions = {
+        fileKey: 'file',
+        fileName: fileName,
+        httpMethod: 'PUT',
+        headers: {
+          'Authorization': this.objectStorageAccess.authorizationHeader,
+          'Content-Type': 'image/jpeg'
+        }
       }
-    }
-    let fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.upload(filePath, serverUrl, options)
-     .then((data) => {
-       // success
-      console.log('--> MyWardDataProvider: Image upload successful:\n', data);
-      resolve(data)
-     }, (err) => {
-      // error
-      console.log('--> MyWardDataProvider: Image upload failed:\n', err);
-      reject(err)
-     })
+      let fileTransfer: FileTransferObject = this.transfer.create();
+      fileTransfer.upload(filePath, serverUrl, options) .then((data) => {
+        // success
+        console.log('--> MyWardDataProvider: Image upload successful:\n', data);
+        resolve(data);
+      }, (err) => {
+        // error
+        console.log('--> MyWardDataProvider: Image upload failed:\n', err);
+        reject(err);
+      })
     });
   }
 }

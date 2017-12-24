@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
- /// <reference path="../../../plugins/cordova-plugin-mfp/typings/worklight.d.ts" />
+/// <reference path="../../../plugins/cordova-plugin-mfp/typings/worklight.d.ts" />
 
 import { Injectable } from '@angular/core';
 

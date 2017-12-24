@@ -67,6 +67,7 @@ export class ReportNewPage {
   }
 
   createMap() {
+    // TODO need to store/retrieve prevLoc in app preferences/local storage
     let prevLoc = new LatLng(13.0768342, 77.7886087);
     let mapOptions: GoogleMapOptions = {
       camera: {
@@ -210,7 +211,7 @@ export class ReportNewPage {
                         this.loader.dismiss();
                         this.showToast('Data Uploaded Successfully');
                         this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
-                          this.myWardDataProvider.data.push(grievance)
+                          this.myWardDataProvider.data.push(grievance);
                           this.navCtrl.pop();
                         })
                       }, (failure) => {
