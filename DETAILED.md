@@ -1649,12 +1649,12 @@ Update `IonicMobileApp/src/pages/home/home.html` as below.
     &lt;ion-title&gt;
       Problems Reported
     &lt;/ion-title&gt;
+    <b>&lt;ion-buttons end&gt;
+      &lt;button ion-button icon-only (click)="reportNewProblem()"&gt;
+        &lt;ion-icon name="add"&gt;&lt;/ion-icon&gt;
+      &lt;/button&gt;
+    &lt;/ion-buttons&gt;</b>
   &lt;/ion-navbar&gt;
-  <b>&lt;ion-buttons end&gt;
-    &lt;button ion-button icon-only (click)="reportNewProblem()"&gt;
-      &lt;ion-icon name="add"&gt;&lt;/ion-icon&gt;
-    &lt;/button&gt;
-  &lt;/ion-buttons&gt;</b>
 &lt;/ion-header&gt;
 
 &lt;ion-content padding&gt;
