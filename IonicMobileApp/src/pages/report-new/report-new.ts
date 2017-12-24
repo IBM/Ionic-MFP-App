@@ -210,8 +210,7 @@ export class ReportNewPage {
                         this.loader.dismiss();
                         this.showToast('Data Uploaded Successfully');
                         this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
-                          // force reload of data in HomePage
-                          this.myWardDataProvider.data = null;
+                          this.myWardDataProvider.data.push(grievance)
                           this.navCtrl.pop();
                         })
                       }, (failure) => {

@@ -37,10 +37,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
-  }
-
-  ionViewWillEnter() {
-    console.log('--> HomePage ionViewWillEnter() called');
     this.loadData();
   }
 
