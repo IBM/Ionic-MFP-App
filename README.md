@@ -47,9 +47,10 @@ When you have completed this pattern, you will understand:
   - 5.2 [Update App ID, Name and Description](#52-update-app-id-name-and-description)
   - 5.3 [Specify Cloudant credentials in MFP adapter](#53-specify-cloudant-credentials-in-mfp-adapter)
   - 5.4 [Specify Object Storage credentials in MFP Adapter](#54-specify-object-storage-credentials-in-mfp-adapter)
-6. [Deploy MFP Adapters](#step-6-deploy-mfp-adapters)
+6. [Deploy MFP Adapters and Register the App to MFP server](#step-6-deploy-mfp-adapters-and-register-the-app-to-mfp-server)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
-  - 6.2 [Test the newly created MFP adapter](#62-test-the-newly-created-mfp-adapter)
+  - 6.2 [Register the MyWard app to MFP server](#62-register-the-myward-app-to-mfp-server)
+  - 6.3 [Test the MyWardData adapter](#63-test-the-mywarddata-adapter)
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
   - 7.2 [Enable developer options and USB debugging on your Android phone](#72-enable-developer-options-and-usb-debugging-on-your-android-phone)
@@ -255,9 +256,11 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 </code></pre>
 
 ### 5.3 Specify Cloudant credentials in MFP adapter
- * Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the properties `key` and `password` as per the newly generated API key.
+
+Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the following properties to point to the Cloudant database created in [Step 2](#step-2-create-cloudant-database-and-populate-it-with-sample-data).
+ * Update `key` and `password` with the Cloudant API key as generated in [Step 2.2](#22-generate-cloudant-api-key).
  * For property `account`, specify the Cloudant dashboard URL portion upto (and including) *-bluemix.cloudant.com* as shown in the snapshot of [Step 2.2](#22-generate-cloudant-api-key).
- * For property `DBName`, specify value `myward`.
+ * For property `DBName`, leave the default value of `myward` as-is.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
@@ -269,9 +272,12 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 &lt;/mfp:adapter&gt;
 </code></pre>
 
-### 5.4 Specify Object Storage credentials in MFP Adapter
+### 5.4 Specify Cloud Object Storage credentials in MFP Adapter
 
-Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below. Specify values for `bucketName`, `serviceId` and `apiKey`. While creating the bucket in [Step 3.1](#31-create-ibm-cloud-object-storage), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
+Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the following properties to point to the Cloud Object Storage created in [Step 3](#step-3-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data).
+  * Specify value for `bucketName` as created in [Step 3.1](#31-create-ibm-cloud-object-storage). 
+  * Specify `serviceId` and `apiKey` created in [Step 3.2](#32-create-service-id-and-api-key-for-accessing-objects).
+  * While creating the bucket in [Step 3.1](#31-create-ibm-cloud-object-storage), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
@@ -283,7 +289,7 @@ Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.x
 &lt;/mfp:adapter&gt;
 </code></pre>
 
-## Step 6. Deploy MFP Adapters
+## Step 6. Deploy MFP Adapters and Register the App to MFP server
 
 ### 6.1 Build and Deploy the MFP adapters
 
@@ -305,19 +311,36 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-### 6.2 Test the newly created MFP adapter
+### 6.2 Register the MyWard app to MFP server
 
-Launch MFP Dashboard
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you had created in [Step 3.2](#32-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
+```
+$ cd ../../IonicMobileApp/
+$ mfpdev app register
+Verifying server configuration...
+Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' runtime:'mfp'
+Updated config.xml file located at: .../Ionic-MFP-App/IonicMobileApp/config.xml
+Run 'cordova prepare' to propagate changes.
+Registered app for platform: android
+```
+
+  Propogate changes by running `cordova prepare`
+```
+$ cordova prepare
+```
+
+### 6.3 Test the MyWardData adapter
+
+Launch MFP Dashboard as below:
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWard` application, and `MyWardData` and `UserLogin` adapters listed.
 
-Create credentials to test adapter REST API
+Create credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
   * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter \*\* and click on `Add`. Finally click on `Save`.
 
   <img src="doc/source/images/MFP_CreateCredentialsToTestAdapter.png" alt="MFP - Create Confidential Client to test Adapter REST APIs" width="800" border="10" />
 
-Test adapter REST API
+Test adapter REST API as below:
   * Inside the MFP dashboard, click on the `MyWardData` adapter. Click on `Resources` and then click on `View Swagger Docs`. The Swagger UI for adapter REST APIs will get shown in a new window/tab.
   * Inside the Swagger UI, click on `Expand Operations`.
   * To test the `GET /` API, first click on `OFF` toggle button to enable authentication. Select `Default Scope` and click on `Authorize` as shown below. Enter the `ID` and `Secret` created above against `Username` and `Password`. Click `OK`. If authentication is successful, the toggle button will switch to `ON` position.
@@ -332,7 +355,7 @@ Test adapter REST API
 
   <img src="doc/source/images/TestMFPAdapter_ObjectStorageAccess.png" alt="Test the newly added API in MFP Adapter for getting Cloud Object Storage Authorization token" width="1024" border="10" />
 
-Delete the temporary credentials after testing adapter REST API
+Delete the temporary credentials after testing adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`.
   * Delete the `Client ID` created previously.
 
