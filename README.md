@@ -46,7 +46,7 @@ When you have completed this pattern, you will understand:
   - 5.1 [Clone repo](#51-clone-repo)
   - 5.2 [Update App ID, Name and Description](#52-update-app-id-name-and-description)
   - 5.3 [Specify Cloudant credentials in MFP adapter](#53-specify-cloudant-credentials-in-mfp-adapter)
-  - 5.4 [Specify Object Storage credentials in MFP Adapter](#54-specify-object-storage-credentials-in-mfp-adapter)
+  - 5.4 [Specify Cloud Object Storage credentials in MFP Adapter](#54-specify-cloud-object-storage-credentials-in-mfp-adapter)
 6. [Deploy MFP Adapters and Register the App to MFP server](#step-6-deploy-mfp-adapters-and-register-the-app-to-mfp-server)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
   - 6.2 [Register the MyWard app to MFP server](#62-register-the-myward-app-to-mfp-server)
