@@ -48,7 +48,7 @@ When you have completed this pattern, you will understand:
 6. [Deploy MFP Adapters and Register the App to MFP server](#step-6-deploy-mfp-adapters-and-register-the-app-to-mfp-server)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
   - 6.2 [Register the MyWard app to MFP server](#62-register-the-myward-app-to-mfp-server)
-  - 6.3 [Map MyWardData Protecting Scope to UserLogin security check](#63-map-mywarddata-protecting-scope-to-userlogin-security-check)
+  - 6.3 [Map MyWardData's protecting scope to UserLogin security check](#63-map-mywarddatas-protecting-scope-to-userlogin-security-check)
   - 6.4 [Test the MyWardData adapter](#64-test-the-mywarddata-adapter)
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
@@ -327,7 +327,7 @@ Registered app for platform: android
 $ cordova prepare
 ```
 
-### 6.3 Map MyWardData Protecting Scope to UserLogin security check
+### 6.3 Map MyWardData's protecting scope to UserLogin security check
 
 Launch MFP Dashboard as below:
   * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
