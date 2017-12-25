@@ -33,6 +33,29 @@ When you have completed this pattern, you will understand:
 11. Mobile app sends the user entered/captured data along with image & geo-location to MFP adapter, which in turn stores image in ObjectStorage and text data (along with reference to image in ObjectStorage) in Cloudant.
 12. Other users who click on refresh button on the home page (and those who log in afresh) are shown the updated list of problem reports.
 
+## Steps
+1. [Setup Ionic and MFP CLI](#step-1-setup-ionic-and-mfp-cli)
+2. [Create Cloudant database and populate it with sample data](#step-2-create-cloudant-database-and-populate-it-with-sample-data)
+  - 2.1 [Create Cloudant database](#21-create-cloudant-database)
+  - 2.2 [Generate Cloudant API Key](#22-generate-cloudant-api-key)
+3. [Create IBM Cloud Object Storage service and populate it with sample data](#step-3-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
+  - 3.1 [Create IBM Cloud Object Storage](#31-create-ibm-cloud-object-storage)
+  - 3.2 [Create Service ID and API Key for accessing objects](#32-create-service-id-and-api-key-for-accessing-objects)
+4. [Create Mobile Foundation service and configure MFP CLI](#step-4-create-mobile-foundation-service-and-configure-mfp-cli)
+5. [Download source repo and customize](#step-5-download-source-repo-and-customize)
+  - 5.1 [Clone repo](#51-clone-repo)
+  - 5.2 [Update App ID, Name and Description](#52-update-app-id-name-and-description)
+  - 5.3 [Specify Cloudant credentials in MFP adapter](#53-specify-cloudant-credentials-in-mfp-adapter)
+  - 5.4 [Specify Object Storage credentials in MFP Adapter](#54-specify-object-storage-credentials-in-mfp-adapter)
+6. [Deploy MFP Adapters](#step-6-deploy-mfp-adapters)
+  - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
+  - 6.2 [Test the newly created MFP adapter](#62-test-the-newly-created-mfp-adapter)
+7. [Run application on Android phone](#step-7-run-application-on-android-phone)
+  - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
+  - 7.2 [Enable developer options and USB debugging on your Android phone](#72-enable-developer-options-and-usb-debugging-on-your-android-phone)
+  - 7.3 [Enable Android platform for Ionic application](#73-enable-android-platform-for-ionic-application)
+  - 7.4 [Build/Run the Ionic application on Android phone](#74-buildrun-the-ionic-application-on-android-phone)
+  - 7.5 [Update App Logo and Splash](#75-update-app-logo-and-splash)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
