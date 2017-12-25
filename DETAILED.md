@@ -946,7 +946,7 @@ public class CloudantJavaResource {
 }
 </code></pre>
 
-  Note: We are protecting all the REST APIs of this adapter with a custom security scope of `RestrictedData` (by using [@OAuthSecurity](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/#protecting-adapter-resources) at class level) which we will later map to `UserLogin` security check.
+  Note: We are protecting all the REST APIs of this adapter with a custom security scope of `RestrictedData` (by using [@OAuthSecurity](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/#protecting-adapter-resources) at class level) which we will map to `UserLogin` security check in [Step 4.2.5](#425-map-mywarddatas-protecting-scope-to-userlogin-security-check).
 
 * Delete `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/User.java`
 
