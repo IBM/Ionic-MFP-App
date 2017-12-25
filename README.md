@@ -48,7 +48,8 @@ When you have completed this pattern, you will understand:
 6. [Deploy MFP Adapters and Register the App to MFP server](#step-6-deploy-mfp-adapters-and-register-the-app-to-mfp-server)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
   - 6.2 [Register the MyWard app to MFP server](#62-register-the-myward-app-to-mfp-server)
-  - 6.3 [Test the MyWardData adapter](#63-test-the-mywarddata-adapter)
+  - 6.3 [Map MyWardData Protecting Scope to UserLogin security check](#63-map-mywarddata-protecting-scope-to-userlogin-security-check)
+  - 6.4 [Test the MyWardData adapter](#64-test-the-mywarddata-adapter)
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
   - 7.2 [Enable developer options and USB debugging on your Android phone](#72-enable-developer-options-and-usb-debugging-on-your-android-phone)
@@ -326,13 +327,32 @@ Registered app for platform: android
 $ cordova prepare
 ```
 
-### 6.3 Test the MyWardData adapter
+### 6.3 Map MyWardData Protecting Scope to UserLogin security check
 
 Launch MFP Dashboard as below:
   * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWard` application, and `MyWardData` and `UserLogin` adapters listed.
 
-Create credentials to test adapter REST API as below:
+Verify MFP Adapter configuration as below:
+  * Inside the MFP dashboard, click on the `MyWardData` adapter. Under `Configurations` tab, you should see the various properties we specified in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adaptera) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter) for acccessing Cloudant database and Cloud Object Storage as shown below. As an alternative to specifying those property values in `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as previously shown in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adaptera) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter), you can deploy the adapters with empty `defaultValue`, and once the adapter is deployed, change the values on this page.
+
+  <img src="doc/source/images/MyWardDataConfigurations.png" alt="Option to specify the configuration properties for accessing Cloudant NoSQL DB and Cloud Object Storage in deployed MFP Adapter" width="640" border="10" />
+
+  * Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter as shown below. The `Security` column should show the protecting scope `RestrictedData` against each REST method.
+    
+  <img src="doc/source/images/MyWardDataProtectingScope.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="640" border="10" />
+
+Map `RestrictedData` scope to `UserLogin` security check as below:
+  * In the MFP dashboard, under `Applications` click on `MyWard` application. Click on `Android` and click on `Security` tab. Click on `New` button under `Scope-Elements Mapping` as shown below.
+  * Specify `Scope element` as `RestrictedData`, and under `Custom Security Checks` select `UserLogin` as shown below. Click on `Add`. The new mapping should get created and shown under `Scope-Elements Mapping`.
+
+  <img src="doc/source/images/MapRestrictedDataScopeToUserLoginCheck.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="800" border="10" />
+
+  * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform of iOS as well.
+
+### 6.4 Test the MyWardData adapter
+
+Create temporary credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
   * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter \*\* and click on `Add`. Finally click on `Save`.
 
