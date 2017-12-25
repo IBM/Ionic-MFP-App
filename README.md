@@ -1,5 +1,3 @@
-## Note: Work in Progress
-
 # Develop Enterprise-grade Hybrid Mobile App with Cloud-native Backend
 
 When developing your enterprise mobile app that needs centralized hosting of data, use of cloud-native services such as [Cloudant No-SQL Database](https://www.ibm.com/cloud/cloudant) for storing textual data and [Object Storage service](https://www.ibm.com/cloud/object-storage) for storing image/video/audio data, allows you to quickly go from idea-conception to reality. The [Mobile Foundation service](https://www.ibm.com/cloud/mobile-foundation) available from IBM Cloud provides a scalable mobile access gateway for securely accessing those backend services, and it provides other essential mobile backend capabilities such as push notifications, app lifecycle management, security/authentication and app analytics.
@@ -415,7 +413,10 @@ $ ionic cordova build android
 $ ionic cordova run android
 ```
 
-<img src="doc/source/images/SampleIonicAppRunningOnAndroid.png" alt="Snapshot of app running on Android device" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppLoginPage.png" alt="MyWard App - Login Page" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppHomePage.png" alt="MyWard App - Home Page" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Problem Detail Page" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppReportNewPage.png" alt="MyWard App - Report New Problem Page" width="240" border="10" />
 
 
 ### 7.5 Update App Logo and Splash
