@@ -348,7 +348,7 @@ Map `RestrictedData` scope to `UserLogin` security check as below:
 
   <img src="doc/source/images/MapRestrictedDataScopeToUserLoginCheck.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="800" border="10" />
 
-  * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform of iOS as well.
+  * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform for iOS as well.
 
 ### 6.4 Test the MyWardData adapter
 
