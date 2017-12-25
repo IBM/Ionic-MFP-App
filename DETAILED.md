@@ -441,7 +441,7 @@ $ ionic cordova run android
 
 Upon app launch, the login page should get displayed as shown below.
 
-  <img src="doc/source/images/MyWardAppLoginPage.png" alt="MyWard App - Home Page" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppLoginPage.png" alt="MyWard App - Login Page" width="240" border="10" />
 
 
 ### 3.2 Create Mobile Foundation service and configure MFP CLI
@@ -1625,7 +1625,7 @@ $ ionic cordova run android
 
 Upon clicking of on any of the problems reported on the home page, a detail page should open up showing bigger image and the location should be marked on Google Maps as shown below.
 
-  <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Home Page" width="240" border="10" />
+  <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Problem Detail Page" width="240" border="10" />
 
 ## Step 7. Capture image and geolocation and upload to server
 
