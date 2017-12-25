@@ -30,7 +30,8 @@
     - 4.2.2 [Point the MFP adapter to your Cloudant service instance](#422-point-the-mfp-adapter-to-your-cloudant-service-instance)
     - 4.2.3 [Update adapter methods to return MyWard Grievances data](#423-update-adapter-methods-to-return-myward-grievances-data)
     - 4.2.4 [Build and Deploy the MFP adapter](#424-build-and-deploy-the-mfp-adapter)
-    - 4.2.5 [Test the newly created MFP adapter](#425-test-the-newly-created-mfp-adapter)
+    - 4.2.5 [Map MyWardData's protecting scope to UserLogin security check](#425-map-mywarddatas-protecting-scope-to-userlogin-security-check)
+    - 4.2.6 [Test the newly created MFP adapter](#426-test-the-newly-created-mfp-adapter)
   - 4.3 [Update Ionic app to fetch and display data from MFP Adapter](#step-43-update-ionic-app-to-fetch-and-display-data-from-mfp-adapter)
     - 4.3.1 [Create a new provider in Ionic app for calling MFP adapter API](#431-create-a-new-provider-in-ionic-app-for-calling-mfp-adapter-api)
     - 4.3.2 [Modify home page to display the list of problems reported](#432-modify-home-page-to-display-the-list-of-problems-reported)
@@ -902,7 +903,10 @@ public class MyWardGrievance {
 * Update `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/CloudantJavaResource.java` as below:
 <pre><code>
 ...
+<b>import com.ibm.mfp.adapter.api.OAuthSecurity;</b>
+
 @Path("/")
+<b>@OAuthSecurity(scope = "RestrictedData")</b>
 public class CloudantJavaResource {
 	...
 
@@ -942,6 +946,8 @@ public class CloudantJavaResource {
 }
 </code></pre>
 
+  Note: We are protecting all the REST APIs of this adapter with a custom security scope of `RestrictedData` (by using [@OAuthSecurity](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/#protecting-adapter-resources) at class level) which we will later map to `UserLogin` security check.
+
 * Delete `MobileFoundationAdapters/MyWardData/src/main/java/com/sample/User.java`
 
 #### 4.2.4 Build and Deploy the MFP adapter
@@ -954,19 +960,30 @@ $ mfpdev adapter deploy
 ...
 ```
 
-#### 4.2.5 Test the newly created MFP adapter
+#### 4.2.5 Map MyWardData's protecting scope to UserLogin security check
 
-Launch MFP Dashboard
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you had created in [Step 3.2](#32-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
+Launch MFP Dashboard as below:
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWard` application, and `MyWardData` and `UserLogin` adapters listed.
+  * Click on the `MyWardData` adapter. Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter. The `Security` column should show the protecting scope `RestrictedData` against each REST method.
+    
+Map `RestrictedData` scope to `UserLogin` security check as below:
+  * In the MFP dashboard, under `Applications` click on `MyWard` application. Click on `Android` and click on `Security` tab. Click on `New` button under `Scope-Elements Mapping` as shown below.
+  * Specify `Scope element` as `RestrictedData`, and under `Custom Security Checks` select `UserLogin` as shown below. Click on `Add`. The new mapping should get created and shown under `Scope-Elements Mapping`.
 
-Create credentials to test adapter REST API
+  <img src="doc/source/images/MapRestrictedDataScopeToUserLoginCheck.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="800" border="10" />
+
+  * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform for iOS as well.
+
+#### 4.2.6 Test the newly created MFP adapter
+
+Create temporary credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
   * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter \*\* and click on `Add`. Finally click on `Save`.
 
   <img src="doc/source/images/MFP_CreateCredentialsToTestAdapter.png" alt="MFP - Create Confidential Client to test Adapter REST APIs" width="800" border="10" />
 
-Test adapter REST API
+Test adapter REST API as below:
   * Inside the MFP dashboard, click on the `MyWardData` adapter. Click on `Resources` and then click on `View Swagger Docs`. The Swagger UI for adapter REST APIs will get shown in a new window/tab.
   * Inside the Swagger UI, click on `Expand Operations`.
   * To test the `GET /` API, first click on `OFF` toggle button to enable authentication. Select `Default Scope` and click on `Authorize` as shown below. Enter the `ID` and `Secret` created above against `Username` and `Password`. Click `OK`. If authentication is successful, the toggle button will switch to `ON` position.
@@ -977,7 +994,7 @@ Test adapter REST API
 
   <img src="doc/source/images/SwaggerToolsForTestingMobileFirstAdapter.png" alt="Swagger UI for testing MobileFirst Adapters" width="800" border="10" />
 
-Delete the temporary credentials after testing adapter REST API
+Delete the temporary credentials after testing adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`.
   * Delete the `Client ID` created previously.
 
