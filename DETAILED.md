@@ -492,6 +492,20 @@ $ ls
 UserLogin
 ```
 
+Edit `MobileFoundationAdapters/UserLogin/src/main/adapter-resources/adapter.xml` and update defaultValue of [successStateExpirationSec](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/security-check/#adding-rememberme-functionality) and [rememberMeDurationSec](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/security-check/#adding-rememberme-functionality) as below. This is to ensure that a successful login is remembered for 10 minutes.
+
+```
+&lt;mfp:adapter name="UserLogin" ...&gt;
+  ...
+  &lt;securityCheckDefinition name="UserLogin" class="com.sample.UserLogin"&gt;
+    &lt;property name="maxAttempts" defaultValue="3" description="How many attempts are allowed" type="integer"/&gt;
+    &lt;property name="blockedStateExpirationSec" defaultValue="10" description="How long before the client can try again (seconds)" type="integer"/&gt;
+    &lt;property name="successStateExpirationSec" <b>defaultValue="600"</b> description="How long is a successful state valid for (seconds)" type="integer"/&gt;
+    &lt;property name="rememberMeDurationSec" <b>defaultValue="600"</b> description="How long is the user remembered when using RememberMe (seconds)" type="integer"/&gt;
+  &lt;/securityCheckDefinition&gt;
+&lt;/mfp:adapter&gt;
+```
+
 Build and deploy the UserLogin sample adapter
 ```
 $ cd ./UserLogin
