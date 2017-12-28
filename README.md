@@ -451,6 +451,50 @@ $ ionic cordova resources
 
 For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
 
+### 7.6 Build APK for uploading to Google Play Store
+
+* Add following lines at the end of `IonicMobileApp/platforms/android/proguard-project-mfp.txt`:
+```
+-dontwarn okhttp3.internal.huc.**
+-keep class plugin.google.maps.** { *; }
+```
+
+* Create release build as below:
+```
+$ cd ../IonicMobileApp
+$ ionic cordova build android --prod --release
+```
+
+* Zip align release build as below:
+```
+$ cd ./platforms/android/build/outputs/apk/
+$ ls
+android-release-unsigned.apk
+$ <Android-Home>/sdk/build-tools/25.0.2/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
+$ ls 
+android-release-unsigned-aligned.apk	android-release-unsigned.apk
+```
+  where, `<Android-Home>` points to the location of your Android Home directory. On Mac, this is usually `/Users/<username>/Library/Android/`.
+
+* Create self signing certificate as below:
+```
+$ keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+$ ls
+android-release-unsigned-aligned.apk	android-release-unsigned.apk		my-release-key.jks
+```
+
+* Self sign APK as below:
+```
+$ <Android-Home>/sdk/build-tools/25.0.2/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
+Keystore password for signer #1: 
+$ ls
+android-release-unsigned-aligned.apk	my-release-key.jks
+android-release-unsigned.apk		myward.apk
+$ 
+```
+
+* Distrubute `myward.apk` by uploading to Google Play Store or to your company's internal App store.
+
 
 # Troubleshooting
 
