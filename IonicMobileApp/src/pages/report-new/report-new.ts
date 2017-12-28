@@ -191,45 +191,47 @@ export class ReportNewPage {
     }
 
     this.loader = this.loadingCtrl.create({
-      content: 'Uploading image to server. Please wait ...',
+      content: 'Uploading data to server. Please wait ...',
+      dismissOnPageChange: true
     });
     this.loader.present().then(() => {
-      this.myWardDataProvider.uploadImage(imageFilename, this.capturedImage).then(
+      this.myWardDataProvider.uploadNewGrievance(grievance).then(
         (response) => {
-          this.imageResizer.resize(this.getImageResizerOptions()).then(
-            (filePath: string) => {
-              this.myWardDataProvider.uploadImage(thumbnailImageFilename, filePath).then(
-                (response) => {
-                  this.loader.dismiss();
-                  this.showToast('Image Uploaded Successfully');
-                  this.loader = this.loadingCtrl.create({
-                    content: 'Uploading data to server. Please wait ...',
-                  });
-                  this.loader.present().then(() => {
-                    this.myWardDataProvider.uploadNewGrievance(grievance).then(
+          this.loader.dismiss();
+          this.showToast('Data Uploaded Successfully');
+          this.loader = this.loadingCtrl.create({
+            content: 'Uploading image to server. Please wait ...',
+            dismissOnPageChange: true
+          });
+          this.loader.present().then(() => {
+            this.myWardDataProvider.uploadImage(imageFilename, this.capturedImage).then(
+              (response) => {
+                this.imageResizer.resize(this.getImageResizerOptions()).then(
+                  (filePath: string) => {
+                    this.myWardDataProvider.uploadImage(thumbnailImageFilename, filePath).then(
                       (response) => {
                         this.loader.dismiss();
-                        this.showToast('Data Uploaded Successfully');
+                        this.showToast('Image Uploaded Successfully');
                         this.showAlert('Upload Successful', 'Successfully uploaded problem report to server', false, () => {
                           this.myWardDataProvider.data.push(grievance);
                           this.navCtrl.pop();
                         })
                       }, (failure) => {
                         this.loader.dismiss();
-                        this.showAlert('Data Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
-                      });
+                        this.showAlert('Thumbnail Upload Failed', 'Encountered following error while uploading thumbnail image to server:\n' + failure.errorMsg);
+                    });
+                  }).catch(e => {
+                    console.log(e)
+                    this.showAlert('Error Creating Thumbnail', 'Encountered following error while creating thumbnail:\n' + JSON.stringify(e));
                   });
-                }, (failure) => {
-                  this.loader.dismiss();
-                  this.showAlert('Thumbnail Upload Failed', 'Encountered following error while uploading thumbnail image to server:\n' + failure.errorMsg);
+              }, (failure) => {
+                this.loader.dismiss();
+                this.showAlert('Image Upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
               });
-            }).catch(e => {
-              console.log(e)
-              this.showAlert('Error Creating Thumbnail', 'Encountered following error while creating thumbnail:\n' + JSON.stringify(e));
-            });
+          });
         }, (failure) => {
           this.loader.dismiss();
-          this.showAlert('Image Upload Failed', 'Encountered following error while uploading image to server:\n' + failure.errorMsg);
+          this.showAlert('Data Upload Failed', 'Encountered following error while uploading data to server:\n' + failure.errorMsg);
         });
     });
   }
