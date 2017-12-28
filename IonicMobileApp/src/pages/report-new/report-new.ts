@@ -21,6 +21,7 @@ import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
+import { LoginPage } from '../login/login';
 
 // @IonicPage()
 @Component({
@@ -46,6 +47,7 @@ export class ReportNewPage {
   ionViewDidLoad() {
     console.log('--> ReportNewPage ionViewDidLoad() called');
     this.createMap();
+    this.initAuthChallengeHandler();
   }
 
   // https://ionicframework.com/docs/native/camera/
@@ -259,4 +261,20 @@ export class ReportNewPage {
     return datetime;
   }
 
+  initAuthChallengeHandler() {
+    this.authHandler.setHandleChallengeCallback(() => {
+      this.navCtrl.push(LoginPage, { isPushed: true, fixedUsername: this.authHandler.username });
+    });
+    this.authHandler.setLoginSuccessCallback(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof LoginPage) {
+        this.navCtrl.pop().then(() =>{
+          this.loader = this.loadingCtrl.create({
+            content: 'Uploading data to server. Please wait ...'
+          });
+          this.loader.present();
+        });
+      }
+    });
+  }
 }

@@ -27,13 +27,22 @@ import { HomePage } from '../home/home';
 export class LoginPage {
   form;
   loader: any;
+  isPushed = null;
+  isUsernameDisabled: boolean = false;
+  fixedUsername = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController, public authHandler:AuthHandlerProvider, public loadingCtrl: LoadingController) {
     console.log('--> LoginPage constructor() called');
 
+    this.isPushed = navParams.get('isPushed');
+    this.fixedUsername = navParams.get('fixedUsername');
+    if (this.fixedUsername != null) {
+      this.isUsernameDisabled = true;
+    }
+
     this.form = new FormGroup({
-      username: new FormControl("", Validators.required),
+      username: new FormControl({value: this.fixedUsername, disabled: this.isUsernameDisabled}, Validators.required),
       password: new FormControl("", Validators.required)
     });
 
@@ -45,20 +54,22 @@ export class LoginPage {
         this.showAlert('Login Failure', 'Failed to login.');
       }
     });
-    this.authHandler.setLoginSuccessCallback(() => {
-      let view = this.navCtrl.getActive();
-      if (!(view.instance instanceof HomePage )) {
-        this.navCtrl.setRoot(HomePage);
-      }
-    });
-    this.authHandler.setHandleChallengeCallback(() => {
-      this.navCtrl.setRoot(LoginPage);
-    });
+    if (this.isPushed == null) {
+      this.authHandler.setLoginSuccessCallback(() => {
+        let view = this.navCtrl.getActive();
+        if (!(view.instance instanceof HomePage)) {
+          this.navCtrl.setRoot(HomePage);
+        }
+      });
+      this.authHandler.setHandleChallengeCallback(() => {
+        this.navCtrl.setRoot(LoginPage);
+      });
+    }
   }
 
   processForm() {
     // Reference: https://github.com/driftyco/ionic-preview-app/blob/master/src/pages/inputs/basic/pages.ts
-    let username = this.form.value.username;
+    let username = this.fixedUsername != null ? this.fixedUsername : this.form.value.username;
     let password = this.form.value.password;
     if (username === "" || password === "") {
       this.showAlert('Login Failure', 'Username and password are required');

@@ -18,8 +18,10 @@ import { NavController, LoadingController } from 'ionic-angular';
 import { ImgCacheService } from 'ng-imgcache';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
+import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 import { ProblemDetailPage } from '../problem-detail/problem-detail';
 import { ReportNewPage } from '../report-new/report-new';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-home',
@@ -31,13 +33,19 @@ export class HomePage {
   objectStorageAccess: any;
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
-    public myWardDataProvider: MyWardDataProvider, public imgCache: ImgCacheService) {
+    public myWardDataProvider: MyWardDataProvider, public imgCache: ImgCacheService,
+    private authHandler:AuthHandlerProvider) {
     console.log('--> HomePage constructor() called');
   }
 
   ionViewDidLoad() {
     console.log('--> HomePage ionViewDidLoad() called');
     this.loadData();
+  }
+
+  ionViewWillEnter() {
+    console.log('--> HomePage ionViewWillEnter() called');
+    this.initAuthChallengeHandler();
   }
 
   loadData() {
@@ -74,5 +82,23 @@ export class HomePage {
   refresh() {
     this.myWardDataProvider.data = null;
     this.loadData();
+  }
+
+  initAuthChallengeHandler() {
+    this.authHandler.setHandleChallengeCallback(() => {
+      this.loader.dismiss();
+      this.navCtrl.push(LoginPage, { isPushed: true });
+    });
+    this.authHandler.setLoginSuccessCallback(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof LoginPage) {
+        this.navCtrl.pop().then(() =>{
+          this.loader = this.loadingCtrl.create({
+            content: 'Loading data. Please wait ...'
+          });
+          this.loader.present();
+        });
+      }
+    });
   }
 }
