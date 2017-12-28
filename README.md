@@ -56,6 +56,7 @@ When you have completed this pattern, you will understand:
   - 7.3 [Enable Android platform for Ionic application](#73-enable-android-platform-for-ionic-application)
   - 7.4 [Build/Run the Ionic application on Android phone](#74-buildrun-the-ionic-application-on-android-phone)
   - 7.5 [Update App Logo and Splash](#75-update-app-logo-and-splash)
+  - 7.6 [Build APK for uploading to Google Play Store](#76-build-apk-for-uploading-to-google-play-store)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
