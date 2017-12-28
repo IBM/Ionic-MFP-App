@@ -2184,3 +2184,138 @@ export class HomePage {
   }</b>
 }
 </code></pre>
+
+Handle login timeout in Report New Problem page and Home page
+
+Update `IonicMobileApp/src/pages/login/login.ts` as below:
+<pre><code>
+...
+export class LoginPage {
+  form;
+  loader: any;
+  <b>isPushed = null;
+  isUsernameDisabled: boolean = false;
+  fixedUsername = null;</b>
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public alertCtrl: AlertController, public authHandler:AuthHandlerProvider, public loadingCtrl: LoadingController) {
+    console.log('--> LoginPage constructor() called');
+
+    <b>this.isPushed = navParams.get('isPushed');
+    this.fixedUsername = navParams.get('fixedUsername');
+    if (this.fixedUsername != null) {
+      this.isUsernameDisabled = true;
+    }</b>
+
+    this.form = new FormGroup({
+      <b>username: new FormControl({value: this.fixedUsername, disabled: this.isUsernameDisabled}, Validators.required),</b>
+      password: new FormControl("", Validators.required)
+    });
+
+    this.authHandler.setLoginFailureCallback((error) => {
+      this.loader.dismiss();
+      if (error !== null) {
+        this.showAlert('Login Failure', error);
+      } else {
+        this.showAlert('Login Failure', 'Failed to login.');
+      }
+    });
+    <b>if (this.isPushed == null) {</b>
+      this.authHandler.setLoginSuccessCallback(() => {
+        let view = this.navCtrl.getActive();
+        if (!(view.instance instanceof HomePage )) {
+          this.navCtrl.setRoot(HomePage);
+        }
+      });
+      this.authHandler.setHandleChallengeCallback(() => {
+        this.navCtrl.setRoot(LoginPage);
+      });
+    <b>}</b>
+  }
+
+  processForm() {
+    // Reference: https://github.com/driftyco/ionic-preview-app/blob/master/src/pages/inputs/basic/pages.ts
+    <b>let username = this.fixedUsername != null ? this.fixedUsername : this.form.value.username;</b>
+    let password = this.form.value.password;
+    ...
+  }
+
+  showAlert(alertTitle, alertMessage) {
+    ...
+  }
+  ...
+}
+</code></pre>
+
+Update `IonicMobileApp/src/pages/report-new/report-new.ts` as below:
+<pre><code>
+...
+<b>import { LoginPage } from '../login/login';</b>
+...
+export class ReportNewPage {
+  ...
+  ionViewDidLoad() {
+    console.log('--> ReportNewPage ionViewDidLoad() called');
+    this.createMap();
+    <b>this.initAuthChallengeHandler();</b>
+  }
+  ...
+  <b>initAuthChallengeHandler() {
+    this.authHandler.setHandleChallengeCallback(() => {
+      this.navCtrl.push(LoginPage, { isPushed: true, fixedUsername: this.authHandler.username });
+    });
+    this.authHandler.setLoginSuccessCallback(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof LoginPage) {
+        this.navCtrl.pop().then(() =>{
+          this.loader = this.loadingCtrl.create({
+            content: 'Uploading data to server. Please wait ...'
+          });
+          this.loader.present();
+        });
+      }
+    });
+  }</b>
+}
+</code></pre>
+
+Update `IonicMobileApp/src/pages/home/home.ts` as below:
+<pre><code>
+...
+<b>import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
+import { LoginPage } from '../login/login';</b>
+...
+export class HomePage {
+  ...
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
+    public myWardDataProvider: MyWardDataProvider, public imgCache: ImgCacheService<b>,
+    private authHandler:AuthHandlerProvider</b>) {
+    console.log('--> HomePage constructor() called');
+  }
+
+  ...
+
+  <b>ionViewWillEnter() {
+    console.log('--> HomePage ionViewWillEnter() called');
+    this.initAuthChallengeHandler();
+  }
+
+  initAuthChallengeHandler() {
+    this.authHandler.setHandleChallengeCallback(() => {
+      this.loader.dismiss();
+      this.navCtrl.push(LoginPage, { isPushed: true });
+    });
+    this.authHandler.setLoginSuccessCallback(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof LoginPage) {
+        this.navCtrl.pop().then(() =>{
+          this.loader = this.loadingCtrl.create({
+            content: 'Loading data. Please wait ...'
+          });
+          this.loader.present();
+        });
+      }
+    });
+  }</b>
+}
+</code></pre>
