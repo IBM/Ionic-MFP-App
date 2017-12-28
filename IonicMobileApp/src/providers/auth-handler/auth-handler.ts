@@ -17,17 +17,17 @@
 
 import { Injectable } from '@angular/core';
 
-var isChallenged = false;
-var handleChallengeCallback = null;
-var loginSuccessCallback = null;
-var loginFailureCallback = null;
-
 @Injectable()
 export class AuthHandlerProvider {
   securityCheckName = 'UserLogin';
   userLoginChallengeHandler;
   initialized = false;
   username = null;
+
+  isChallenged = false;
+  handleChallengeCallback = null;
+  loginSuccessCallback = null;
+  loginFailureCallback = null;
 
   constructor() {
     console.log('--> AuthHandlerProvider constructor() called');
@@ -40,58 +40,59 @@ export class AuthHandlerProvider {
     }
     this.initialized = true;
     console.log('--> AuthHandler init() called');
-
     this.userLoginChallengeHandler = WL.Client.createSecurityCheckChallengeHandler(this.securityCheckName);
-
-    this.userLoginChallengeHandler.handleChallenge = function(challenge) {
-      console.log('--> AuthHandler handleChallenge called');
-      isChallenged = true;
-
-      console.log('--> remainingAttempts: ', challenge.remainingAttempts);
-      var statusMsg = 'Remaining attempts: ' + challenge.remainingAttempts;
-      if (challenge.errorMsg !== null) {
-        console.log('--> errorMsg: ', challenge.errorMsg);
-        statusMsg += '<br>' + challenge.errorMsg;
-        if (loginFailureCallback != null) {
-          loginFailureCallback(statusMsg);
-        }
-      }
-
-      if (handleChallengeCallback != null) {
-        handleChallengeCallback();
-      } else {
-        console.log('--> handleChallengeCallback not set!');
-      }
-    };
-
-    this.userLoginChallengeHandler.handleSuccess = function(data) {
-      console.log('--> AuthHandler handleSuccess called');
-      isChallenged = false;
-
-      if (loginSuccessCallback != null) {
-        loginSuccessCallback();
-      } else {
-        console.log('--> loginSuccessCallback not set!');
-      }
-    };
-
-    this.userLoginChallengeHandler.handleFailure = function(error) {
-      console.log('--> AuthHandler handleFailure called' + error.failure);
-      isChallenged = false;
-
-      if (loginFailureCallback != null) {
-        loginFailureCallback(error.failure);
-      } else {
-        console.log('--> loginFailureCallback not set!');
-      }
-    };
+    // https://stackoverflow.com/questions/20279484/how-to-access-the-correct-this-inside-a-callback
+    this.userLoginChallengeHandler.handleChallenge = this.handleChallenge.bind(this);
+    this.userLoginChallengeHandler.handleSuccess = this.handleSuccess.bind(this);
+    this.userLoginChallengeHandler.handleFailure = this.handleFailure.bind(this);
   }
 
-  setCallbacks(onSuccess, onFailure, onHandleChallenge) {
-    console.log('--> AuthHandler setCallbacks called');
-    loginSuccessCallback = onSuccess;
-    loginFailureCallback = onFailure;
-    handleChallengeCallback = onHandleChallenge;
+  setHandleChallengeCallback(onHandleChallenge) {
+    console.log('--> AuthHandler setHandleChallengeCallback() called');
+    this.handleChallengeCallback = onHandleChallenge;
+  }
+
+  setLoginSuccessCallback(onSuccess) {
+    console.log('--> AuthHandler setLoginSuccessCallback() called');
+    this.loginSuccessCallback = onSuccess;
+  }
+
+  setLoginFailureCallback(onFailure) {
+    console.log('--> AuthHandler setLoginFailureCallback() called');
+    this.loginFailureCallback = onFailure;
+  }
+
+  handleChallenge(challenge) {
+    console.log('--> AuthHandler handleChallenge called.\n', JSON.stringify(challenge));
+    this.isChallenged = true;
+    if (challenge.errorMsg !== null && this.loginFailureCallback != null) {
+      var statusMsg = 'Remaining attempts = ' + challenge.remainingAttempts + '<br>' + challenge.errorMsg;
+      this.loginFailureCallback(statusMsg);
+    } else if (this.handleChallengeCallback != null) {
+      this.handleChallengeCallback();
+    } else {
+      console.log('--> AuthHandler: handleChallengeCallback not set!');
+    }
+  }
+
+  handleSuccess(data) {
+    console.log('--> AuthHandler handleSuccess called');
+    this.isChallenged = false;
+    if (this.loginSuccessCallback != null) {
+      this.loginSuccessCallback();
+    } else {
+      console.log('--> AuthHandler: loginSuccessCallback not set!');
+    }
+  }
+
+  handleFailure(error) {
+    console.log('--> AuthHandler handleFailure called.\n' + JSON.stringify(error));
+    this.isChallenged = false;
+    if (this.loginFailureCallback != null) {
+      this.loginFailureCallback(error.failure);
+    } else {
+      console.log('--> AuthHandler: loginFailureCallback not set!');
+    }
   }
 
   // Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/javascript/
@@ -100,29 +101,30 @@ export class AuthHandlerProvider {
     WLAuthorizationManager.obtainAccessToken('UserLogin')
     .then(
       (accessToken) => {
-        console.log('--> obtainAccessToken onSuccess');
+        console.log('--> AuthHandler: obtainAccessToken onSuccess');
       },
       (error) => {
-        console.log('--> obtainAccessToken onFailure: ' + JSON.stringify(error));
+        console.log('--> AuthHandler: obtainAccessToken onFailure: ' + JSON.stringify(error));
       }
     );
   }
 
   login(username, password) {
-    console.log('--> AuthHandler login called');
-    console.log('--> isChallenged: ', isChallenged);
+    console.log('--> AuthHandler login called. isChallenged = ', this.isChallenged);
     this.username = username;
-    if (isChallenged) {
+    if (this.isChallenged) {
       this.userLoginChallengeHandler.submitChallengeAnswer({'username':username, 'password':password});
     } else {
+      // https://stackoverflow.com/questions/20279484/how-to-access-the-correct-this-inside-a-callback
+      var self = this;
       WLAuthorizationManager.login(this.securityCheckName, {'username':username, 'password':password})
       .then(
         (success) => {
-          console.log('--> login success');
+          console.log('--> AuthHandler: login success');
         },
         (failure) => {
-          console.log('--> login failure: ' + JSON.stringify(failure));
-          loginFailureCallback(failure.errorMsg);
+          console.log('--> AuthHandler: login failure: ' + JSON.stringify(failure));
+          self.loginFailureCallback(failure.errorMsg);
         }
       );
     }
@@ -133,10 +135,10 @@ export class AuthHandlerProvider {
     WLAuthorizationManager.logout(this.securityCheckName)
     .then(
       (success) => {
-        console.log('--> logout success');
+        console.log('--> AuthHandler: logout success');
       },
       (failure) => {
-        console.log('--> logout failure: ' + JSON.stringify(failure));
+        console.log('--> AuthHandler: logout failure: ' + JSON.stringify(failure));
       }
     );
   }

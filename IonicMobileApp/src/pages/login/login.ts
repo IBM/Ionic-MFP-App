@@ -37,23 +37,23 @@ export class LoginPage {
       password: new FormControl("", Validators.required)
     });
 
-    this.authHandler.setCallbacks(
-      () =>  {
-        this.loader.dismiss();
-        let view = this.navCtrl.getActive();
-        if (!(view.instance instanceof HomePage )) {
-          this.navCtrl.setRoot(HomePage);
-        }
-      }, (error) => {
-        this.loader.dismiss();
-        if (error !== null) {
-          this.showAlert('Login Failure', error);
-        } else {
-          this.showAlert('Login Failure', 'Failed to login.');
-        }
-      }, () => {
-        // this.navCtrl.setRoot(Login);
-      });
+    this.authHandler.setLoginFailureCallback((error) => {
+      this.loader.dismiss();
+      if (error !== null) {
+        this.showAlert('Login Failure', error);
+      } else {
+        this.showAlert('Login Failure', 'Failed to login.');
+      }
+    });
+    this.authHandler.setLoginSuccessCallback(() => {
+      let view = this.navCtrl.getActive();
+      if (!(view.instance instanceof HomePage )) {
+        this.navCtrl.setRoot(HomePage);
+      }
+    });
+    this.authHandler.setHandleChallengeCallback(() => {
+      this.navCtrl.setRoot(LoginPage);
+    });
   }
 
   processForm() {
@@ -67,6 +67,7 @@ export class LoginPage {
     console.log('--> Sign-in with user: ' + username);
     this.loader = this.loadingCtrl.create({
       content: 'Signining in. Please wait ...',
+      dismissOnPageChange: true
     });
     this.loader.present().then(() => {
       this.authHandler.login(username, password);
