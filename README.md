@@ -22,13 +22,13 @@ When you have completed this pattern, you will understand:
 2. Mobile app sends the user credentials to MFP server for validation.
 3. MFP server invokes the security adapter logic to validate user credentials and returns an appropriate response to the mobile app.
 4. If user authentication succeeds, mobile app proceeds to show the home page. As part of this, it makes a call to MFP adapter to fetch the data from Cloudant NoSQL database.
-5. MFP adapter fetches the data from Cloudant and returns it to the mobile app. The data fetched will have references to the images stored in Cloud Object Storage.
+5. MFP adapter fetches the data from Cloudant and returns it to the mobile app. The data fetched from Cloudant will have references to the images stored in Cloud Object Storage.
 6. Mobile app makes a call to MFP adapter to get the Authorization token for interacting with Cloud Object Storage service.
 7. MFP adapter makes a call to Cloud Object Storage service's token manager endpoint to get the Authorization token
 and returns it to the mobile app.
-8. Mobile app initializes image-caching plugin and asks it to use an HTTP header of `Authorization=<value returned from MFP adapter>` while fetching images. Mobile app displays the data obtained from MFP adapter as a list of items. The image caching plugin running on the mobile app downloads and caches images from ObjectStorage.
+8. Mobile app initializes image-caching plugin and asks it to use an HTTP header of `Authorization=<value returned from MFP adapter>` while fetching images. Mobile app displays the data obtained from MFP adapter as a list of items. The image caching plugin running on the mobile app downloads and caches images from Cloud Object Storage.
 9. User clicks on one of the list item to see more details. A detail page is shown consisting of image and geo-location marked inside Google Maps.
-10. Back in the home page, user clicks on `+` button to report a new civic problem. A new page is shown where user can enter a title/description for the new civic problem as well as capture image and geo-location of the problem spot. User clicks on `Submit` button.
+10. Back in the home page, user clicks on `+` button to report a new civic problem. A new page is shown where user can enter a description for the new civic problem as well as capture image and geo-location of the problem spot. User clicks on `Submit` button.
 11. Mobile app uploads the textual data to Cloudant NoSQL DB via MFP Adapter.
 12. Mobile app creates a thumbnail image by resizing the captured image and uploads both the captured image and thumbnail to Cloud Object Storage.
 13. Other users who click on refresh button on the home page (and those who log in afresh) are shown the updated list of problem reports.
