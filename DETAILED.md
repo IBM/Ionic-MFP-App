@@ -95,7 +95,7 @@ $ java -version
 java version "1.8.0_101"
 ```
 
-* Install an IDE for JavaScript/TypeScript such as Atom on Mac.
+* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as Atom on Mac.
 
   Install TypeScript plugin for Atom
 ```
