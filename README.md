@@ -142,11 +142,11 @@ apm install atom-typescript
 
 Once the database is created, the dashboard will update to show the documents inside `myward` database (which, as expected, will be empty to begin with).
 
-* Click *Create Document*. Under document content, after the auto populated `_id` field, enter grievance details as shown below.
+* Click *Create Document*. Under document content, after the auto populated `_id` field, enter grievance details as shown below. Please note that you need to put a comma (,) after the auto populated `_id` field.
 
-```
+<pre><code>
 {
-  "_id": "7fc63023799dfda9582609e75127b4fa",
+  "_id": "7fc63023799dfda9582609e75127b4fa"<b>,
   "reportedBy": "shivahr@gmail.com",
   "reportedDateTime": "20171125_152627",
   "picture": {
@@ -161,9 +161,9 @@ Once the database is created, the dashboard will update to show the documents in
       13.0773568
     ]
   },
-  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"
+  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"<b>
 }
-```
+</code></pre>
 
 Click *Create Document* to create/save the document.
 
