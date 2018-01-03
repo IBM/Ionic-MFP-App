@@ -241,7 +241,7 @@ $ mfpdev server add
 ? Save the administrator password for this server?: Yes
 ? Enter the context root of the MobileFirst administration services: mfpadmin
 ? Enter the MobileFirst Server connection timeout in seconds: 30
-? Make this server the default?: No
+? Make this server the default?: Yes
 Verifying server configuration...
 The following runtimes are currently installed on this server: mfp
 Server profile 'Cloud-MFP' added successfully.
@@ -314,7 +314,7 @@ Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml
 
 ### 6.1 Build and Deploy the MFP adapters
 
-Build and deploy UserLogin Adapter
+Build and deploy UserLogin Adapter as below.
 
 ```
 $ cd MobileFoundationAdapters/
@@ -324,7 +324,12 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-Build and deploy MyWardData Adapter
+  Note: In [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli), if you specified `No` to `Make this server the default?`, then you need to specify the name of your server profile (`Cloud-MFP` in our case) at the end of `mfpdev adapter deploy` command as shown below.
+```
+$ mfpdev adapter deploy Cloud-MFP
+```
+
+Build and deploy MyWardData Adapter as below.
 
 ```
 $ cd ../MyWardData/
@@ -342,6 +347,11 @@ Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' 
 Updated config.xml file located at: .../Ionic-MFP-App/IonicMobileApp/config.xml
 Run 'cordova prepare' to propagate changes.
 Registered app for platform: android
+```
+
+  Note: In [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli), if you specified `No` to `Make this server the default?`, then you need to specify the name of your server profile (`Cloud-MFP` in our case) at the end of `mfpdev app register` command as shown below.
+```
+$ mfpdev app register Cloud-MFP
 ```
 
   Propogate changes by running `cordova prepare`
