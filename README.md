@@ -161,7 +161,7 @@ Once the database is created, the dashboard will update to show the documents in
       13.0773568
     ]
   },
-  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"<b>
+  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"</b>
 }
 </code></pre>
 
