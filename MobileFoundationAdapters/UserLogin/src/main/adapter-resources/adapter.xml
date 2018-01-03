@@ -24,7 +24,7 @@ limitations under the License.
 
 	<securityCheckDefinition name="UserLogin" class="com.sample.UserLogin">
 		<property name="maxAttempts" defaultValue="3" description="How many attempts are allowed" type="integer"/>
-		<property name="blockedStateExpirationSec" defaultValue="10" description="How long before the client can try again (seconds)" type="integer"/>
+		<property name="blockedStateExpirationSec" defaultValue="300" description="How long before the client can try again (seconds)" type="integer"/>
 		<property name="successStateExpirationSec" defaultValue="600" description="How long is a successful state valid for (seconds)" type="integer"/>
 		<property name="rememberMeDurationSec" defaultValue="600" description="How long is the user remembered when using RememberMe (seconds)" type="integer"/>
 	</securityCheckDefinition>
