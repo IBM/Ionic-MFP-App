@@ -14,7 +14,7 @@ When you have completed this pattern, you will understand:
 * How to fetch data from Cloudant service to mobile app via MFP adapter as well as post new data to Cloudant.
 * How to customize the Ionic app logo and splash, and build the release apk for uploading to public/private app stores.
 
-# Flow
+## Flow
 
 <img src="doc/source/images/Architecture.png" alt="Architecture diagram" width="800" border="10" />
 
@@ -33,18 +33,18 @@ and returns it to the mobile app.
 12. Mobile app creates a thumbnail image by resizing the captured image and uploads both the captured image and thumbnail to Cloud Object Storage.
 13. Other users who click on refresh button on the home page (and those who log in afresh) are shown the updated list of problem reports.
 
-# Included Components
+## Included Components
 * [Cloudant NoSQL DB](https://console.ng.bluemix.net/catalog/services/cloudant-nosql-db): A fully managed data layer designed for modern web and mobile applications that leverages a flexible JSON schema.
 * [Cloud Object Storage](https://console.bluemix.net/catalog/infrastructure/cloud-object-storage): A highly scalable cloud storage service, designed for high durability, resiliency and security.
 * [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation): A scalable mobile access gateway powered by the market-leading IBM Mobile Foundation Technology. The service offers a comprehensive set of mobile backend capabilities such as, App life cycle, Push, Analytics, Feature Toggle, Security and Authentication and offline synch. 
 
-# Featured Technologies
+## Featured Technologies
 * [Mobile](https://mobilefirstplatform.ibmcloud.com/): Systems of engagement are increasingly using mobile technology as the platform for delivery.
 
 # Watch the Video
 
 
-## Steps
+# Steps
 1. [Setup Ionic and MFP CLI](#step-1-setup-ionic-and-mfp-cli)
 2. [Create Cloudant database and populate it with sample data](#step-2-create-cloudant-database-and-populate-it-with-sample-data)
   - 2.1 [Create Cloudant database](#21-create-cloudant-database)
