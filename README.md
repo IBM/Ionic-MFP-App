@@ -20,7 +20,7 @@ When you have completed this pattern, you will understand:
 
 1. User launches the mobile app, enters his/her credentials on the login screen and clicks `Login`.
 2. Mobile app sends the user credentials to MFP server for validation.
-3. MFP server invokes the security adapter logic to validate user credentials and returns an appropriate response to the mobile app.
+3. MFP server invokes the security adapter logic to validate user credentials and returns an appropriate response to the mobile app. For the sake of this demo, we will use a simple security adapter that returns success when password equals username.
 4. If user authentication succeeds, mobile app proceeds to show the home page. As part of this, it makes a call to MFP adapter to fetch the data from Cloudant NoSQL database.
 5. MFP adapter fetches the data from Cloudant and returns it to the mobile app. The data fetched from Cloudant will have references to the images stored in Cloud Object Storage.
 6. Mobile app makes a call to MFP adapter to get the Authorization token for interacting with Cloud Object Storage service.
@@ -122,7 +122,7 @@ $ java -version
 java version "1.8.0_101"
 ```
 
-* Install an IDE for JavaScript/TypeScript such as Atom on Mac.
+* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as Atom on Mac.
 
   After installing Atom, install TypeScript plugin for Atom as shown below.
 ```
