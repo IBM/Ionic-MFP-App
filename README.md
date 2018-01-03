@@ -5,7 +5,7 @@ When developing your enterprise mobile app that needs centralized hosting of dat
 This code pattern gives you step by step instructions for developing an [Ionic/Cordova](http://ionicframework.com/) based hybrid mobile app that securely connects to Cloudant and Object Storage services via IBM MobileFoundation (aka MFP) service.
 
 When you have completed this pattern, you will understand:
-* How to authenticate users (through pre-emptive login) using MFP security adapater.
+* How to authenticate users (through preemptive login) using MFP security adapater.
 * How to write an MFP adapter that authenticates with Cloud Object Storage service and pass back the Authorization token to the mobile app.
 * Recommended architectural patterns for coding the interaction between mobile app and Cloud Object Storage service.
 * How to use imgcache.js in Ionic app for caching images fetched from Cloud Object Storage service.
