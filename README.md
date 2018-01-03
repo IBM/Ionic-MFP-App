@@ -221,7 +221,14 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
 
 ## Step 4. Create Mobile Foundation service and configure MFP CLI
-* Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
+
+In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on Create as shown below.
+
+  <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
+
+In the Mobile Foundation service overview page that gets shown, click on `Service credentials`. Expand `View credentials` and make a note of the `url`, `user` and `password` as shown below.
+
+  <img src="doc/source/images/MobileFoundationServiceCredentials.png" alt="IBM Mobile Foundation service credentials" width="800" border="10" />
 
 * Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
 
@@ -246,6 +253,7 @@ Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Defau
 --------------------------------------------------------------------------------------
 ```
 
+  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
 
 ## Step 5. Download source repo and customize
 
