@@ -446,7 +446,14 @@ Upon app launch, the login page should get displayed as shown below.
 
 
 ### 3.2 Create Mobile Foundation service and configure MFP CLI
-* Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Mobile Foundation*](https://console.bluemix.net/catalog/services/mobile-foundation) service. Make a note of the admin password.
+
+In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on Create as shown below.
+
+  <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
+
+In the Mobile Foundation service overview page that gets shown, click on `Service credentials`. Expand `View credentials` and make a note of the `url`, `user` and `password` as shown below.
+
+  <img src="doc/source/images/MobileFoundationServiceCredentials.png" alt="IBM Mobile Foundation service credentials" width="800" border="10" />
 
 * Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
 
@@ -459,7 +466,7 @@ $ mfpdev server add
 ? Save the administrator password for this server?: Yes
 ? Enter the context root of the MobileFirst administration services: mfpadmin
 ? Enter the MobileFirst Server connection timeout in seconds: 30
-? Make this server the default?: No
+? Make this server the default?: Yes
 Verifying server configuration...
 The following runtimes are currently installed on this server: mfp
 Server profile 'Cloud-MFP' added successfully.
@@ -470,6 +477,8 @@ Name         URL
 Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Default]
 --------------------------------------------------------------------------------------
 ```
+
+  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
 
 ### 3.3 Add MFP Security Adapter
 
@@ -980,7 +989,7 @@ $ mfpdev adapter deploy
 #### 4.2.5 Map MyWardData's protecting scope to UserLogin security check
 
 Launch MFP Dashboard as below:
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). Then click on `Launch Console` to open the MFP dashboard.
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 3.2](#32-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 3.2](#32-create-mobile-foundation-service-and-configure-mfp-cli).
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWard` application, and `MyWardData` and `UserLogin` adapters listed.
   * Click on the `MyWardData` adapter. Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter. The `Security` column should show the protecting scope `RestrictedData` against each REST method.
     
