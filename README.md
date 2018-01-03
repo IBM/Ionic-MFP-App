@@ -42,7 +42,7 @@ and returns it to the mobile app.
 * [Mobile](https://mobilefirstplatform.ibmcloud.com/): Systems of engagement are increasingly using mobile technology as the platform for delivery.
 
 # Watch the Video
-
+[![](http://img.youtube.com/vi/SjM3aVRvGWQ/0.jpg)](https://youtu.be/SjM3aVRvGWQ)
 
 # Steps
 1. [Setup Ionic and MFP CLI](#step-1-setup-ionic-and-mfp-cli)
