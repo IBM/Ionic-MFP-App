@@ -416,8 +416,14 @@ Delete the temporary credentials after testing adapter REST API as below:
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
   - Click on *Configure* -> *SDK Manager*
-  - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23*. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
- 
+  - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23* or higher. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
+* Edit `IonicMobileApp/config.xml` and specify the API level in `android-targetSdkVersion` as shown below.
+
+<pre><code>
+  &lt;preference name="android-minSdkVersion" value="16" /&gt;
+  &lt;preference name="android-targetSdkVersion" <b>value="23"</b> /&gt;
+</pre></code>
+
 ### 7.2 Enable developer options and USB debugging on your Android phone
 * Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
   - Launch the Settings app on your phone. Select *About Device* -> *Software Info* . Tap *Build number* 7 times to enable developer options.
@@ -445,12 +451,6 @@ Available platforms:
   ios ~4.4.0
   osx ~4.0.1
   webos ~3.7.0
-```
-
-[Cordova Android 6.3.0](https://cordova.apache.org/announcements/2017/09/27/android-release.html) targets the latest Android API level of API 26. If you want to [target API 23 instead](https://stackoverflow.com/questions/35573485/ionic-add-platform-android-with-custom-android-target), then edit `IonicMobileApp/config.xml` and add preference for `android-targetSdkVersion` as shown below.
-```
-  <preference name="android-minSdkVersion" value="16" />
-  <preference name="android-targetSdkVersion" value="23" />
 ```
 
 ### 7.4 Build/Run the Ionic application on Android phone
@@ -525,7 +525,7 @@ android-release-unsigned.apk		myward.apk
 $ 
 ```
 
-* Distrubute `myward.apk` by uploading to Google Play Store or to your company's internal App store.
+* Distribute `myward.apk` by uploading to Google Play Store or to your company's internal App store.
 
 
 # Troubleshooting
