@@ -232,6 +232,8 @@ In the Mobile Foundation service overview page that gets shown, click on `Servic
 
 * Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
 
+  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
+
 ```
 $ mfpdev server add
 ? Enter the name of the new server profile: Cloud-MFP
@@ -252,8 +254,6 @@ Name         URL
 Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Default]
 --------------------------------------------------------------------------------------
 ```
-
-  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
 
 ## Step 5. Download source repo and customize
 
