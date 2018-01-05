@@ -101,6 +101,11 @@ $ mfpdev --version
 8.0.0-2017091111
 ```
 
+  Note: While installing MFP CLI, if you hit an error saying `npm ERR! package.json npm can't find a package.json file in your current directory.`, then it is most likely due to [MFP CLI not being supported in your npm version](https://stackoverflow.com/questions/46168090/ibm-mobile-first-mfpdev-cli-installation-failure). In such a case, downgrade your npm as below, and then install MFP CLI.
+  ```
+  $ sudo npm install -g npm@3.10.10
+  ```
+
 * Install GIT https://git-scm.com/downloads
 ```
 $ git --version
