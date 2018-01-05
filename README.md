@@ -416,6 +416,7 @@ Delete the temporary credentials after testing adapter REST API as below:
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
   - Click on *Configure* -> *SDK Manager*
+  - Make a note of the `Android SDK Location`.
   - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23* or higher. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
 * Edit `IonicMobileApp/config.xml` and specify the API level in `android-targetSdkVersion` as shown below.
 
@@ -459,6 +460,8 @@ Available platforms:
 ```
 $ ionic cordova build android
 ```
+
+  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. ANDROID_HOME should be set to the *Android SDK Location* that you noted in [Step 7.1](#71-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the [value to be used for setting JAVA_HOME on macOS](http://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
 
 * Run application on Android device
 ```
