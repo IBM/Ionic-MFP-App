@@ -58,18 +58,18 @@ and returns it to the mobile app.
   - 5.2 [Update App ID, Name and Description](#52-update-app-id-name-and-description)
   - 5.3 [Specify Cloudant credentials in MFP adapter](#53-specify-cloudant-credentials-in-mfp-adapter)
   - 5.4 [Specify Cloud Object Storage credentials in MFP Adapter](#54-specify-cloud-object-storage-credentials-in-mfp-adapter)
-6. [Deploy MFP Adapters and Register the App to MFP server](#step-6-deploy-mfp-adapters-and-register-the-app-to-mfp-server)
+6. [Deploy the MFP Adapters and Test them](#step-6-deploy-the-mfp-adapters-and-test-them)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
-  - 6.2 [Register the MyWard app to MFP server](#62-register-the-myward-app-to-mfp-server)
-  - 6.3 [Map MyWardData's protecting scope to UserLogin security check](#63-map-mywarddatas-protecting-scope-to-userlogin-security-check)
-  - 6.4 [Test the MyWardData adapter](#64-test-the-mywarddata-adapter)
+  - 6.2 [Map MyWardData's protecting scope to UserLogin security check](#62-map-mywarddatas-protecting-scope-to-userlogin-security-check)
+  - 6.3 [Test the MyWardData adapter](#63-test-the-mywarddata-adapter)
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
   - 7.2 [Enable developer options and USB debugging on your Android phone](#72-enable-developer-options-and-usb-debugging-on-your-android-phone)
   - 7.3 [Enable Android platform for Ionic application](#73-enable-android-platform-for-ionic-application)
-  - 7.4 [Build/Run the Ionic application on Android phone](#74-buildrun-the-ionic-application-on-android-phone)
-  - 7.5 [Update App Logo and Splash](#75-update-app-logo-and-splash)
-  - 7.6 [Build APK for uploading to Google Play Store](#76-build-apk-for-uploading-to-google-play-store)
+  - 7.4 [Register the MyWard app to MFP server](#74-register-the-myward-app-to-mfp-server)
+  - 7.5 [Build/Run the Ionic application on Android phone](#75-buildrun-the-ionic-application-on-android-phone)
+  - 7.6 [Update App Logo and Splash](#76-update-app-logo-and-splash)
+  - 7.7 [Build APK for uploading to Google Play Store](#77-build-apk-for-uploading-to-google-play-store)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
@@ -100,6 +100,11 @@ $ sudo npm install -g mfpdev-cli
 $ mfpdev --version
 8.0.0-2017091111
 ```
+
+  Note: While installing MFP CLI, if you hit an error saying `npm ERR! package.json npm can't find a package.json file in your current directory.`, then it is most likely due to [MFP CLI not being supported in your npm version](https://stackoverflow.com/questions/46168090/ibm-mobile-first-mfpdev-cli-installation-failure). In such a case, downgrade your npm as below, and then install MFP CLI.
+  ```
+  $ sudo npm install -g npm@3.10.10
+  ```
 
 * Install GIT https://git-scm.com/downloads
 ```
@@ -310,7 +315,7 @@ Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml
 &lt;/mfp:adapter&gt;
 </code></pre>
 
-## Step 6. Deploy MFP Adapters and Register the App to MFP server
+## Step 6. Deploy the MFP Adapters and Test them
 
 ### 6.1 Build and Deploy the MFP adapters
 
@@ -337,29 +342,7 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-### 6.2 Register the MyWard app to MFP server
-
-```
-$ cd ../../IonicMobileApp/
-$ mfpdev app register
-Verifying server configuration...
-Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' runtime:'mfp'
-Updated config.xml file located at: .../Ionic-MFP-App/IonicMobileApp/config.xml
-Run 'cordova prepare' to propagate changes.
-Registered app for platform: android
-```
-
-  Note: In [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli), if you specified `No` to `Make this server the default?`, then you need to specify the name of your server profile (`Cloud-MFP` in our case) at the end of `mfpdev app register` command as shown below.
-```
-$ mfpdev app register Cloud-MFP
-```
-
-  Propogate changes by running `cordova prepare`
-```
-$ cordova prepare
-```
-
-### 6.3 Map MyWardData's protecting scope to UserLogin security check
+### 6.2 Map MyWardData's protecting scope to UserLogin security check
 
 Launch MFP Dashboard as below:
   * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
@@ -382,7 +365,7 @@ Map `RestrictedData` scope to `UserLogin` security check as below:
 
   * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform for iOS as well.
 
-### 6.4 Test the MyWardData adapter
+### 6.3 Test the MyWardData adapter
 
 Create temporary credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
@@ -454,7 +437,29 @@ Available platforms:
   webos ~3.7.0
 ```
 
-### 7.4 Build/Run the Ionic application on Android phone
+### 7.4 Register the MyWard app to MFP server
+
+```
+$ cd ../../IonicMobileApp/
+$ mfpdev app register
+Verifying server configuration...
+Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' runtime:'mfp'
+Updated config.xml file located at: .../Ionic-MFP-App/IonicMobileApp/config.xml
+Run 'cordova prepare' to propagate changes.
+Registered app for platform: android
+```
+
+  Note: In [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli), if you specified `No` to `Make this server the default?`, then you need to specify the name of your server profile (`Cloud-MFP` in our case) at the end of `mfpdev app register` command as shown below.
+```
+$ mfpdev app register Cloud-MFP
+```
+
+  Propogate changes by running `cordova prepare`
+```
+$ cordova prepare
+```
+
+### 7.5 Build/Run the Ionic application on Android phone
 
 * Build Android application
 ```
@@ -473,7 +478,7 @@ $ ionic cordova run android
   <img src="doc/source/images/MyWardAppHomePage.png" alt="MyWard App - Home Page" width="240" border="10" /> <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Problem Detail Page" width="240" border="10" /> <img src="doc/source/images/MyWardAppReportNewPage.png" alt="MyWard App - Report New Problem Page" width="240" border="10" />
 
 
-### 7.5 Update App Logo and Splash
+### 7.6 Update App Logo and Splash
 
 Reference: Automating Icons and Splash Screens https://blog.ionic.io/automating-icons-and-splash-screens/
 
@@ -486,7 +491,7 @@ $ ionic cordova resources
 
 For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
 
-### 7.6 Build APK for uploading to Google Play Store
+### 7.7 Build APK for uploading to Google Play Store
 
 * Add following lines at the end of `IonicMobileApp/platforms/android/proguard-project-mfp.txt`:
 ```
