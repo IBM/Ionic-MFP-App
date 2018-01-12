@@ -60,7 +60,7 @@ and returns it to the mobile app.
   - 5.4 [Specify Cloud Object Storage credentials in MFP Adapter](#54-specify-cloud-object-storage-credentials-in-mfp-adapter)
 6. [Deploy the MFP Adapters and Test them](#step-6-deploy-the-mfp-adapters-and-test-them)
   - 6.1 [Build and Deploy the MFP adapters](#61-build-and-deploy-the-mfp-adapters)
-  - 6.2 [Map MyWardData's protecting scope to UserLogin security check](#62-map-mywarddatas-protecting-scope-to-userlogin-security-check)
+  - 6.2 [Launch MFP dashboard and verify adapter configurations](#62-launch-mfp-dashboard-and-verify-adapter-configurations)
   - 6.3 [Test the MyWardData adapter](#63-test-the-mywarddata-adapter)
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
@@ -342,7 +342,7 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-### 6.2 Map MyWardData's protecting scope to UserLogin security check
+### 6.2 Launch MFP dashboard and verify adapter configurations
 
 Launch MFP Dashboard as below:
   * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
@@ -353,17 +353,9 @@ Verify MFP Adapter configuration as below:
 
   <img src="doc/source/images/MyWardDataConfigurations.png" alt="Option to specify the configuration properties for accessing Cloudant NoSQL DB and Cloud Object Storage in deployed MFP Adapter" width="640" border="10" />
 
-  * Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter as shown below. The `Security` column should show the protecting scope `RestrictedData` against each REST method.
+  * Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter as shown below. The `Security` column should show the protecting scope `UserLogin` against each REST method.
     
-  <img src="doc/source/images/MyWardDataProtectingScope.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="640" border="10" />
-
-Map `RestrictedData` scope to `UserLogin` security check as below:
-  * In the MFP dashboard, under `Applications` click on `MyWard` application. Click on `Android` and click on `Security` tab. Click on `New` button under `Scope-Elements Mapping` as shown below.
-  * Specify `Scope element` as `RestrictedData`, and under `Custom Security Checks` select `UserLogin` as shown below. Click on `Add`. The new mapping should get created and shown under `Scope-Elements Mapping`.
-
-  <img src="doc/source/images/MapRestrictedDataScopeToUserLoginCheck.png" alt="The REST APIs of MyWardData adapter are protected by RestrictedData security scope" width="800" border="10" />
-
-  * Repeat above steps for `Applications` -> `MyWard` -> `iOS` in case you add Cordova platform for iOS as well.
+  <img src="doc/source/images/MyWardDataProtectingScope.png" alt="The REST APIs of MyWardData adapter are protected by UserLogin security scope" width="640" border="10" />
 
 ### 6.3 Test the MyWardData adapter
 
