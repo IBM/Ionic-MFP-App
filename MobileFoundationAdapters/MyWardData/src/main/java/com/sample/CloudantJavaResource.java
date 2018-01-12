@@ -35,7 +35,7 @@ import com.ibm.mfp.adapter.api.AdaptersAPI;
 import com.ibm.mfp.adapter.api.OAuthSecurity;
 
 @Path("/")
-@OAuthSecurity(scope = "RestrictedData")
+@OAuthSecurity(scope = "UserLogin")
 public class CloudantJavaResource {
 	/*
 	 * For more info on JAX-RS see https://jax-rs-spec.java.net/nonav/2.0-rev-a/apidocs/index.html
