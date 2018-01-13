@@ -86,7 +86,7 @@ $ cordova --version
 7.0.1
 ```
 
-**Note**: If you are on Windows, instead of using sudo, run the above command (and the ones below) in a command prompt opened in administrative mode.
+**Note**: If you are on Windows, instead of using `sudo`, run the above command (and the ones below) in a command prompt opened in administrative mode.
 
 * Install Ionic
 ```
@@ -128,9 +128,9 @@ $ java -version
 java version "1.8.0_101"
 ```
 
-* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as Atom on Mac.
+* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as [Atom](https://atom.io/) on Mac.
 
-  After installing Atom, install TypeScript plugin for Atom as shown below.
+  After installing [Atom](https://atom.io/), install TypeScript plugin for Atom as shown below.
 ```
 apm install atom-typescript
 ```
@@ -141,7 +141,7 @@ apm install atom-typescript
 
 * Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
 * From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
-* In the Cloudant dashboard, click on *Databases*.
+* In the Cloudant Dashboard, click on *Databases*.
 * Click on *Create Database*. Specify name of database as `myward` as shown below. Click *Create*.
 
 <img src="doc/source/images/CreateCloudantDatabase.png" alt="Create Database in Cloudant NoSQL DB" width="800" border="10" />
@@ -350,7 +350,7 @@ Launch MFP Dashboard as below:
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWardData` and `UserLogin` adapters listed.
 
 Verify MFP Adapter configuration as below:
-  * Inside the MFP dashboard, click on the `MyWardData` adapter. Under `Configurations` tab, you should see the various properties we specified in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adapter) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter) for acccessing Cloudant database and Cloud Object Storage as shown below. As an alternative to specifying those property values in `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as previously shown in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adapter) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter), you can deploy the adapters with empty `defaultValue`, and once the adapter is deployed, change the values on this page.
+  * Inside the MFP dashboard, click on the `MyWardData` adapter. Under `Configurations` tab, you should see the various properties we specified in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adapter) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter) for accessing Cloudant database and Cloud Object Storage as shown below. As an alternative to specifying those property values in `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as previously shown in [Step 5.3](#53-specify-cloudant-credentials-in-mfp-adapter) and [Step 5.4](#54-specify-cloud-object-storage-credentials-in-mfp-adapter), you can deploy the adapters with empty `defaultValue`, and once the adapter is deployed, change the values on this page.
 
   <img src="doc/source/images/MyWardDataConfigurations.png" alt="Option to specify the configuration properties for accessing Cloudant NoSQL DB and Cloud Object Storage in deployed MFP Adapter" width="640" border="10" />
 
@@ -362,7 +362,7 @@ Verify MFP Adapter configuration as below:
 
 Create temporary credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
-  * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter \*\* and click on `Add`. Finally click on `Save`.
+  * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter `\*\*` and click on `Add`. Finally click on `Save`.
 
   <img src="doc/source/images/MFP_CreateCredentialsToTestAdapter.png" alt="MFP - Create Confidential Client to test Adapter REST APIs" width="800" border="10" />
 
@@ -498,7 +498,7 @@ $ cd ../IonicMobileApp
 $ ionic cordova resources
 ```
 
-For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
+For running `ionic cordova resources` command, you would need to sign up on [ionicframework.com](https://ionicframework.com/) and specify the credentials on the command line.
 
 ### 7.8 Build APK for uploading to Google Play Store
 
