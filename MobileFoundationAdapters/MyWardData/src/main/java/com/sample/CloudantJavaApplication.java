@@ -43,7 +43,7 @@ public class CloudantJavaApplication extends MFPJAXRSApplication{
 	private String baseUrl = "";
 
 	protected void init() throws Exception {
-		logger.info("Adapter initialized!");
+		logger.info("Initializing adapter...");
 		String cloudantDBName = configurationAPI.getPropertyValue("DBName");
 		String cloudantAccount = configurationAPI.getPropertyValue("account");
 		String cloudantKey = configurationAPI.getPropertyValue("key");
@@ -67,6 +67,7 @@ public class CloudantJavaApplication extends MFPJAXRSApplication{
 		oAuthCreds = new BasicIBMOAuthCredentials(apiKey, serviceID);
 		oAuthCreds.getTokenManager().getToken(); // initialize fetching and caching of token
 		this.baseUrl = endpointURL + "/" + bucketName + "/";
+		logger.info("Adapter initialized!");
 	}
 
 	public ObjectStorageAccess getObjectStorageAccess() {
