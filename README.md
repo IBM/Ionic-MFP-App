@@ -426,6 +426,7 @@ $ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDR
 
 * Add [Cordova platform for Android](https://cordova.apache.org/docs/en/latest/guide/platforms/android/)
 ```
+$ cd ../IonicMobileApp
 $ ionic cordova platform add android@6.3.0
 > cordova platform add android@6.3.0 --save
 ...
@@ -447,7 +448,7 @@ Available platforms:
 ### 7.5 Register the MyWard app to MFP server
 
 ```
-$ cd ../../IonicMobileApp/
+$ cd ../IonicMobileApp
 $ mfpdev app register
 Verifying server configuration...
 Registering to server:'https://mobilefoundation-71-hb-server.mybluemix.net:443' runtime:'mfp'
@@ -463,13 +464,14 @@ $ mfpdev app register Cloud-MFP
 
   Propogate changes by running `cordova prepare`
 ```
-$ cordova prepare
+$ ionic cordova prepare
 ```
 
 ### 7.6 Build/Run the Ionic application on Android phone
 
 * Build Android application
 ```
+$ cd ../IonicMobileApp
 $ ionic cordova build android
 ```
 
