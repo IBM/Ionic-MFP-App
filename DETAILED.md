@@ -1484,13 +1484,13 @@ After login, the home page should display the list of problems reported along wi
 
 ## Step 6. Show problem details page with location marked on Google Maps
 
-Generate Google Maps API Key and specify the same in `IonicMobileApp/config.xml` and `IonicMobileApp/package.json`.
+Get an API key for using the Google Maps Android API as per instructions in https://developers.google.com/maps/documentation/android-api/signup.
 
 Install Cordova plugin for Google Maps
 https://ionicframework.com/docs/native/google-maps/
 
 ```
-$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your-Google-Maps-API-Key-for-Android>"
+$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your_API_Key_for_using_GoogleMaps_Android_API>"
 $ npm install --save @ionic-native/google-maps
 ```
 
