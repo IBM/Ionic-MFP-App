@@ -65,11 +65,12 @@ and returns it to the mobile app.
 7. [Run application on Android phone](#step-7-run-application-on-android-phone)
   - 7.1 [Install Android Studio and Android SDK platform](#71-install-android-studio-and-android-sdk-platform)
   - 7.2 [Enable developer options and USB debugging on your Android phone](#72-enable-developer-options-and-usb-debugging-on-your-android-phone)
-  - 7.3 [Enable Android platform for Ionic application](#73-enable-android-platform-for-ionic-application)
-  - 7.4 [Register the MyWard app to MFP server](#74-register-the-myward-app-to-mfp-server)
-  - 7.5 [Build/Run the Ionic application on Android phone](#75-buildrun-the-ionic-application-on-android-phone)
-  - 7.6 [Update App Logo and Splash](#76-update-app-logo-and-splash)
-  - 7.7 [Build APK for uploading to Google Play Store](#77-build-apk-for-uploading-to-google-play-store)
+  - 7.3 [Setup API keys for using Google Maps](#73-setup-api-keys-for-using-google-maps)
+  - 7.4 [Enable Android platform for Ionic application](#74-enable-android-platform-for-ionic-application)
+  - 7.5 [Register the MyWard app to MFP server](#75-register-the-myward-app-to-mfp-server)
+  - 7.6 [Build/Run the Ionic application on Android phone](#76-buildrun-the-ionic-application-on-android-phone)
+  - 7.7 [Update App Logo and Splash](#77-update-app-logo-and-splash)
+  - 7.8 [Build APK for uploading to Google Play Store](#78-build-apk-for-uploading-to-google-play-store)
 
 ## Step 1. Setup Ionic and MFP CLI
 * Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
@@ -407,7 +408,21 @@ Delete the temporary credentials after testing adapter REST API as below:
 * If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
 * Connect the Android phone to your development machine by USB cable, and accept *allow* access on your phone.
 
-### 7.3 Enable Android platform for Ionic application
+### 7.3 Setup API keys for using Google Maps
+
+* Get an API key for using the Google Maps Android API as per instructions in https://developers.google.com/maps/documentation/android-api/signup.
+
+  You can similarly get an API key for using the Google Maps SDK for iOS as per instructions in 
+https://developers.google.com/maps/documentation/ios-sdk/get-api-key.
+
+* Add the Google Maps API keys into the `MyWard` app as below:
+
+```
+$ cd ../../IonicMobileApp/
+$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your_API_key_for_using_GoogleMaps_Android_API>" --variable API_KEY_FOR_IOS="<Your_API_key_for_using_GoogleMaps_SDK_for_iOS>"
+```
+
+### 7.4 Enable Android platform for Ionic application
 
 * Add [Cordova platform for Android](https://cordova.apache.org/docs/en/latest/guide/platforms/android/)
 ```
@@ -429,7 +444,7 @@ Available platforms:
   webos ~3.7.0
 ```
 
-### 7.4 Register the MyWard app to MFP server
+### 7.5 Register the MyWard app to MFP server
 
 ```
 $ cd ../../IonicMobileApp/
@@ -451,7 +466,7 @@ $ mfpdev app register Cloud-MFP
 $ cordova prepare
 ```
 
-### 7.5 Build/Run the Ionic application on Android phone
+### 7.6 Build/Run the Ionic application on Android phone
 
 * Build Android application
 ```
@@ -470,7 +485,7 @@ $ ionic cordova run android
   <img src="doc/source/images/MyWardAppHomePage.png" alt="MyWard App - Home Page" width="240" border="10" /> <img src="doc/source/images/MyWardAppDetailPage.png" alt="MyWard App - Problem Detail Page" width="240" border="10" /> <img src="doc/source/images/MyWardAppReportNewPage.png" alt="MyWard App - Report New Problem Page" width="240" border="10" />
 
 
-### 7.6 Update App Logo and Splash
+### 7.7 Update App Logo and Splash
 
 Reference: Automating Icons and Splash Screens https://blog.ionic.io/automating-icons-and-splash-screens/
 
@@ -483,7 +498,7 @@ $ ionic cordova resources
 
 For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
 
-### 7.7 Build APK for uploading to Google Play Store
+### 7.8 Build APK for uploading to Google Play Store
 
 * Add following lines at the end of `IonicMobileApp/platforms/android/proguard-project-mfp.txt`:
 ```
