@@ -177,7 +177,7 @@ Click *Create Document* to create/save the document.
 
 ### 2.2 Generate Cloudant API Key
 
- * In the Cloudant dashboard, under `myward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
+ * In the Cloudant Dashboard, under `myward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
  * Make a note of the Key and Password generated.
  * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
 
@@ -286,7 +286,7 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 
 Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the following properties to point to the Cloudant database created in [Step 2](#step-2-create-cloudant-database-and-populate-it-with-sample-data).
  * Update `key` and `password` with the Cloudant API key as generated in [Step 2.2](#22-generate-cloudant-api-key).
- * For property `account`, specify the Cloudant dashboard URL portion upto (and including) *-bluemix.cloudant.com* as shown in the snapshot of [Step 2.2](#22-generate-cloudant-api-key).
+ * For property `account`, specify the Cloudant Dashboard URL portion upto (and including) *-bluemix.cloudant.com* as shown in the snapshot of [Step 2.2](#22-generate-cloudant-api-key).
  * For property `DBName`, leave the default value of `myward` as-is.
 
 <pre><code>
@@ -362,7 +362,7 @@ Verify MFP Adapter configuration as below:
 
 Create temporary credentials to test adapter REST API as below:
   * Inside the MFP dashboard, click on `Runtime Settings`. Click on `Confidential Clients`. Then click on `New`.
-  * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter `\*\*` and click on `Add`. Finally click on `Save`.
+  * In the form that pops up, specify values for `ID` and `Secret` as shown in snapshot below. For `Allowed Scope` enter `**` and click on `Add`. Finally click on `Save`.
 
   <img src="doc/source/images/MFP_CreateCredentialsToTestAdapter.png" alt="MFP - Create Confidential Client to test Adapter REST APIs" width="800" border="10" />
 
