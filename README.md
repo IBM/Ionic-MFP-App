@@ -2,13 +2,13 @@
 
 When developing your enterprise mobile app that needs centralized hosting of data, use of cloud-native services such as [Cloudant No-SQL Database](https://www.ibm.com/cloud/cloudant) for storing textual data and [Object Storage service](https://www.ibm.com/cloud/object-storage) for storing image/video/audio data, allows you to quickly go from idea-conception to reality. The [Mobile Foundation service](https://www.ibm.com/cloud/mobile-foundation) available from IBM Cloud provides a scalable mobile access gateway for securely accessing those backend services, and it provides other essential mobile backend capabilities such as push notifications, app lifecycle management and app analytics.
 
-This code pattern gives you step by step instructions for developing an [Ionic/Cordova](http://ionicframework.com/) based hybrid mobile app that securely connects to Cloudant and Object Storage services via IBM MobileFoundation (aka MFP) service.
+This code pattern gives you step by step instructions for developing an [Ionic/Cordova](https://ionicframework.com/) based hybrid mobile app that securely connects to Cloudant and Object Storage services via IBM MobileFoundation (aka MFP) service.
 
 When you have completed this pattern, you will understand:
-* How to authenticate users (through preemptive login) using MFP security adapater.
+* How to authenticate users (through preemptive login) using MFP security adapter.
 * How to write an MFP adapter that authenticates with Cloud Object Storage service and pass back the Authorization token to the mobile app.
 * Recommended architectural patterns for coding the interaction between mobile app and Cloud Object Storage service.
-* How to use imgcache.js in Ionic app for caching images fetched from Cloud Object Storage service.
+* How to use `imgcache.js` in Ionic app for caching images fetched from Cloud Object Storage service.
 * How to show Google Maps in Ionic app as well as capture user’s geo-location & image from camera.
 * How to upload the captured image from mobile app to Cloud Object Storage service.
 * How to fetch data from Cloudant service to mobile app via MFP adapter as well as post new data to Cloudant.
@@ -73,7 +73,7 @@ and returns it to the mobile app.
   - 7.8 [Build APK for uploading to Google Play Store](#78-build-apk-for-uploading-to-google-play-store)
 
 ## Step 1. Setup Ionic and MFP CLI
-* Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
+* Install `Node.js` by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
 ```
 $ node --version
 v8.6.0
@@ -141,14 +141,14 @@ apm install atom-typescript
 
 * Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
 * From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
-* In the Cloudant Dashboard, click on *Databases*.
-* Click on *Create Database*. Specify name of database as `myward` as shown below. Click *Create*.
+* In the Cloudant Dashboard, click on `Databases`.
+* Click on `Create Database`. Specify name of database as `myward` as shown below. Click `Create`.
 
 <img src="doc/source/images/CreateCloudantDatabase.png" alt="Create Database in Cloudant NoSQL DB" width="800" border="10" />
 
 Once the database is created, the dashboard will update to show the documents inside `myward` database (which, as expected, will be empty to begin with).
 
-* Click *Create Document*. Under document content, after the auto populated `_id` field, enter grievance details as shown below. Please note that you need to put a comma (,) after the auto populated `_id` field.
+* Click `Create Document`. Under document content, after the auto populated `_id` field, enter grievance details as shown below. Please note that you need to put a comma (,) after the auto populated `_id` field.
 
 <pre><code>
 {
@@ -171,13 +171,13 @@ Once the database is created, the dashboard will update to show the documents in
 }
 </code></pre>
 
-Click *Create Document* to create/save the document.
+Click `Create Document` to create/save the document.
 
 * Repeat the above steps and create documents for the remaining grievances as shown in [SampleData/MyWardGrievances.json](SampleData/MyWardGrievances.json).
 
 ### 2.2 Generate Cloudant API Key
 
- * In the Cloudant Dashboard, under `myward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
+ * In the Cloudant Dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key as shown in the snapshot below.
  * Make a note of the Key and Password generated.
  * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
 
@@ -228,7 +228,7 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
 ## Step 4. Create Mobile Foundation service and configure MFP CLI
 
-In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on Create as shown below.
+In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
 
   <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
 
@@ -236,7 +236,7 @@ In the Mobile Foundation service overview page that gets shown, click on `Servic
 
   <img src="doc/source/images/MobileFoundationServiceCredentials.png" alt="IBM Mobile Foundation service credentials" width="800" border="10" />
 
-* Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
+* Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running the following command in console.
 
   Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
 
@@ -346,7 +346,7 @@ $ mfpdev adapter deploy
 ### 6.2 Launch MFP dashboard and verify adapter configurations
 
 Launch MFP Dashboard as below:
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under *Cloud Foundry Services*, click on the *Mobile Foundation* service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under `Cloud Foundry Services`, click on the `Mobile Foundation` service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWardData` and `UserLogin` adapters listed.
 
 Verify MFP Adapter configuration as below:
@@ -391,9 +391,9 @@ Delete the temporary credentials after testing adapter REST API as below:
 * Download and install Android Studio from https://developer.android.com/studio/index.html
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
-  - Click on *Configure* -> *SDK Manager*
-  - Make a note of the `Android SDK Location`.
-  - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23* or higher. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
+  - Click on `Configure` -> `SDK Manager`
+  - Make a note of the `Android SDK Location`.
+  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23` or higher. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
 * Edit `IonicMobileApp/config.xml` and specify the API level in `android-targetSdkVersion` as shown below.
 
 <pre><code>
@@ -403,10 +403,10 @@ Delete the temporary credentials after testing adapter REST API as below:
 
 ### 7.2 Enable developer options and USB debugging on your Android phone
 * Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
-  - Launch the Settings app on your phone. Select *About Device* -> *Software Info* . Tap *Build number* 7 times to enable developer options.
-  - Return to Settings list. Select *Developer options* and enable *USB debugging*.
+  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
+  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
 * If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
-* Connect the Android phone to your development machine by USB cable, and accept *allow* access on your phone.
+* Connect the Android phone to your development machine by USB cable, and accept `allow` access on your phone.
 
 ### 7.3 Setup API keys for using Google Maps
 
@@ -462,7 +462,7 @@ Registered app for platform: android
 $ mfpdev app register Cloud-MFP
 ```
 
-  Propogate changes by running `cordova prepare`
+  Propagate changes by running `cordova prepare`
 ```
 $ ionic cordova prepare
 ```
@@ -475,7 +475,7 @@ $ cd ../IonicMobileApp
 $ ionic cordova build android
 ```
 
-  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. ANDROID_HOME should be set to the *Android SDK Location* that you noted in [Step 7.1](#71-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the [value to be used for setting JAVA_HOME on macOS](http://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
+  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. `ANDROID_HOME` should be set to the `Android SDK Location` that you noted in [Step 7.1](#71-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the [value to be used for setting `JAVA_HOME` on [macOS](http://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
 
 * Run application on Android device
 ```
@@ -551,7 +551,7 @@ $
 
 * Install Google Chrome
 * Open Google Chrome. Open URL chrome://inspect/#devices
-* Under *Devices*, click on *inspect* below your connected device.
+* Under `Devices`, click on `inspect` below your connected device.
 
   <img src="doc/source/images/DebugAndroidAppWithChromeDeveloperTools.png" alt="Debugging of Android app using Chrome Developer Tools" width="800" border="10" />
 
