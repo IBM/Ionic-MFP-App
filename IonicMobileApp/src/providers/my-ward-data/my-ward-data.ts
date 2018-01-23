@@ -28,43 +28,42 @@ export class MyWardDataProvider {
   }
 
   load() {
-    if (this.data) {
-      // already loaded data
-      return Promise.resolve(this.data);
-    }
-    // don't have the data yet
     console.log('--> MyWardDataProvider loading data from adapter ...');
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      if (this.data) {
+        // already loaded data
+        return resolve(this.data);
+      }
+      // don't have the data yet
       let dataRequest = new WLResourceRequest("/adapters/MyWardData", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
-          console.log('--> MyWardDataProvider loaded data from adapter ', response);
+          console.log('--> MyWardDataProvider loaded data from adapter\n', response);
           this.data = response.responseJSON;
-          resolve(this.data)
+          resolve(this.data);
         }, (failure) => {
-          console.log('--> MyWardDataProvider failed to load data', failure);
-          resolve('error')
+          console.log('--> MyWardDataProvider failed to load data\n', JSON.stringify(failure));
+          reject(failure);
         })
     });
   }
 
   getObjectStorageAccess() {
-    if (this.objectStorageAccess) {
-      // already loaded data
-      return Promise.resolve(this.objectStorageAccess);
-    }
-    // don't have the data yet
     // console.log('--> MyWardDataProvider getting Object Storage AuthToken from adapter ...');
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      if (this.objectStorageAccess) {
+        // already loaded data
+        return resolve(this.objectStorageAccess);
+      }
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
           // console.log('--> MyWardDataProvider got Object Storage AuthToken from adapter ', response);
           this.objectStorageAccess = response.responseJSON;
-          resolve(this.objectStorageAccess)
+          resolve(this.objectStorageAccess);
         }, (failure) => {
-          console.log('--> MyWardDataProvider failed to get Object Storage AuthToken from adapter', failure);
-          resolve('error')
+          console.log('--> MyWardDataProvider failed to get Object Storage AuthToken from adapter\n', JSON.stringify(failure));
+          reject(failure);
         })
     });
   }
