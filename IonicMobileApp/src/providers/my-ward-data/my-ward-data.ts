@@ -55,6 +55,7 @@ export class MyWardDataProvider {
         // already loaded data
         return resolve(this.objectStorageAccess);
       }
+      // don't have the data yet
       let dataRequest = new WLResourceRequest("/adapters/MyWardData/objectStorage", WLResourceRequest.GET);
       dataRequest.send().then(
         (response) => {
