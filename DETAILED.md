@@ -1316,7 +1316,7 @@ $ mfpdev adapter build
 $ mfpdev adapter deploy
 ```
 
-Test the newly added API as per instructions in [step 4.2.5](#425-test-the-newly-created-mfp-adapter). The GET API on `/objectStorage` should return a JSON object containing `baseUrl` and `authorizationHeader` as shown below.
+Test the newly added API as per instructions in [Step 4.2.6](#426-test-the-newly-created-mfp-adapter). The GET API on `/objectStorage` should return a JSON object containing `baseUrl` and `authorizationHeader` as shown below.
 
   <img src="doc/source/images/TestMFPAdapter_ObjectStorageAccess.png" alt="Test the newly added API in MFP Adapter for getting Cloud Object Storage Authorization token" width="1024" border="10" />
 
