@@ -1212,7 +1212,10 @@ Add [ibm-cos-java-sdk](https://github.com/IBM/ibm-cos-sdk-java) dependency to `M
 &lt;/project&gt;
 </code></pre>
 
-Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below. Specify values for `bucketName`, `serviceId` and `apiKey`. While creating the bucket in [step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
+Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below.
+  - Specify `defaultValue` for `bucketName` from [Step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
+  - Specify `defaultValue` for `serviceId` and `apiKey` from [Step 5.1.2](#512-create-service-id-and-api-key-for-accessing-objects).
+  - While creating the bucket in [Step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
