@@ -55,7 +55,7 @@ public class CloudantJavaResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addEntry(MyWardGrievance myWardGrievance) throws Exception {
-		if (myWardGrievance != null) {
+		if (myWardGrievance != null && myWardGrievance.hasRequiredFields()) {
 			getDB().save(myWardGrievance);
 			return Response.ok().build();
 		} else {

@@ -30,7 +30,7 @@ export class AuthHandlerProvider {
   loginFailureCallback = null;
 
   constructor() {
-    console.log('--> AuthHandlerProvider constructor() called');
+    console.log('--> AuthHandler constructor() called');
   }
 
   // Reference: https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/credentials-validation/javascript/

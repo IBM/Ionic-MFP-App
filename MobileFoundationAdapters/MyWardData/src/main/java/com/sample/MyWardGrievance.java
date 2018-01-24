@@ -32,4 +32,14 @@ public class MyWardGrievance {
 	}
 	public GeoLocation geoLocation;
 	public String address;
+
+	boolean hasRequiredFields() {
+		if (reportedBy != null && !reportedBy.isEmpty() && reportedDateTime != null && !reportedDateTime.isEmpty()
+				&& picture != null && picture.large != null && !picture.large.isEmpty() && picture.thumbnail != null
+				&& !picture.thumbnail.isEmpty() && problemDescription != null && !problemDescription.isEmpty()
+				&& geoLocation != null && address != null && !address.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 }
