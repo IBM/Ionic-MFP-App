@@ -923,6 +923,16 @@ public class MyWardGrievance {
 	}
 	public GeoLocation geoLocation;
 	public String address;
+
+	boolean hasRequiredFields() {
+		if (reportedBy != null && !reportedBy.isEmpty() && reportedDateTime != null && !reportedDateTime.isEmpty()
+				&& picture != null && picture.large != null && !picture.large.isEmpty() && picture.thumbnail != null
+				&& !picture.thumbnail.isEmpty() && problemDescription != null && !problemDescription.isEmpty()
+				&& geoLocation != null && address != null && !address.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 }
 ```
 
@@ -943,7 +953,7 @@ public class CloudantJavaResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addEntry(<b>MyWardGrievance myWardGrievance</b>) throws Exception {
-		<b>if (myWardGrievance != null) {
+		<b>if (myWardGrievance != null && myWardGrievance.hasRequiredFields()) {
 			getDB().save(myWardGrievance);</b>
 			return Response.ok().build();
 		} else {
