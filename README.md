@@ -177,7 +177,7 @@ Click `Create Document` to create/save the document.
 
 ### 2.2 Generate Cloudant API Key
 
- * In the Cloudant Dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key as shown in the snapshot below.
+ * In the Cloudant Dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key` as shown in the snapshot below.
  * Make a note of the Key and Password generated.
  * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
 
@@ -346,7 +346,7 @@ $ mfpdev adapter deploy
 ### 6.2 Launch MFP dashboard and verify adapter configurations
 
 Launch MFP Dashboard as below:
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under `Cloud Foundry Services`, click on the `Mobile Foundation` service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
+  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under `Cloud Foundry Services`, click on the `Mobile Foundation` service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWardData` and `UserLogin` adapters listed.
 
 Verify MFP Adapter configuration as below:
@@ -389,11 +389,11 @@ Delete the temporary credentials after testing adapter REST API as below:
 
 ### 7.1 Install Android Studio and Android SDK platform
 * Download and install Android Studio from https://developer.android.com/studio/index.html
-* Install Android SDK Platform 23 (or higher)
+* Install Android SDK Platform 23 (or higher) as below:
   - Launch Android Studio.
-  - Click on `Configure` -> `SDK Manager`
-  - Make a note of the `Android SDK Location`.
-  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23` or higher. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
+  - Click on `Configure` -> `SDK Manager`
+  - Make a note of the `Android SDK Location`.
+  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23` or higher. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
 * Edit `IonicMobileApp/config.xml` and specify the API level in `android-targetSdkVersion` as shown below.
 
 <pre><code>
@@ -403,8 +403,8 @@ Delete the temporary credentials after testing adapter REST API as below:
 
 ### 7.2 Enable developer options and USB debugging on your Android phone
 * Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
-  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
-  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
+  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
+  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
 * If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
 * Connect the Android phone to your development machine by USB cable, and accept `allow` access on your phone.
 
