@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_151628",
+  "picture": {
+    "large": "20171125_151628.jpg",
+    "thumbnail": "thumbnail_20171125_151628.jpg"
+  },
+  "problemDescription": "Garbage dumped near water tank next to main road",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7867915,
+      13.0751105
+    ]
+  },
+  "address": "Near J.C. Circle at the beginning of Kurubarapete Main Road, Hosakote, Bangalore 562114"
+}

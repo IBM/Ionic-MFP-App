@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_153135",
+  "picture": {
+    "large": "IMG-20171125-WA0018.jpeg",
+    "thumbnail": "thumbnail_IMG-20171125-WA0018.jpg"
+  },
+  "problemDescription": "Road dug up for laying underground sewage pumps left untarred for more than 3 months!",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7867915,
+      13.0751105
+    ]
+  },
+  "address": "Nalagalli road, Hosakote, Bangalore 562114"
+}

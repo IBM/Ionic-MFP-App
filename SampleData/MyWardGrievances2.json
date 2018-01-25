@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_153034",
+  "picture": {
+    "large": "20171125_153034.jpg",
+    "thumbnail": "thumbnail_20171125_153034.jpg"
+  },
+  "problemDescription": "Water overflow from broken Municipal Water Pipes.",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7886087,
+      13.0768342
+    ]
+  },
+  "address": "End of Kammavari Pete Road at Nalagalli, Hosakote, Bangalore 562114"
+}

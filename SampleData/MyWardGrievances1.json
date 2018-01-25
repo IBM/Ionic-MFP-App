@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_152627",
+  "picture": {
+    "large": "IMG-20171125-WA0012.jpeg",
+    "thumbnail": "thumbnail_IMG-20171125-WA0012.jpg"
+  },
+  "problemDescription": "Car parking on busy market road chocking movement of other vehicles and pedestrians",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7893168,
+      13.0773568
+    ]
+  },
+  "address": "Basaveshwara Temple road (behind Market Road), Hosakote, Bangalore 562114"
+}

@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_152218",
+  "picture": {
+    "large": "20171125_152218.jpg",
+    "thumbnail": "thumbnail_20171125_152218.jpg"
+  },
+  "problemDescription": "Damaged road adjacent to drain. Risky spot for children and vehicles falling into drain when it is dark.",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7897071,
+      13.0763398
+    ]
+  },
+  "address": "Junction near Siddhi Vinayaka Temple on Market Road, Hosakote, Bangalore 562114"
+}

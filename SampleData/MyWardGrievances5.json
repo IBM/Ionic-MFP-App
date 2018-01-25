@@ -1,0 +1,17 @@
+{
+  "reportedBy": "shivahr@gmail.com",
+  "reportedDateTime": "20171125_152427",
+  "picture": {
+    "large": "20171125_152427.jpg",
+    "thumbnail": "thumbnail_20171125_152427.jpg"
+  },
+  "problemDescription": "Sewage drain blocked due to dumped garbage",
+  "geoLocation": {
+    "type": "Point",
+    "coordinates": [
+      77.7896441,
+      13.0779962
+    ]
+  },
+  "address": "Junction of Darjipet (Market) and Basaveshwara Temple road, Hosakote, Bangalore 562114"
+}
