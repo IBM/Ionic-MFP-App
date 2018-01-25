@@ -842,7 +842,7 @@ Once the database is created, the dashboard will update to show the documents in
 
 <pre><code>
 {
-  "_id": "7fc63023799dfda9582609e75127b4fa"<b>,
+  "_id": "50e9c4a69196a00201463ef2f9ffece5"<b>,
   "reportedBy": "shivahr@gmail.com",
   "reportedDateTime": "20171125_152627",
   "picture": {
