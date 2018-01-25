@@ -72,6 +72,8 @@ and returns it to the mobile app.
   - 7.7 [Update App Logo and Splash](#77-update-app-logo-and-splash)
   - 7.8 [Build APK for uploading to Google Play Store](#78-build-apk-for-uploading-to-google-play-store)
 
+[Troubleshooting](#troubleshooting)
+
 ## Step 1. Setup Ionic and MFP CLI
 * Install `Node.js` by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
 ```
@@ -173,7 +175,11 @@ Once the database is created, the dashboard will update to show the documents in
 
 Click `Create Document` to create/save the document.
 
-* Repeat the above steps and create documents for the remaining grievances as shown in [SampleData/MyWardGrievances.json](SampleData/MyWardGrievances.json).
+* Repeat the above steps and create documents for the remaining sample grievances: [SampleData/MyWardGrievance2.json](SampleData/MyWardGrievance2.json), [SampleData/MyWardGrievance3.json](SampleData/MyWardGrievance3.json), [SampleData/MyWardGrievance4.json](SampleData/MyWardGrievance4.json), [SampleData/MyWardGrievance5.json](SampleData/MyWardGrievance5.json), [SampleData/MyWardGrievance6.json](SampleData/MyWardGrievance6.json).
+
+The `myward` database should now list the six documents as shown below under `Table` view.
+
+<img src="doc/source/images/CloudantDatabasePopulated.png" alt="Cloudant database populated with sample data" width="800" border="10" />
 
 ### 2.2 Generate Cloudant API Key
 
