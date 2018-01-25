@@ -177,6 +177,10 @@ Click `Create Document` to create/save the document.
 
 * Repeat the above steps and create documents for the remaining sample grievances: [SampleData/MyWardGrievance2.json](SampleData/MyWardGrievance2.json), [SampleData/MyWardGrievance3.json](SampleData/MyWardGrievance3.json), [SampleData/MyWardGrievance4.json](SampleData/MyWardGrievance4.json), [SampleData/MyWardGrievance5.json](SampleData/MyWardGrievance5.json), [SampleData/MyWardGrievance6.json](SampleData/MyWardGrievance6.json).
 
+The `myward` database should now list the six documents as shown below under `Table` view.
+
+<img src="doc/source/images/CloudantDatabasePopulated.png" alt="Cloudant database populated with sample data" width="800" border="10" />
+
 ### 2.2 Generate Cloudant API Key
 
  * In the Cloudant Dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key` as shown in the snapshot below.
