@@ -77,7 +77,7 @@ export class LoginPage {
     }
     console.log('--> Sign-in with user: ' + username);
     this.loader = this.loadingCtrl.create({
-      content: 'Signining in. Please wait ...',
+      content: 'Signing in. Please wait ...',
       dismissOnPageChange: true
     });
     this.loader.present().then(() => {
