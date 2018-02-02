@@ -39,7 +39,7 @@ Make sure you have added following line at the end of `IonicMobileApp/platforms/
 
 2) Problem:
 
-When the app is launched, an `Alert` with text 
+After installing the release APK, when the app is launched, an `Alert` with text 
 `java.lang.NoSuchMethodException: isAvailable [class org.json.JSONArray, class org.apache.cordova.CallbackContext]` 
 is thrown as shown below.
 
