@@ -188,15 +188,15 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 * Download and install Android Studio from https://developer.android.com/studio/index.html
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
-  - Click on *Configure* -> *SDK Manager*
-  - Under *SDK Platforms*, select *Android 6.0 (Marshmallow) API Level 23*. Click *Apply* and then click *OK*. This will install Android SDK Platform on your machine.
+  - Click on `Configure` -> `SDK Manager`
+  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23`. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
  
 #### 2.4.2 Enable developer options and USB debugging on your Android phone
 * Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
-  - Launch the Settings app on your phone. Select *About Device* -> *Software Info* . Tap *Build number* 7 times to enable developer options.
-  - Return to Settings list. Select *Developer options* and enable *USB debugging*.
+  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
+  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
 * If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
-* Connect the Android phone to your development machine by USB cable, and accept *allow* access on your phone.
+* Connect the Android phone to your development machine by USB cable, and accept `allow` access on your phone.
 
 #### 2.4.3 Enable Android platform for Ionic application
 
@@ -252,7 +252,7 @@ $ cd ../IonicMobileApp
 $ ionic cordova resources
 ```
 
-For running `ionic cordova resources` command, you would need to sign up on ionicframework.com and specify the credentials on the command line.
+For running `ionic cordova resources` command, you would need to sign up on [ionicframework.com](https://ionicframework.com/) and specify the credentials on the command line.
 
 ### 2.6 Fix issue where you see a blank screen after your splash screen disappears
 
@@ -447,7 +447,7 @@ Upon app launch, the login page should get displayed as shown below.
 
 ### 3.2 Create Mobile Foundation service and configure MFP CLI
 
-In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on Create as shown below.
+In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
 
   <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
 
@@ -550,7 +550,7 @@ Run 'cordova prepare' to propagate changes.
 Registered app for platform: android
 ```
 
-  Propogate changes by running `cordova prepare`
+  Propagate changes by running `cordova prepare`
 ```
 $ cordova prepare
 ```
@@ -831,14 +831,14 @@ Installing "cordova-plugin-statusbar" for android
 
 * Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
 * From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
-* In the Cloudant dashboard, click on *Databases*.
-* Click on *Create Database*. Specify name of database as `myward` as shown below. Click *Create*.
+* In the Cloudant dashboard, click on `Databases`.
+* Click on `Create Database`. Specify name of database as `myward` as shown below. Click `Create`.
 
 <img src="doc/source/images/CreateCloudantDatabase.png" alt="Create Database in Cloudant NoSQL DB" width="800" border="10" />
 
 Once the database is created, the dashboard will update to show the documents inside `myward` database (which, as expected, will be empty to begin with).
 
-* Click *Create Document*. Under document content, after the auto populated `_id` field, enter grievance details as shown below. Please note that you need to put a comma (,) after the auto populated `_id` field.
+* Click `Create Document`. Under document content, after the auto populated `_id` field, enter grievance details as shown below. Please note that you need to put a comma (,) after the auto populated `_id` field.
 
 <pre><code>
 {
@@ -890,9 +890,9 @@ MyWardData	UserLogin
 #### 4.2.2 Point the MFP adapter to your Cloudant service instance
 
 Generate Cloudant API Key
- * In the Cloudant dashboard, under `myward` database, click on *Permissions* and then click on *Generate API Key* as shown in the snapshot below.
+ * In the Cloudant dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key` as shown in the snapshot below.
  * Make a note of the Key and Password generated.
- * The newly added key would get listed under Cloudant users with default permission of *reader* only. Select the checkbox under *writer* next to the new key to give it write permission as well.
+ * The newly added key would get listed under Cloudant users with default permission of reader` only. Select the checkbox under *writer* next to the new key to give it write permission as well.
 
   <img src="doc/source/images/CloudantGenerateAPIKey.png" alt="Generate Cloudant API Key" width="800" border="10" />
 
@@ -2162,7 +2162,7 @@ $ ionic cordova build android
 $ ionic cordova run android
 ```
 
-Upon clicking the + button on the home page, the `Report New Problem` page should show up, allowing the user to specify problem description and address as shown below. User should be able to take a photo of the problem and specify the location of problem either by grabbing device's geo-location or by marking the location on Maps.
+Upon clicking the `+` button on the home page, the `Report New Problem` page should show up, allowing the user to specify problem description and address as shown below. User should be able to take a photo of the problem and specify the location of problem either by grabbing device's geo-location or by marking the location on Maps.
 
   <img src="doc/source/images/MyWardAppReportNewPage.png" alt="MyWard App - Report New Problem Page" width="240" border="10" />
 
