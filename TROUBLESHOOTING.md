@@ -162,7 +162,20 @@ Reference: https://stackoverflow.com/questions/45938239/cordova-and-proguard-cam
 
 Solution:
 
-Edit `IonicMobileApp/config.xml` and add the following tag inside the `<platform name="android">` tag:
+Edit `IonicMobileApp/config.xml` and add the following preference inside the `<platform name="android">` tag:
 ```
   <preference name="applicationId" value="org.mycity.myward" />
+```
+
+4) Problem:
+
+`Application error. The connection to the server was unsuccessful` upon app launch on certain devices.
+
+Reference: https://forum.ionicframework.com/t/application-error-the-connection-to-the-server-was-unsuccessful/67584
+
+Solution:
+
+Edit `IonicMobileApp/config.xml` and add/edit the following preference inside the `<platform name="android">` tag:
+```
+  <preference name="loadUrlTimeoutValue" value="60000" />
 ```
