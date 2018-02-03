@@ -36,6 +36,7 @@
   - 4.3 [Update Ionic app to fetch and display data from MFP Adapter](#step-43-update-ionic-app-to-fetch-and-display-data-from-mfp-adapter)
     - 4.3.1 [Create a new provider in Ionic app for calling MFP adapter API](#431-create-a-new-provider-in-ionic-app-for-calling-mfp-adapter-api)
     - 4.3.2 [Modify home page to display the list of problems reported](#432-modify-home-page-to-display-the-list-of-problems-reported)
+    - 4.3.3 [Test updated home page](#433-test-updated-home-page)
 5. [Use IBM Cloud Object Storage for storing and retrieving images](#step-5-use-ibm-cloud-object-storage-for-storing-and-retrieving-images)
   - 5.1 [Create IBM Cloud Object Storage service and API key](#51-create-ibm-cloud-object-storage-service-and-api-key)
     - 5.1.1 [Create IBM Cloud Object Storage service and populate it with sample data](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
@@ -1180,6 +1181,17 @@ export class HomePage {
 &lt;/ion-content&gt;
 </code></pre>
 
+#### 4.3.3 Test updated home page
+
+Build/Run the Ionic application on Android phone as below:
+
+```
+$ ionic cordova build android
+$ ionic cordova run android
+```
+
+After app launch and successful login, the home page should display the sample list of problems created in [Step 4.1](#41-create-cloudant-database-and-populate-it-with-sample-data). As of now, the image thumbnails would be blank.
+
 ## Step 5. Use IBM Cloud Object Storage for storing and retrieving images
 
 ### 5.1 Create IBM Cloud Object Storage service and API key
@@ -1253,7 +1265,7 @@ Add [ibm-cos-java-sdk](https://github.com/IBM/ibm-cos-sdk-java) dependency to `M
 &lt;/project&gt;
 </code></pre>
 
-Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as below.
+Update `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` as shown in code snippet below.
   - Specify `defaultValue` for `bucketName` from [Step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data)
   - Specify `defaultValue` for `serviceId` and `apiKey` from [Step 5.1.2](#512-create-service-id-and-api-key-for-accessing-objects).
   - While creating the bucket in [Step 5.1.1](#511-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
