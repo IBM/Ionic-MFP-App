@@ -29,6 +29,7 @@ import com.ibm.mfp.adapter.api.ConfigurationAPI;
 import com.ibm.mfp.adapter.api.MFPJAXRSApplication;
 import com.ibm.oauth.BasicIBMOAuthCredentials;
 import com.ibm.oauth.IBMOAuthCredentials;
+import com.ibm.oauth.OAuthServiceException;
 
 public class CloudantJavaApplication extends MFPJAXRSApplication{
 
@@ -60,13 +61,21 @@ public class CloudantJavaApplication extends MFPJAXRSApplication{
 
 		String endpointURL = configurationAPI.getPropertyValue("endpointURL");
 		String bucketName = configurationAPI.getPropertyValue("bucketName");
-		String serviceID = configurationAPI.getPropertyValue("serviceID");
+		String serviceId = configurationAPI.getPropertyValue("serviceId");
 		String apiKey = configurationAPI.getPropertyValue("apiKey");
 
-		SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.bluemix.net/oidc/token";
-		oAuthCreds = new BasicIBMOAuthCredentials(apiKey, serviceID);
-		oAuthCreds.getTokenManager().getToken(); // initialize fetching and caching of token
-		this.baseUrl = endpointURL + "/" + bucketName + "/";
+		if (!endpointURL.isEmpty() && !bucketName.isEmpty() && !serviceId.isEmpty() && !apiKey.isEmpty()) {
+			try {
+				SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.bluemix.net/oidc/token";
+				oAuthCreds = new BasicIBMOAuthCredentials(apiKey, serviceId);
+				// initialize fetching and caching of token
+				oAuthCreds.getTokenManager().getToken();
+				this.baseUrl = endpointURL + "/" + bucketName + "/";
+			} catch (OAuthServiceException e) {
+				throw new Exception("Unable to connect to Object Storage, check the configuration.");
+			}
+		}
+
 		logger.info("Adapter initialized!");
 	}
 
