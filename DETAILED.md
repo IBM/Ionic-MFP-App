@@ -23,6 +23,7 @@
   - 3.6 [Create a new provider in Ionic mobile app to assist in handling MFP security challenges](#36-create-a-new-provider-in-ionic-mobile-app-to-assist-in-handling-mfp-security-challenges)
   - 3.7 [Initialize AuthHandler after MobileFirst SDK is loaded](#37-initialize-authhandler-after-mobilefirst-sdk-is-loaded)
   - 3.8 [Update Login controller to use MFP based user authentication](#38-update-login-controller-to-use-mfp-based-user-authentication)
+  - 3.9 [Test pre-emptive login](#39-test-pre-emptive-login)
 4. [Fetch data from Cloudant database via MFP Adapter](#step-4-fetch-data-from-cloudant-database-via-mfp-adapter)
   - 4.1 [Create Cloudant database and populate it with sample data](#41-create-cloudant-database-and-populate-it-with-sample-data)
   - 4.2 [Create MFP adapter to query Cloudant data](#42-create-mfp-adapter-to-query-cloudant-data)
@@ -470,6 +471,8 @@ In the Mobile Foundation service overview page that gets shown, click on `Servic
 
 * Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running following command in console.
 
+  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
+
 ```
 $ mfpdev server add
 ? Enter the name of the new server profile: Cloud-MFP
@@ -491,8 +494,6 @@ Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Defau
 --------------------------------------------------------------------------------------
 ```
 
-  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
-
 ### 3.3 Add MFP Security Adapter
 
 https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/authentication-and-security/user-authentication/security-check/
@@ -504,7 +505,8 @@ $ mkdir MobileFoundationAdapters
 $ cd MobileFoundationAdapters
 ```
 
-Download UserLogin adapter from https://github.com/MobileFirst-Platform-Developer-Center/SecurityCheckAdapters/tree/release80/UserLogin
+Download UserLogin adapter from https://github.com/MobileFirst-Platform-Developer-Center/SecurityCheckAdapters/tree/release80/UserLogin. This is a simple security adapter that returns success when password equals username.
+
 ```
 $ curl -LOk https://github.com/MobileFirst-Platform-Developer-Center/SecurityCheckAdapters/archive/release80.zip
 $ unzip release80.zip
@@ -837,6 +839,17 @@ $ ionic cordova plugin add cordova-plugin-statusbar
 > cordova plugin add cordova-plugin-statusbar --save
 Installing "cordova-plugin-statusbar" for android
 ```
+
+### 3.9 Test pre-emptive login
+
+Build/Run the Ionic application on Android phone as below:
+
+```
+$ ionic cordova build android
+$ ionic cordova run android
+```
+
+Upon app launch, the login page should get displayed as before in [Step 3.1.4](#314-buildrun-the-ionic-application-on-android-phone). Test by specifying any matching username and password (say `Username: Test` and `Password: Test`). Login should succeed and the sample home page should get shown as in [Step 2.4.4](#244-buildrun-the-ionic-application-on-android-phone).
 
 ## Step 4. Fetch data from Cloudant database via MFP Adapter
 
