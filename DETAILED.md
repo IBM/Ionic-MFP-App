@@ -268,6 +268,14 @@ $ ionic cordova resources
 
 For running `ionic cordova resources` command, you would need to sign up on [ionicframework.com](https://ionicframework.com/) and specify the credentials on the command line.
 
+Optionally, install the StatusBar plugin as below:
+
+```
+$ ionic cordova plugin add cordova-plugin-statusbar
+> cordova plugin add cordova-plugin-statusbar --save
+Installing "cordova-plugin-statusbar" for android
+```
+
 ### 2.6 Fix issue where you see a blank screen after your splash screen disappears
 
 Reference: http://www.codingandclimbing.co.uk/blog/ionic-2-fix-splash-screen-white-screen-issue
@@ -831,14 +839,6 @@ export class LoginPage {
 
 }
 </code></pre>
-
-
-Install the StatusBar plugin
-```
-$ ionic cordova plugin add cordova-plugin-statusbar
-> cordova plugin add cordova-plugin-statusbar --save
-Installing "cordova-plugin-statusbar" for android
-```
 
 ### 3.9 Test pre-emptive login
 
