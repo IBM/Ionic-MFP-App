@@ -191,7 +191,7 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 
 #### 2.4.1 Install Android Studio and Android SDK platform
 * Download and install Android Studio from https://developer.android.com/studio/index.html
-* Install Android SDK Platform 23 (or higher)
+* Install Android SDK Platform 23 (or higher) as below:
   - Launch Android Studio.
   - Click on `Configure` -> `SDK Manager`.
   - Make a note of the Android SDK Location.
@@ -226,11 +226,13 @@ Available platforms:
   webos ~3.7.0
 ```
 
-[Cordova Android 6.3.0](https://cordova.apache.org/announcements/2017/09/27/android-release.html) targets the latest Android API level of API 26. If you want to [target API 23 instead](https://stackoverflow.com/questions/35573485/ionic-add-platform-android-with-custom-android-target), then edit `IonicMobileApp/config.xml` and add preference for `android-targetSdkVersion` as shown below.
+[Cordova Android 6.3.0](https://cordova.apache.org/announcements/2017/09/27/android-release.html) targets Android API level of API 26. Instead of that, if you want to [target API 23 or a different one](https://stackoverflow.com/questions/35573485/ionic-add-platform-android-with-custom-android-target), then edit `IonicMobileApp/config.xml` and add preference for `android-targetSdkVersion` as shown below.
 ```
   <preference name="android-minSdkVersion" value="16" />
   <preference name="android-targetSdkVersion" value="23" />
 ```
+
+Note: Please make sure you install the *Android SDK Platform* for the API level that you use as per instructions in [Step 2.4.1](#241-install-android-studio-and-android-sdk-platform).
 
 #### 2.4.4 Build/Run the Ionic application on Android phone
 
@@ -246,8 +248,9 @@ $ ionic cordova build android
 $ ionic cordova run android
 ```
 
-<img src="doc/source/images/SampleIonicAppRunningOnAndroid.png" alt="Snapshot of app running on Android device" width="240" border="10" />
-
+<table><tr><td>
+  <img src="doc/source/images/SampleIonicAppRunningOnAndroid.png" alt="Snapshot of app running on Android device" width="240" border="10" />
+</td></tr></table>
 
 ### 2.5 Update App Logo and Splash
 
