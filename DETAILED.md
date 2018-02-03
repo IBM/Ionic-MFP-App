@@ -248,6 +248,8 @@ $ ionic cordova build android
 $ ionic cordova run android
 ```
 
+Upon app launch, the sample page should get displayed as shown below:
+
 <table><tr><td>
   <img src="doc/source/images/SampleIonicAppRunningOnAndroid.png" alt="Snapshot of app running on Android device" width="240" border="10" />
 </td></tr></table>
@@ -269,7 +271,7 @@ For running `ionic cordova resources` command, you would need to sign up on [ion
 
 Reference: http://www.codingandclimbing.co.uk/blog/ionic-2-fix-splash-screen-white-screen-issue
 
-Update `IonicMobileApp/config.xml` as below:
+In `IonicMobileApp/config.xml`, add preferences for `AutoHideSplashScreen` and `FadeSplashScreen` after `SplashScreenDelay` as shown below:
 <pre><code>
 ...
 &lt;widget id=...&gt;
@@ -403,21 +405,21 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home'
 
 @NgModule({
-  <b>declarations: [
+  declarations: [
     MyApp,
     <b>LoginPage,</b>
     HomePage
-  ]</b>,
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
-  <b>entryComponents: [
-    MyApp
+  entryComponents: [
+    MyApp,
     <b>LoginPage,</b>
     HomePage
-  ]</b>,
+  ],
   providers: [
     ...
   ]
