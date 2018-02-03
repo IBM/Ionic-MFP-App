@@ -45,7 +45,7 @@
 7. [Capture image and geolocation and upload to server](#step-7-capture-image-and-geolocation-and-upload-to-server)
 
 ## Step 1. Setup Ionic and MFP CLI
-* Install Node.js by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
+* Install `Node.js` by downloading the setup from https://nodejs.org/en/ (Node.js 8.x or above)
 ```
 $ node --version
 v8.6.0
@@ -58,7 +58,7 @@ $ cordova --version
 7.0.1
 ```
 
-**Note**: If you are on Windows, instead of using sudo, run the above command (and the ones below) in a command prompt opened in administrative mode.
+**Note**: If you are on Windows, instead of using `sudo`, run the above command (and the ones below) in a command prompt opened in administrative mode.
 
 * Install Ionic
 ```
@@ -73,6 +73,11 @@ $ sudo npm install -g mfpdev-cli
 $ mfpdev --version
 8.0.0-2017091111
 ```
+
+  Note: While installing MFP CLI, if you hit an error saying `npm ERR! package.json npm can't find a package.json file in your current directory.`, then it is most likely due to [MFP CLI not being supported in your npm version](https://stackoverflow.com/questions/46168090/ibm-mobile-first-mfpdev-cli-installation-failure). In such a case, downgrade your npm as below, and then install MFP CLI.
+  ```
+  $ sudo npm install -g npm@3.10.10
+  ```
 
 * Install GIT https://git-scm.com/downloads
 ```
@@ -95,9 +100,9 @@ $ java -version
 java version "1.8.0_101"
 ```
 
-* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as Atom on Mac.
+* Install an [IDE for TypeScript](https://www.typescriptlang.org/index.html#download-links) such as [Atom](https://atom.io/) on Mac.
 
-  Install TypeScript plugin for Atom
+  After installing [Atom](https://atom.io/), install TypeScript plugin for Atom as shown below.
 ```
 apm install atom-typescript
 ```
@@ -189,6 +194,7 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
   - Click on `Configure` -> `SDK Manager`.
+  - Make a note of the Android SDK Location.
   - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23` or higher. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
  
 #### 2.4.2 Enable developer options and USB debugging on your Android phone
@@ -232,6 +238,8 @@ Available platforms:
 ```
 $ ionic cordova build android
 ```
+
+  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. `ANDROID_HOME` should be set to the `Android SDK Location` that you noted in [Step 2.4.1](#241-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the [value to be used for setting `JAVA_HOME` on [macOS](http://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
 
 * Run application on Android device
 ```
@@ -892,7 +900,7 @@ MyWardData	UserLogin
 Generate Cloudant API Key
  * In the Cloudant dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key` as shown in the snapshot below.
  * Make a note of the Key and Password generated.
- * The newly added key would get listed under Cloudant users with default permission of `reader` only. Select the checkbox under `_writer` next to the new key to give it write permission as well.
+ * The newly added key would get listed under Cloudant users with default permission of `_reader` only. Select the checkbox under `_writer` next to the new key to give it write permission as well.
 
   <img src="doc/source/images/CloudantGenerateAPIKey.png" alt="Generate Cloudant API Key" width="800" border="10" />
 
