@@ -188,13 +188,13 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 * Download and install Android Studio from https://developer.android.com/studio/index.html
 * Install Android SDK Platform 23 (or higher)
   - Launch Android Studio.
-  - Click on `Configure` -> `SDK Manager`
-  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23`. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
+  - Click on `Configure` -> `SDK Manager`.
+  - Under `SDK Platforms`, select `Android 6.0 (Marshmallow) API Level 23` or higher. Click `Apply` and then click `OK`. This will install Android SDK Platform on your machine.
  
 #### 2.4.2 Enable developer options and USB debugging on your Android phone
 * Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
-  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
-  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
+  - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
+  - Return to Settings list. Select `Developer options` and enable `USB debugging`.
 * If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
 * Connect the Android phone to your development machine by USB cable, and accept `allow` access on your phone.
 
@@ -892,7 +892,7 @@ MyWardData	UserLogin
 Generate Cloudant API Key
  * In the Cloudant dashboard, under `myward` database, click on `Permissions` and then click on `Generate API Key` as shown in the snapshot below.
  * Make a note of the Key and Password generated.
- * The newly added key would get listed under Cloudant users with default permission of reader` only. Select the checkbox under *writer* next to the new key to give it write permission as well.
+ * The newly added key would get listed under Cloudant users with default permission of `reader` only. Select the checkbox under `_writer` next to the new key to give it write permission as well.
 
   <img src="doc/source/images/CloudantGenerateAPIKey.png" alt="Generate Cloudant API Key" width="800" border="10" />
 
