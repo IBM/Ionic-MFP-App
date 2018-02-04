@@ -508,6 +508,8 @@ For running `ionic cordova resources` command, you would need to sign up on [ion
 
 ### 7.8 Build APK for uploading to Google Play Store
 
+Reference: https://ionicframework.com/docs/intro/deploying/
+
 * Add following lines at the end of `IonicMobileApp/platforms/android/proguard-project-mfp.txt`:
 ```
 -dontwarn okhttp3.internal.huc.**
@@ -520,27 +522,58 @@ $ cd ../IonicMobileApp
 $ ionic cordova build android --prod --release
 ```
 
+* Set `ANDROID_HOME` environment variable as per instructions in [Step 7.6](#76-buildrun-the-ionic-application-on-android-phone). On Mac, this is usually:
+```
+export ANDROID_HOME=/Users/<username>/Library/Android/sdk
+```
+
 * Zip align release build as below:
 ```
 $ cd ./platforms/android/build/outputs/apk/
 $ ls
 android-release-unsigned.apk
-$ <Android-Home>/sdk/build-tools/25.0.2/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
+$ $ANDROID_HOME/sdk/build-tools/23.0.3/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
 $ ls 
 android-release-unsigned-aligned.apk	android-release-unsigned.apk
-```
-  where, `<Android-Home>` points to the location of your Android Home directory. On Mac, this is usually `/Users/<username>/Library/Android/`.
+```  
 
 * Create self signing certificate as below:
+
+Make a note of the `Keystore password` that you set. You would need it for signing your APK.
+
 ```
 $ keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+
+Enter keystore password:
+Re-enter new password: 
+What is your first and last name?
+  [Unknown]:  Shiva Kumar H R
+What is the name of your organizational unit?
+  [Unknown]:  ISL
+What is the name of your organization?
+  [Unknown]:  IBM
+What is the name of your City or Locality?
+  [Unknown]:  Bangalore
+What is the name of your State or Province?
+  [Unknown]:  Karnataka
+What is the two-letter country code for this unit?
+  [Unknown]:  IN
+Is CN=Shiva Kumar H R, OU=ISL, O=IBM, L=Bangalore, ST=Karnataka, C=IN correct?
+  [no]:  yes
+
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 10,000 days
+	for: CN=Shiva Kumar H R, OU=ISL, O=IBM, L=Bangalore, ST=Karnataka, C=IN
+Enter key password for <my-alias>
+	(RETURN if same as keystore password):  
+[Storing my-release-key.jks]
+
 $ ls
 android-release-unsigned-aligned.apk	android-release-unsigned.apk		my-release-key.jks
 ```
 
 * Self sign APK as below:
 ```
-$ <Android-Home>/sdk/build-tools/25.0.2/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
+$ $ANDROID_HOME/sdk/build-tools/23.0.3/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
 Keystore password for signer #1: 
 $ ls
 android-release-unsigned-aligned.apk	my-release-key.jks
@@ -552,6 +585,8 @@ $
 
 
 # Troubleshooting
+
+Please see [troubleshooting guide](TROUBLESHOOTING.md) for solutions to some commonly occuring problems.
 
 ### Debugging Android hybrid app using Chrome Developer Tools
 
