@@ -179,3 +179,47 @@ Edit `IonicMobileApp/config.xml` and add/edit the following preference inside th
 ```
   <preference name="loadUrlTimeoutValue" value="60000" />
 ```
+
+5) Problem:
+
+Following warning during app build:
+
+```
+$ ionic cordova build android
+...
+Plugin doesn't support this project's cordova-plugman version. cordova-plugman: 8.0.0, failed version requirement: >=6.1.1 <8
+Skipping 'cordova-plugin-mfp' for android.
+...
+```
+
+If you ignore the above warning, and continue to run the app, then upon clicking `SIGN IN` in `Login` page, you will see following error in [Logs](https://github.com/IBM/Ionic-MFP-App/#debugging-android-hybrid-app-using-chrome-developer-tools):
+```
+vendor.js:1704 ERROR Error: Uncaught (in promise): ReferenceError: WLAuthorizationManager is not defined
+ReferenceError: WLAuthorizationManager is not defined
+    at AuthHandlerProvider.webpackJsonp.41.AuthHandlerProvider.login (main.js:1027)
+    at main.js:1152
+    at t.invoke (polyfills.js:3)
+    at Object.onInvoke (vendor.js:4983)
+    at t.invoke (polyfills.js:3)
+    at r.run (polyfills.js:3)
+    at polyfills.js:3
+    at t.invokeTask (polyfills.js:3)
+    at Object.onInvokeTask (vendor.js:4974)
+    at t.invokeTask (polyfills.js:3)
+```
+
+Solution:
+
+Downgrade your `cordova` version to one that is supported by `cordova-plugin-mfp`.
+```
+$ npm view cordova versions --json
+$ npm install -g cordova@7.0.1
+```
+
+Remove Cordova platform for Android and add it again. Then build and run the app.
+```
+$ ionic cordova platform remove android
+$ ionic cordova platform add android@6.3.0
+$ ionic cordova build android
+$ ionic cordova run android
+```
