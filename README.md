@@ -8,7 +8,7 @@ When you have completed this pattern, you will understand:
 * How to authenticate users (through preemptive login) using MFP security adapter.
 * How to write an MFP adapter that authenticates with Cloud Object Storage service and pass back the Authorization token to the mobile app.
 * Recommended architectural patterns for coding the interaction between mobile app and Cloud Object Storage service.
-* How to use `imgcache.js` in Ionic app for caching images fetched from Cloud Object Storage service.
+* How to use [`imgcache.js`](https://github.com/chrisben/imgcache.js/) in Ionic app for caching images fetched from Cloud Object Storage service.
 * How to show Google Maps in Ionic app as well as capture user’s geo-location & image from camera.
 * How to upload the captured image from mobile app to Cloud Object Storage service.
 * How to fetch data from Cloudant service to mobile app via MFP adapter as well as post new data to Cloudant.
@@ -598,9 +598,7 @@ Please see [troubleshooting guide](TROUBLESHOOTING.md) for solutions to some com
 
 
 # References
-* MobileFirst Lab Videos:
-  - [MobileFirst Lab 2.62. Advanced Messenger. Adding MFP SDK and registering app on server](https://www.youtube.com/watch?v=I_dQxp-9WfY)
-  - [MobileFirst Lab 2.63. Advanced Messenger. Using Java and JavaScript adapters to perform backend calls](https://www.youtube.com/watch?v=5YfqKFETZfU)
+* [MobileFirst Foundation 8.0 Developer Labs](http://mobilefirstplatform.ibmcloud.com/labs/developers/8.0/intro/)
 * Ionic 2 quick tutorials:
   - [10 Minutes with Ionic 2: Hello World](http://blog.ionic.io/10-minutes-with-ionic-2-hello-world/)
   - [10 Minutes with Ionic 2: Adding Pages and Navigation](http://blog.ionic.io/10-minutes-with-ionic-2-adding-pages-and-navigation/)
@@ -608,9 +606,7 @@ Please see [troubleshooting guide](TROUBLESHOOTING.md) for solutions to some com
   - [10 Minutes with Ionic 2: Using the Camera with Ionic Native](http://blog.ionic.io/10-minutes-with-ionic-2-using-the-camera-with-ionic-native/)
 * [What Does Ionic 3 Mean for Ionic 2?](https://www.joshmorony.com/what-does-ionic-3-mean-for-ionic-2/)
 * [Dealing with Asynchronous Code in Ionic](https://www.joshmorony.com/dealing-with-asynchronous-code-in-ionic/)
-* [Offline Syncing in Ionic 2 with PouchDB & CouchDB](https://www.joshmorony.com/offline-syncing-in-ionic-2-with-pouchdb-couchdb/)
 * [Understanding Zones and Change Detection in Ionic 2 & Angular 2](https://www.joshmorony.com/understanding-zones-and-change-detection-in-ionic-2-angular-2/)
-  - [Ionic UI not updating after change to model](https://ionicallyspeaking.com/2017/01/17/ionic-2-ui-not-updating-after-change-to-model/)
 * [Basic Security for Ionic & Cordova Applications](https://www.joshmorony.com/basic-security-for-ionic-cordova-applications/)
 
 # License
