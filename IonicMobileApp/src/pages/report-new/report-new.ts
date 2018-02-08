@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
@@ -22,6 +22,7 @@ import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
 import { AuthHandlerProvider } from '../../providers/auth-handler/auth-handler';
 import { LoginPage } from '../login/login';
+import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 
 // @IonicPage()
 @Component({
@@ -40,7 +41,7 @@ export class ReportNewPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private camera : Camera, private alertCtrl: AlertController, private imageResizer: ImageResizer,
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
-    private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider) {
+    private myWardDataProvider: MyWardDataProvider, private authHandler: AuthHandlerProvider, private nativeGeocoder: NativeGeocoder, public zone: NgZone ) {
     console.log('--> ReportNewPage constructor() called');
   }
 
@@ -68,6 +69,39 @@ export class ReportNewPage {
     );
   }
 
+  autoFillAddress() {
+    let lat = this.location.lat;
+    let lng = this.location.lng;
+    this.nativeGeocoder.reverseGeocode(lat , lng)
+       .then((result: NativeGeocoderReverseResult) => {
+          let str = '';
+          if (result.hasOwnProperty('thoroughfare')) {
+            str += result.thoroughfare + ", ";
+          }
+          if (result.hasOwnProperty('subLocality')) {
+            str += result.subLocality + ", ";
+          }
+          if (result.hasOwnProperty('locality')) {
+            str += result.locality +  ", ";
+          }
+          if (result.hasOwnProperty('administrativeArea')) {
+            str += result.administrativeArea + ", ";
+          }
+          if (result.hasOwnProperty('countryName')) {
+            str += result.countryName + ".";
+          }
+          // https://blog.thoughtram.io/angular/2016/02/01/zones-in-angular-2.html
+          this.zone.run(() => {
+            this.address = str;
+          });
+          console.log(str);
+          console.log(JSON.stringify(result));
+      })
+       .catch((error: any) => {
+          console.log(error)
+        });
+  }
+
   createMap() {
     // TODO need to store/retrieve prevLoc in app preferences/local storage
     let prevLoc = new LatLng(13.0768342, 77.7886087);
@@ -86,6 +120,7 @@ export class ReportNewPage {
       this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe( event => {
         this.location = event[0];
         console.log('--> ReportNewPage: User clicked location = ' + event[0]);
+        this.autoFillAddress();
         this.map.clear();
         this.map.addMarker({
           title: 'Selected location',
@@ -107,6 +142,7 @@ export class ReportNewPage {
     // Get the location of you
     this.map.getMyLocation().then((location: MyLocation) => {
       this.location = location.latLng;
+      this.autoFillAddress();
       console.log('--> ReportNewPage: Device Location = ' + JSON.stringify(location, null, 2));
       // Move the map camera to the location with animation
       this.map.animateCamera({

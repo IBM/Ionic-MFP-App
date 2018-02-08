@@ -136,5 +136,6 @@
         <variable name="API_KEY_FOR_ANDROID" value="" />
     </plugin>
     <plugin name="cordova-plugin-camera" spec="^3.0.0" />
+    <plugin name="cordova-plugin-nativegeocoder" spec="^2.0.5" />
     <plugin name="info.protonet.imageresizer" spec="^0.1.1" />
 </widget>
