@@ -598,6 +598,7 @@ Please see [troubleshooting guide](TROUBLESHOOTING.md) for solutions to some com
 
 
 # References
+* [Speeding up development of your enterprise mobile apps using open source technologies and cloud services](https://developer.ibm.com/code/2018/02/08/speeding-development-enterprise-mobile-apps-using-open-source-technologies-cloud-services/)
 * [MobileFirst Foundation 8.0 Developer Labs](http://mobilefirstplatform.ibmcloud.com/labs/developers/8.0/intro/)
 * Ionic 2 quick tutorials:
   - [10 Minutes with Ionic 2: Hello World](http://blog.ionic.io/10-minutes-with-ionic-2-hello-world/)
