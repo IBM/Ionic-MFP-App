@@ -210,7 +210,7 @@ ReferenceError: WLAuthorizationManager is not defined
 
 Solution:
 
-Downgrade your `cordova` version to one that is supported by `cordova-plugin-mfp`.
+Downgrade your `cordova` version to one that is [supported by `cordova-plugin-mfp`](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/application-development/sdk/cordova/#support-levels).
 ```
 $ npm view cordova versions --json
 $ npm install -g cordova@7.0.1
