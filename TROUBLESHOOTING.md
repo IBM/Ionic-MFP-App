@@ -223,3 +223,18 @@ $ ionic cordova platform add android@6.3.0
 $ ionic cordova build android
 $ ionic cordova run android
 ```
+
+6) Problem:
+
+Following runtime error when making a call to MobileFoundation adapter
+```
+Unhandled Promise rejection: Object {status: 400, statusText: "Bad Request", 
+responseText: "{"errorCode":"invalid_request"}", responseJSON: Object, responseHeaders: Object…} ;
+```
+
+This is due to compatibility issues between the client SDKs and the MobileFoundation Server.
+
+Reference: https://stackoverflow.com/questions/37806871/400-bad-request-in-wlauthorizationmanager-obtainaccesstoken-mfp8
+
+Solution:
+Make sure you are using latest version of cordova-plugin-mfp and recreate your MobileFoundation service instance if needed.
