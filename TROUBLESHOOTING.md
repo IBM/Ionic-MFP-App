@@ -238,3 +238,58 @@ Reference: https://stackoverflow.com/questions/37806871/400-bad-request-in-wlaut
 
 Solution:
 Make sure you are using latest version of cordova-plugin-mfp and recreate your MobileFoundation service instance if needed.
+
+7) Problem:
+
+In the `Report New Problem` page, when you click on `GET MY LOCATION` the app crashes with the following errors reported in [logs](#capturing-logs-from-production-version-of-the-app-on-android).
+```
+Rejecting re-init on previously-failed class java.lang.Class<android.support.v4.app.FragmentActivity>
+Shutting down VM
+ FATAL EXCEPTION: main
+ Process: org.mycity.myward, PID: 19050
+ java.lang.NoClassDefFoundError: android.support.v4.app.FragmentActivity
+ 	at com.google.android.gms.common.api.internal.zzce.zzajj(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.LifecycleCallback.zzb(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.LifecycleCallback.zzn(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzah.zza(Unknown Source)
+ 	at com.google.android.gms.common.api.GoogleApi.<init>(Unknown Source)
+ 	at com.google.android.gms.common.api.GoogleApi.<init>(Unknown Source)
+ 	at com.google.android.gms.location.FusedLocationProviderClient.<init>(Unknown Source)
+ 	at com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Unknown Source)
+ 	at plugin.google.maps.PluginLocationService._requestLocationUpdate(PluginLocationService.java:451)
+ 	at plugin.google.maps.PluginLocationService.requestLocation(PluginLocationService.java:279)
+ 	at plugin.google.maps.PluginLocationService.access$300(PluginLocationService.java:39)
+ 	at plugin.google.maps.PluginLocationService$3.onConnected(PluginLocationService.java:234)
+ 	at com.google.android.gms.common.internal.zzae.zzk(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzba.zzj(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzao.zzaie(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzao.onConnected(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzbi.onConnected(Unknown Source)
+ 	at com.google.android.gms.common.api.internal.zzt.onConnected(Unknown Source)
+ 	at com.google.android.gms.common.internal.zzac.onConnected(Unknown Source)
+ 	at com.google.android.gms.common.internal.zzn.zzakr(Unknown Source)
+ 	at com.google.android.gms.common.internal.zze.zzw(Unknown Source)
+ 	at com.google.android.gms.common.internal.zzi.zzaks(Unknown Source)
+ 	at com.google.android.gms.common.internal.zzh.handleMessage(Unknown Source)
+ 	at android.os.Handler.dispatchMessage(Handler.java:102)
+ 	at android.os.Looper.loop(Looper.java:148)
+ 	at android.app.ActivityThread.main(ActivityThread.java:7402)
+ 	at java.lang.reflect.Method.invoke(Native Method)
+ 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1230)
+ 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1120)
+```
+
+Solution:
+This is usually due to an incompatible configuration/version of Cordova plugin for GoogleMaps. Remove the plugin and add it again to resolve this problem.
+
+```
+$ cordova plugin remove cordova-plugin-googlemaps
+$ cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID=“your-api-key-for-android”
+```
+
+Remove Android platform and add it again to pickup the changes.
+```
+$ ionic cordova platform remove android
+$ ionic cordova platform add android@6.3.0
+$ ionic cordova run android
+```
