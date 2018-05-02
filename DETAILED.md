@@ -1979,8 +1979,8 @@ export class ReportNewPage {
       quality: 90, // picture quality
       destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true
+      correctOrientation: true,
+      saveToPhotoAlbum: true
     }
     this.camera.getPicture(options) .then((imageData) => {
         // this.capturedImage = "data:image/jpeg;base64," + imageData;
