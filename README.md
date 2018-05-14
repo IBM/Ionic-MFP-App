@@ -326,7 +326,7 @@ Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml
 
 ### 6.1 Build and Deploy the MFP adapters
 
-Build and deploy UserLogin Adapter as below.
+Build and deploy `UserLogin` adapter as below.
 
 ```
 $ cd MobileFoundationAdapters/
@@ -341,7 +341,7 @@ $ mfpdev adapter deploy
 $ mfpdev adapter deploy Cloud-MFP
 ```
 
-Build and deploy MyWardData Adapter as below.
+Build and deploy `MyWardData` adapter as below.
 
 ```
 $ cd ../MyWardData/
