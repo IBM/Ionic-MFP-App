@@ -234,17 +234,23 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
 ## Step 4. Create Mobile Foundation service and configure MFP CLI
 
-In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
+* In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
 
   <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
 
-In the Mobile Foundation service overview page that gets shown, click on `Service credentials`. Expand `View credentials` and make a note of the `url`, `user` and `password` as shown below.
+  Note: If *Mobile Foundation* service is not available with your current account type, then you can either:
+  - Upgrade your account, and avail the *Mobile Foundation* service's free Developer plan which allows the use of the service free for up to ten daily client devices for development and testing activities, or
+  - Start MobileFirst Server instance locally by downloading the [Developer Kit](https://mobilefirstplatform.ibmcloud.com/downloads/#developer-kit) and [installing](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/installation-configuration/development/mobilefirst/installation-guide/) it on your workstation.
+
+* In the Mobile Foundation service overview page that gets shown, click on `Service credentials`. Expand `View credentials` and make a note of the `url`, `user` and `password` as shown below.
 
   <img src="doc/source/images/MobileFoundationServiceCredentials.png" alt="IBM Mobile Foundation service credentials" width="800" border="10" />
 
+  Note: If you are using the MobileFirst Developer Kit, the default url would be http://localhost:9080 and username/password would be admin/admin .
+
 * Back on your local machine, configure MFP CLI to work with Mobile Foundation server by running the following command in console.
 
-  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port).
+  Note: For `Enter the fully qualified URL of this server:`, enter the `url` mentioned in credentials followed by `:443` (the default HTTPS port). If you are using the MobileFirst Developer Kit, then enter http://localhost:9080 .
 
 ```
 $ mfpdev server add
