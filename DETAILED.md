@@ -1733,6 +1733,7 @@ Upon clicking of on any of the problems reported on the home page, a detail page
 * Capture photo using Cordova Camera plugin https://ionicframework.com/docs/native/camera/
 * Create thumbnail image using Cordova plugin For Image Resize https://ionicframework.com/docs/native/image-resizer/
 * Upload image to Object Storage using Cordova File Transfer plugin https://ionicframework.com/docs/native/file-transfer/
+* Reverse geocode latitude and longitude into an address using Cordova NativeGeocoder plugin https://ionicframework.com/docs/native/native-geocoder/
 
 ```
 $ ionic cordova plugin add cordova-plugin-camera
@@ -1743,6 +1744,9 @@ $ npm install --save @ionic-native/image-resizer
 
 $ ionic cordova plugin add cordova-plugin-file-transfer
 $ npm install --save @ionic-native/file-transfer
+
+$ ionic cordova plugin add cordova-plugin-nativegeocoder
+$ npm install --save @ionic-native/native-geocoder
 ```
 
 Generate a new page for reporting new problem.
@@ -1795,6 +1799,7 @@ Update `IonicMobileApp/src/app/app.module.ts` as below.
 <b>import { Camera } from '@ionic-native/camera';
 import { ImageResizer } from '@ionic-native/image-resizer';
 import { FileTransfer } from '@ionic-native/file-transfer';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { ReportNewPage } from '../pages/report-new/report-new';</b>
 @NgModule({
   declarations: [
@@ -1826,7 +1831,8 @@ import { ReportNewPage } from '../pages/report-new/report-new';</b>
     GoogleMaps<b>,
     Camera,
     ImageResizer,
-    FileTransfer</b>
+    FileTransfer,
+    NativeGeocoder,</b>
   ]
 })
 export class AppModule {}
@@ -1938,10 +1944,11 @@ Update `IonicMobileApp/src/pages/report-new/report-new.html` as below.
 Update `IonicMobileApp/src/pages/report-new/report-new.ts` as below.
 
 <pre><code>
-import { Component } from '@angular/core';
+import { Component<b>, NgZone</b> } from '@angular/core';
 import { NavController, NavParams<b>, AlertController, LoadingController, ToastController</b> } from 'ionic-angular';
 <b>import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
@@ -1961,9 +1968,9 @@ export class ReportNewPage {
   location: LatLng = null;
   loader: any;</b>
 
-  constructor(public navCtrl: NavController, public navParams: NavParams<b>,
+  constructor(public navCtrl: NavController, public navParams: NavParams<b>, public zone: NgZone,
     private camera: Camera, private alertCtrl: AlertController, private imageResizer: ImageResizer,
-    private loadingCtrl: LoadingController, private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController, private toastCtrl: ToastController, private nativeGeocoder: NativeGeocoder,
     private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider</b>) {
     console.log(<b>'--> ReportNewPage constructor() called'</b>);
   }
@@ -2014,6 +2021,7 @@ export class ReportNewPage {
           title: 'Selected location',
           position: event[0]
         }).then((marker: Marker) => {
+          this.autoFillAddress();
           marker.showInfoWindow();
         });
       });
@@ -2044,12 +2052,45 @@ export class ReportNewPage {
           position: location.latLng,
           animation: 'BOUNCE'
         }).then((marker: Marker) => {
+          this.autoFillAddress();
           marker.showInfoWindow();
         });
       })
     }).catch(err => {
       this.showAlert('Try again', err.error_message);
       console.log(err);
+    });
+  }
+
+  autoFillAddress() {
+    let lat = this.location.lat;
+    let lng = this.location.lng;
+    this.nativeGeocoder.reverseGeocode(lat , lng).then((result: NativeGeocoderReverseResult) => {
+      console.log('--> ReportNewPage: Result of reverseGeocode(' + lat + ', ' + lng + ') = ' + JSON.stringify(result));
+      let address = result[0];
+      let str = '';
+      if (address.subLocality) {
+        str += address.subLocality + ", ";
+      }
+      if (address.locality) {
+        str += address.locality +  ", ";
+      }
+      if (address.subAdministrativeArea) {
+        str += address.subAdministrativeArea + ", ";
+      }
+      if (address.administrativeArea) {
+        str += address.administrativeArea + ", ";
+      }
+      if (address.countryName) {
+        str += address.countryName + ".";
+      }
+      // https://blog.thoughtram.io/angular/2016/02/01/zones-in-angular-2.html
+      this.zone.run(() => {
+        this.address = str;
+      });
+      console.log('--> ReportNewPage: Reverse geocoded address = ' + str);
+    }) .catch((error: any) => {
+      console.log(error)
     });
   }
 
