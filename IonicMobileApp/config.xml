@@ -21,7 +21,7 @@
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="FadeSplashScreen" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="android-targetSdkVersion" value="23" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -83,7 +83,7 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <mfp:android>
-        <mfp:sdkChecksum>3131501994</mfp:sdkChecksum>
+        <mfp:sdkChecksum>4189346558</mfp:sdkChecksum>
         <mfp:appChecksum>0</mfp:appChecksum>
         <mfp:security>
             <mfp:testWebResourcesChecksum enabled="false" ignoreFileExtensions="png, jpg, jpeg, gif, mp4, mp3" />
@@ -117,25 +117,27 @@
         </mfp:windows10>
         <mfp:appChecksum>0</mfp:appChecksum>
     </mfp:windows>
-    <mfp:platformVersion>8.0.0.00-20171122-043458</mfp:platformVersion>
+    <mfp:platformVersion>8.0.0.00-20180504-092633</mfp:platformVersion>
     <mfp:clientCustomInit enabled="false" />
     <mfp:server runtime="mfp" url="https://mobilefoundation-75-c5-server.mybluemix.net:443" />
     <mfp:directUpdateAuthenticityPublicKey />
     <mfp:languagePreferences>en</mfp:languagePreferences>
-    <engine name="android" spec="^6.3.0" />
-    <plugin name="cordova-plugin-device" spec="^1.1.4" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
-    <plugin name="cordova-plugin-mfp" spec="^8.0.2017112205" />
-    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.3.0" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
+    <plugin name="cordova-plugin-device" spec="^1.1.7" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^1.2.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="cordova-plugin-mfp" spec="^8.0.2018050404" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
     <plugin name="cordova-plugin-file" spec="^5.0.0" />
-    <plugin name="cordova-plugin-file-transfer" spec="^1.7.0" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.3.3">
         <variable name="API_KEY_FOR_ANDROID" value="" />
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.1.0" />
     </plugin>
     <plugin name="cordova-plugin-camera" spec="^3.0.0" />
-    <plugin name="cordova-plugin-nativegeocoder" spec="^2.0.5" />
     <plugin name="info.protonet.imageresizer" spec="^0.1.1" />
+    <plugin name="cordova-plugin-nativegeocoder" spec="^2.0.5" />
+    <engine name="android" spec="~6.3.0" />
 </widget>
