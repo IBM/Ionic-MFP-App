@@ -39,7 +39,7 @@
     "cordova-plugin-googlemaps": "^2.3.3",
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-mfp": "^8.0.2018050404",
-    "cordova-plugin-nativegeocoder": "^2.0.5",
+    "cordova-plugin-nativegeocoder": "^3.1.1",
     "cordova-plugin-okhttp": "^2.0.0",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-statusbar": "^2.4.2",

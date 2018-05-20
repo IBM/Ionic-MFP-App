@@ -135,9 +135,10 @@
         <variable name="API_KEY_FOR_ANDROID" value="" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.1.0" />
+        <variable name="API_KEY_FOR_IOS" value="(API_KEY_FOR_IOS)" />
     </plugin>
     <plugin name="cordova-plugin-camera" spec="^3.0.0" />
     <plugin name="info.protonet.imageresizer" spec="^0.1.1" />
-    <plugin name="cordova-plugin-nativegeocoder" spec="^2.0.5" />
     <engine name="android" spec="~6.3.0" />
+    <plugin name="cordova-plugin-nativegeocoder" spec="^3.1.1" />
 </widget>
