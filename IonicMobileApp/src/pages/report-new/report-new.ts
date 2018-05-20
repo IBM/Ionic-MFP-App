@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, Marker, LatLng, MyLocation } from '@ionic-native/google-maps';
+import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
 
 import { MyWardDataProvider } from '../../providers/my-ward-data/my-ward-data';
@@ -37,10 +38,10 @@ export class ReportNewPage {
   location: LatLng = null;
   loader: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public zone: NgZone,
     private camera : Camera, private alertCtrl: AlertController, private imageResizer: ImageResizer,
-    private loadingCtrl: LoadingController, private toastCtrl: ToastController,
-    private myWardDataProvider: MyWardDataProvider, private authHandler:AuthHandlerProvider) {
+    private loadingCtrl: LoadingController, private toastCtrl: ToastController, private nativeGeocoder: NativeGeocoder,
+    private myWardDataProvider: MyWardDataProvider, private authHandler: AuthHandlerProvider) {
     console.log('--> ReportNewPage constructor() called');
   }
 
@@ -91,6 +92,7 @@ export class ReportNewPage {
           title: 'Selected location',
           position: event[0]
         }).then((marker: Marker) => {
+          this.autoFillAddress();
           marker.showInfoWindow();
         });
       });
@@ -121,12 +123,45 @@ export class ReportNewPage {
           position: location.latLng,
           animation: 'BOUNCE'
         }).then((marker: Marker) => {
+          this.autoFillAddress();
           marker.showInfoWindow();
         });
       })
     }).catch(err => {
       this.showAlert('Try again', err.error_message);
       console.log(err);
+    });
+  }
+
+  autoFillAddress() {
+    let lat = this.location.lat;
+    let lng = this.location.lng;
+    this.nativeGeocoder.reverseGeocode(lat , lng).then((result: NativeGeocoderReverseResult) => {
+      console.log('--> ReportNewPage: Result of reverseGeocode(' + lat + ', ' + lng + ') = ' + JSON.stringify(result));
+      let address = result[0];
+      let str = '';
+      if (address.subLocality) {
+        str += address.subLocality + ", ";
+      }
+      if (address.locality) {
+        str += address.locality +  ", ";
+      }
+      if (address.subAdministrativeArea) {
+        str += address.subAdministrativeArea + ", ";
+      }
+      if (address.administrativeArea) {
+        str += address.administrativeArea + ", ";
+      }
+      if (address.countryName) {
+        str += address.countryName + ".";
+      }
+      // https://blog.thoughtram.io/angular/2016/02/01/zones-in-angular-2.html
+      this.zone.run(() => {
+        this.address = str;
+      });
+      console.log('--> ReportNewPage: Reverse geocoded address = ' + str);
+    }) .catch((error: any) => {
+      console.log(error)
     });
   }
 
