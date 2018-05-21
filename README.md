@@ -538,7 +538,7 @@ export ANDROID_HOME=/Users/<username>/Library/Android/sdk
 $ cd ./platforms/android/build/outputs/apk/
 $ ls
 android-release-unsigned.apk
-$ $ANDROID_HOME/sdk/build-tools/23.0.3/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
+$ $ANDROID_HOME/build-tools/23.0.3/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
 $ ls 
 android-release-unsigned-aligned.apk	android-release-unsigned.apk
 ```  
@@ -579,7 +579,7 @@ android-release-unsigned-aligned.apk	android-release-unsigned.apk		my-release-ke
 
 * Self sign APK as below:
 ```
-$ $ANDROID_HOME/sdk/build-tools/23.0.3/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
+$ $ANDROID_HOME/build-tools/23.0.3/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
 Keystore password for signer #1: 
 $ ls
 android-release-unsigned-aligned.apk	my-release-key.jks
