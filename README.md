@@ -431,8 +431,10 @@ https://developers.google.com/maps/documentation/ios-sdk/get-api-key.
 
 ```
 $ cd ../../IonicMobileApp/
-$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your_API_key_for_using_GoogleMaps_Android_API>" --variable API_KEY_FOR_IOS="<Your_API_key_for_using_GoogleMaps_SDK_for_iOS>"
+$ ionic cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<Your_API_key_for_using_GoogleMaps_Android_API>" --variable API_KEY_FOR_IOS="<Your_API_key_for_using_GoogleMaps_SDK_for_iOS>" PLAY_SERVICES_VERSION=15.0.1
 ```
+
+Note: Make sure you specify the latest PLAY_SERVICES_VERSION in the command above.
 
 ### 7.4 Enable Android platform for Ionic application
 
