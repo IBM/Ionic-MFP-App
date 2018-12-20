@@ -83,16 +83,18 @@ v8.6.0
 
 * Install Cordova
 ```
-$ sudo npm install -g cordova
+$ sudo npm install -g cordova@7.0.1
 $ cordova --version
 7.0.1
 ```
 
 **Note**: If you are on Windows, instead of using `sudo`, run the above command (and the ones below) in a command prompt opened in administrative mode.
 
+> Note: Please refer MFP documentation for compatible versions of Cordova - https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/application-development/sdk/cordova/
+
 * Install Ionic
 ```
-$ sudo npm install -g ionic
+$ sudo npm install -g ionic@3.19.0
 $ ionic --version
 3.19.0
 ```
