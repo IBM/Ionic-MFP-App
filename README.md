@@ -34,15 +34,15 @@ and returns it to the mobile app.
 13. Other users who click on refresh button on the home page (and those who log in afresh) are shown the updated list of problem reports.
 
 ## Included Components
-* [Cloudant NoSQL DB](https://console.ng.bluemix.net/catalog/services/cloudant-nosql-db): A fully managed data layer designed for modern web and mobile applications that leverages a flexible JSON schema.
-* [Cloud Object Storage](https://console.bluemix.net/catalog/infrastructure/cloud-object-storage): A highly scalable cloud storage service, designed for high durability, resiliency and security.
-* [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation): A scalable mobile access gateway powered by the market-leading IBM Mobile Foundation Technology. The service offers a comprehensive set of mobile backend capabilities such as, App life cycle, Push, Analytics, Feature Toggle, Security and Authentication and offline synch. 
+* [Cloudant NoSQL DB](https://cloud.ibm.com/catalog/services/cloudant): A fully managed data layer designed for modern web and mobile applications that leverages a flexible JSON schema.
+* [Cloud Object Storage](https://cloud.ibm.com/catalog/services/cloud-object-storage): A highly scalable cloud storage service, designed for high durability, resiliency and security.
+* [Mobile Foundation](https://cloud.ibm.com/catalog/services/mobile-foundation): A scalable mobile access gateway powered by the market-leading IBM Mobile Foundation Technology. The service offers a comprehensive set of mobile backend capabilities such as, App life cycle, Push, Analytics, Feature Toggle, Security and Authentication and offline synch.
 
 ## Featured Technologies
 * [Mobile](https://mobilefirstplatform.ibmcloud.com/): Systems of engagement are increasingly using mobile technology as the platform for delivery.
 
 # Watch the Video
-[![](http://img.youtube.com/vi/SjM3aVRvGWQ/0.jpg)](https://youtu.be/SjM3aVRvGWQ)
+[![](https://img.youtube.com/vi/SjM3aVRvGWQ/0.jpg)](https://youtu.be/SjM3aVRvGWQ)
 
 # Steps
 1. [Setup Ionic and MFP CLI](#step-1-setup-ionic-and-mfp-cli)
@@ -126,7 +126,7 @@ $ mvn --version
 Apache Maven 3.5.0 ...
 ```
 
-* Install Java SDK from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+* Install Java SDK from https://www.oracle.com/technetwork/java/javase/downloads/index.html
 ```
 $ java -version
 java version "1.8.0_101"
@@ -143,7 +143,7 @@ apm install atom-typescript
 
 ### 2.1 Create Cloudant database
 
-* Log in to [IBM Cloud Dashboard](https://console.bluemix.net/) and create [*Cloudant NoSQL DB*](https://console.bluemix.net/catalog/services/cloudant-nosql-db) service.
+* Log in to [IBM Cloud Dashboard](https://cloud.ibm.com/) and create [*Cloudant NoSQL DB*](https://cloud.ibm.com/catalog/services/cloudant) service.
 * From the welcome page of Cloudant service that you just created, launch the Cloudant Dashboard.
 * In the Cloudant Dashboard, click on `Databases`.
 * Click on `Create Database`. Specify name of database as `myward` as shown below. Click `Create`.
@@ -196,7 +196,7 @@ The `myward` database should now list the six documents as shown below under `Ta
 
 ### 3.1 Create IBM Cloud Object Storage
 
-* In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [*Object Storage*](https://console.bluemix.net/catalog/infrastructure/cloud-object-storage) service under `Infrastructure` -> `Storage`. Click on `Create` as shown below.
+* In the [IBM Cloud Dashboard](https://cloud.ibm.com/), click on `Catalog` and select [*Object Storage*](https://cloud.ibm.com/catalog/services/cloud-object-storage) service under `Infrastructure` -> `Storage`. Click on `Create` as shown below.
 
   <img src="doc/source/images/COS_CreateService.png" alt="Create IBM Cloud Object Storage service" width="800" border="10" />
 
@@ -211,7 +211,7 @@ The `myward` database should now list the six documents as shown below under `Ta
 ### 3.2 Create Service ID and API Key for accessing objects
 
 * Create Service ID
-  - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://console.bluemix.net/iam/. 
+  - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://cloud.ibm.com/iam/.
   - In case you have multiple IBM Cloud accounts, then select the target Account, Region, Organization and Space.
   - Under `Identity & Access` (on the left side of the page), select `Service IDs` and click `Create`. Give a name and description, and click `Create`.
   - Make a note of the Service ID as shown below.
@@ -226,7 +226,7 @@ The `myward` database should now list the six documents as shown below under `Ta
 
 * Create API Key
   - Back in *IBM Cloud Identity & Access Management* dashboard, under `Service IDs`, click on the service ID created earlier.
-Under `Access policies`, you should see the `Writer` role for your bucket. 
+Under `Access policies`, you should see the `Writer` role for your bucket.
   - Click on `API keys` tab and then click on `Create` button. In the `Create API key` dialog, give a name and description for the API key and click on `Create`. You should get a confirmation dialog saying `API key successfully created` as shown below.
   - Click on `Download` and save the API key as shown below. Note: This is the only time you will see the key. You cannot retrieve it later.
   - Finally click on `Close`.
@@ -236,7 +236,7 @@ Under `Access policies`, you should see the `Writer` role for your bucket.
 
 ## Step 4. Create Mobile Foundation service and configure MFP CLI
 
-* In the [IBM Cloud Dashboard](https://console.bluemix.net/), click on `Catalog` and select [Mobile Foundation](https://console.bluemix.net/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
+* In the [IBM Cloud Dashboard](https://cloud.ibm.com/), click on `Catalog` and select [Mobile Foundation](https://cloud.ibm.com/catalog/services/mobile-foundation) service under `Platform` -> `Mobile`. Click on `Create` as shown below.
 
   <img src="doc/source/images/CreateMobileFoundationService.png" alt="Create IBM Mobile Foundation service" width="800" border="10" />
 
@@ -280,7 +280,7 @@ Cloud-MFP  https://mobilefoundation-71-hb-server.mybluemix.net:443        [Defau
 ### 5.1 Clone repo
 
 ```
-$ git clone https://github.com/IBM/Ionic-MFP-App.git
+$ git clone https://github.com/IBM/Ionic-MFP-App
 $ cd Ionic-MFP-App
 ```
 
@@ -289,7 +289,7 @@ Update `IonicMobileApp/config.xml` as below. Change `id`, `name`, `description` 
 
 <pre><code>
 &lt;?xml version='1.0' encoding='utf-8'?&gt;
-&lt;widget <b>id="org.mycity.myward"</b> version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:mfp="http://www.ibm.com/mobilefirst/cordova-plugin-mfp"&gt;
+&lt;widget <b>id="org.mycity.myward"</b> version="0.0.1" xmlns="https://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:mfp="http://www.ibm.com/mobilefirst/cordova-plugin-mfp"&gt;
     <b>&lt;name&gt;MyWard&lt;/name&gt;
     &lt;description&gt;Get your civic issues resolved by posting through this app.&lt;/description&gt;
     &lt;author email="shivahr@gmail.com" href="https://developer.ibm.com/code/author/shivahr/"&gt;Shiva Kumar H R&lt;/author&gt;</b>
@@ -305,10 +305,10 @@ Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
-  <b>&lt;property name="account" displayName="Cloudant account" defaultValue=""/&gt;
-  &lt;property name="key" displayName="Cloudant key" defaultValue=""/&gt;
-  &lt;property name="password" displayName="Cloudant password" defaultValue=""/&gt;
-  &lt;property name="DBName" displayName="Cloudant DB name" defaultValue="myward"/&gt;</b>
+  <b>&lt;property name="account" displayName="Cloudant account" defaultValue="" /&gt;
+  &lt;property name="key" displayName="Cloudant key" defaultValue="" /&gt;
+  &lt;property name="password" displayName="Cloudant password" defaultValue="" /&gt;
+  &lt;property name="DBName" displayName="Cloudant DB name" defaultValue="myward" /&gt;</b>
   ...
 &lt;/mfp:adapter&gt;
 </code></pre>
@@ -316,17 +316,17 @@ Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml
 ### 5.4 Specify Cloud Object Storage credentials in MFP Adapter
 
 Open `MobileFoundationAdapters/MyWardData/src/main/adapter-resources/adapter.xml` and update the following properties to point to the Cloud Object Storage created in [Step 3](#step-3-create-ibm-cloud-object-storage-service-and-populate-it-with-sample-data).
-  * Specify value for `bucketName` as created in [Step 3.1](#31-create-ibm-cloud-object-storage). 
+  * Specify value for `bucketName` as created in [Step 3.1](#31-create-ibm-cloud-object-storage).
   * Specify `serviceId` and `apiKey` created in [Step 3.2](#32-create-service-id-and-api-key-for-accessing-objects).
-  * While creating the bucket in [Step 3.1](#31-create-ibm-cloud-object-storage), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://console.bluemix.net/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
+  * While creating the bucket in [Step 3.1](#31-create-ibm-cloud-object-storage), if you selected a different Location/Resiliency, then update the `endpointURL` as per the specification in https://cloud.ibm.com/docs/services/cloud-object-storage/basics/endpoints.html#select-regions-and-endpoints.
 
 <pre><code>
 &lt;mfp:adapter name="MyWardData" ...&gt;
   ...
-  <b>&lt;property name="endpointURL" displayName="Cloud Object Storage Endpoint Public URL" defaultValue="https://s3-api.us-geo.objectstorage.softlayer.net"/&gt;
-  &lt;property name="bucketName" displayName="Cloud Object Storage Bucket Name" defaultValue=""/&gt;
-  &lt;property name="serviceId" displayName="Cloud Object Storage Service ID" defaultValue=""  /&gt;
-  &lt;property name="apiKey" displayName="Cloud Object Storage API Key" defaultValue=""/&gt;</b>
+  <b>&lt;property name="endpointURL" displayName="Cloud Object Storage Endpoint Public URL" defaultValue="https://s3-api.us-geo.objectstorage.softlayer.net" /&gt;
+  &lt;property name="bucketName" displayName="Cloud Object Storage Bucket Name" defaultValue="" /&gt;
+  &lt;property name="serviceId" displayName="Cloud Object Storage Service ID" defaultValue="" /&gt;
+  &lt;property name="apiKey" displayName="Cloud Object Storage API Key" defaultValue="" /&gt;</b>
 &lt;/mfp:adapter&gt;
 </code></pre>
 
@@ -360,7 +360,7 @@ $ mfpdev adapter deploy
 ### 6.2 Launch MFP dashboard and verify adapter configurations
 
 Launch MFP Dashboard as below:
-  * In the [IBM Cloud dashboard](https://console.bluemix.net/dashboard/), under `Cloud Foundry Services`, click on the `Mobile Foundation` service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
+  * In the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/), under `Cloud Foundry Services`, click on the `Mobile Foundation` service you created in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli). The service overview page that gets shown, will have the MFP dashboard embedded within it. You can also open the MFP dashboard in a separate browser tab by appending `/mfpconsole` to the *url* mentioned in [Step 4](#step-4-create-mobile-foundation-service-and-configure-mfp-cli).
   * Inside the MFP dashboard, in the list on the left, you will see the `MyWardData` and `UserLogin` adapters listed.
 
 Verify MFP Adapter configuration as below:
@@ -369,7 +369,7 @@ Verify MFP Adapter configuration as below:
   <img src="doc/source/images/MyWardDataConfigurations.png" alt="Option to specify the configuration properties for accessing Cloudant NoSQL DB and Cloud Object Storage in deployed MFP Adapter" width="640" border="10" />
 
   * Click on `Resources` tab. You should see the various REST APIs exposed by `MyWardData` adapter as shown below. The `Security` column should show the protecting scope `UserLogin` against each REST method.
-    
+
   <img src="doc/source/images/MyWardDataProtectingScope.png" alt="The REST APIs of MyWardData adapter are protected by UserLogin security scope" width="640" border="10" />
 
 ### 6.3 Test the MyWardData adapter
@@ -402,7 +402,7 @@ Delete the temporary credentials after testing adapter REST API as below:
 ## Step 7. Run application on Android phone
 
 ### 7.1 Install Android Studio and Android SDK platform
-* Download and install Android Studio from https://developer.android.com/studio/index.html
+* Download and install Android Studio from https://developer.android.com/studio/
 * Install Android SDK Platform 23 (or higher) as below:
   - Launch Android Studio.
   - Click on `Configure` -> `SDK Manager`
@@ -416,17 +416,17 @@ Delete the temporary credentials after testing adapter REST API as below:
 </pre></code>
 
 ### 7.2 Enable developer options and USB debugging on your Android phone
-* Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options.html
+* Enable USB debugging on your Android phone as per the steps in https://developer.android.com/studio/debug/dev-options
   - Launch the Settings app on your phone. Select `About Device` -> `Software Info`. Tap `Build number` 7 times to enable developer options.
   - Return to Settings list. Select `Developer options` and enable `USB debugging`.
-* If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.html.
+* If you are developing on Windows, then you need to install the appropriate USB driver as per instructions in https://developer.android.com/studio/run/oem-usb.
 * Connect the Android phone to your development machine by USB cable, and accept `allow` access on your phone.
 
 ### 7.3 Setup API keys for using Google Maps
 
-* Get an API key for using the Google Maps Android API as per instructions in https://developers.google.com/maps/documentation/android-api/signup.
+* Get an API key for using the Google Maps Android API as per instructions in https://developers.google.com/maps/documentation/android-sdk/signup.
 
-  You can similarly get an API key for using the Google Maps SDK for iOS as per instructions in 
+  You can similarly get an API key for using the Google Maps SDK for iOS as per instructions in
 https://developers.google.com/maps/documentation/ios-sdk/get-api-key.
 
 * Add the Google Maps API keys into the `MyWard` app as below:
@@ -453,7 +453,7 @@ $ ionic cordova platform add android@6.3.0
 $ cordova platform version
 Installed platforms:
   android 6.3.0
-Available platforms: 
+Available platforms:
   blackberry10 ~3.8.0 (deprecated)
   browser ~4.1.0
   ios ~4.4.0
@@ -491,7 +491,7 @@ $ cd ../IonicMobileApp
 $ ionic cordova build android
 ```
 
-  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. `ANDROID_HOME` should be set to the `Android SDK Location` that you noted in [Step 7.1](#71-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the value to be used for setting `JAVA_HOME` on [macOS](http://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
+  Note: In case the Cordova build fails due to missing `ANDROID_HOME` and `JAVA_HOME` environment variables, then set those environment variables as per instructions in https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables. `ANDROID_HOME` should be set to the `Android SDK Location` that you noted in [Step 7.1](#71-install-android-studio-and-android-sdk-platform). Command `/usr/libexec/java_home` returns the value to be used for setting `JAVA_HOME` on [macOS](https://mattshomepage.com/articles/2016/May/22/java_home_mac_os_x/). On other platforms you could run `java -XshowSettings:properties 2>&1 | grep 'java.home'` as mentioned [here](http://sbndev.astro.umd.edu/wiki/Finding_and_Setting_JAVA_HOME#Sample_Perl_Script:_java_home).
 
 * Run application on Android device
 ```
@@ -505,7 +505,7 @@ $ ionic cordova run android
 
 ### 7.7 Update App Logo and Splash
 
-Reference: Automating Icons and Splash Screens https://blog.ionic.io/automating-icons-and-splash-screens/
+Reference: Automating Icons and Splash Screens https://blog.ionicframework.com/automating-icons-and-splash-screens/
 
 Copy your desired app icon to `IonicMobileApp/resources/icon.png` and app splash to `IonicMobileApp/resources/splash.png`.
 
@@ -543,9 +543,9 @@ $ cd ./platforms/android/build/outputs/apk/
 $ ls
 android-release-unsigned.apk
 $ $ANDROID_HOME/build-tools/23.0.3/zipalign -v -p 4 android-release-unsigned.apk android-release-unsigned-aligned.apk
-$ ls 
+$ ls
 android-release-unsigned-aligned.apk	android-release-unsigned.apk
-```  
+```
 
 * Create self signing certificate as below:
 
@@ -555,7 +555,7 @@ Make a note of the `Keystore password` that you set. You would need it for signi
 $ keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
 
 Enter keystore password:
-Re-enter new password: 
+Re-enter new password:
 What is your first and last name?
   [Unknown]:  Shiva Kumar H R
 What is the name of your organizational unit?
@@ -574,7 +574,7 @@ Is CN=Shiva Kumar H R, OU=ISL, O=IBM, L=Bangalore, ST=Karnataka, C=IN correct?
 Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 10,000 days
 	for: CN=Shiva Kumar H R, OU=ISL, O=IBM, L=Bangalore, ST=Karnataka, C=IN
 Enter key password for <my-alias>
-	(RETURN if same as keystore password):  
+	(RETURN if same as keystore password):
 [Storing my-release-key.jks]
 
 $ ls
@@ -584,11 +584,11 @@ android-release-unsigned-aligned.apk	android-release-unsigned.apk		my-release-ke
 * Self sign APK as below:
 ```
 $ $ANDROID_HOME/build-tools/23.0.3/apksigner sign --ks my-release-key.jks --out myward.apk android-release-unsigned-aligned.apk
-Keystore password for signer #1: 
+Keystore password for signer #1:
 $ ls
 android-release-unsigned-aligned.apk	my-release-key.jks
 android-release-unsigned.apk		myward.apk
-$ 
+$
 ```
 
 * Distribute `myward.apk` by uploading to Google Play Store or to your company's internal App store.
@@ -609,18 +609,18 @@ Please see [troubleshooting guide](TROUBLESHOOTING.md) for solutions to some com
 
 # References
 * [Speeding up development of your enterprise mobile apps using open source technologies and cloud services](https://developer.ibm.com/code/2018/02/08/speeding-development-enterprise-mobile-apps-using-open-source-technologies-cloud-services/)
-* [MobileFirst Foundation 8.0 Developer Labs](http://mobilefirstplatform.ibmcloud.com/labs/developers/8.0/intro/)
+* [MobileFirst Foundation 8.0 Developer Labs](https://mobilefirstplatform.ibmcloud.com/labs/developers/8.0/intro/)
 * Ionic 2 quick tutorials:
-  - [10 Minutes with Ionic 2: Hello World](http://blog.ionic.io/10-minutes-with-ionic-2-hello-world/)
-  - [10 Minutes with Ionic 2: Adding Pages and Navigation](http://blog.ionic.io/10-minutes-with-ionic-2-adding-pages-and-navigation/)
-  - [10 Minutes with Ionic 2: Calling an API](http://blog.ionic.io/10-minutes-with-ionic-2-calling-an-api/)
-  - [10 Minutes with Ionic 2: Using the Camera with Ionic Native](http://blog.ionic.io/10-minutes-with-ionic-2-using-the-camera-with-ionic-native/)
+  - [10 Minutes with Ionic 2: Hello World](https://blog.ionicframework.com/10-minutes-with-ionic-2-hello-world/)
+  - [10 Minutes with Ionic 2: Adding Pages and Navigation](https://blog.ionicframework.com/10-minutes-with-ionic-2-adding-pages-and-navigation/)
+  - [10 Minutes with Ionic 2: Calling an API](https://blog.ionicframework.com/10-minutes-with-ionic-2-calling-an-api/)
+  - [10 Minutes with Ionic 2: Using the Camera with Ionic Native](https://blog.ionicframework.com/10-minutes-with-ionic-2-using-the-camera-with-ionic-native/)
 * [What Does Ionic 3 Mean for Ionic 2?](https://www.joshmorony.com/what-does-ionic-3-mean-for-ionic-2/)
 * [Dealing with Asynchronous Code in Ionic](https://www.joshmorony.com/dealing-with-asynchronous-code-in-ionic/)
 * [Understanding Zones and Change Detection in Ionic 2 & Angular 2](https://www.joshmorony.com/understanding-zones-and-change-detection-in-ionic-2-angular-2/)
 * [Basic Security for Ionic & Cordova Applications](https://www.joshmorony.com/basic-security-for-ionic-cordova-applications/)
 
 # License
-This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](http://www.apache.org/licenses/LICENSE-2.0.txt).
+This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
-[Apache Software License (ASL) FAQ](http://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
+[Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
