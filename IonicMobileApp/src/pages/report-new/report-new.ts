@@ -136,7 +136,7 @@ export class ReportNewPage {
   autoFillAddress() {
     let lat = this.location.lat;
     let lng = this.location.lng;
-    this.nativeGeocoder.reverseGeocode(lat , lng).then((result: NativeGeocoderReverseResult) => {
+    this.nativeGeocoder.reverseGeocode(lat , lng).then((result: NativeGeocoderReverseResult[]) => {
       console.log('--> ReportNewPage: Result of reverseGeocode(' + lat + ', ' + lng + ') = ' + JSON.stringify(result));
       let address = result[0];
       let str = '';
