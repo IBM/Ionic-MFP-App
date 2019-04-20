@@ -36,7 +36,7 @@ and returns it to the mobile app.
 ## Included Components
 * [Cloudant NoSQL DB](https://cloud.ibm.com/catalog/services/cloudant): A fully managed data layer designed for modern web and mobile applications that leverages a flexible JSON schema.
 * [Cloud Object Storage](https://cloud.ibm.com/catalog/services/cloud-object-storage): A highly scalable cloud storage service, designed for high durability, resiliency and security.
-* [Mobile Foundation](https://cloud.ibm.com/catalog/services/mobile-foundation): A scalable mobile access gateway powered by the market-leading IBM Mobile Foundation Technology. The service offers a comprehensive set of mobile backend capabilities such as, App life cycle, Push, Analytics, Feature Toggle, Security and Authentication and offline synch.
+* [Mobile Foundation](https://cloud.ibm.com/catalog/services/mobile-foundation): A scalable mobile access gateway powered by the market-leading IBM Mobile Foundation Technology. The service offers a comprehensive set of mobile backend capabilities such as, App life cycle, Push, Analytics, Feature Toggle, Security and Authentication and offline synch. 
 
 ## Featured Technologies
 * [Mobile](https://mobilefirstplatform.ibmcloud.com/): Systems of engagement are increasingly using mobile technology as the platform for delivery.
@@ -211,7 +211,7 @@ The `myward` database should now list the six documents as shown below under `Ta
 ### 3.2 Create Service ID and API Key for accessing objects
 
 * Create Service ID
-  - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://cloud.ibm.com/iam/.
+  - In a separate browser tab/window, launch the *IBM Cloud Identity & Access Management* dashboard using URL https://cloud.ibm.com/iam/. 
   - In case you have multiple IBM Cloud accounts, then select the target Account, Region, Organization and Space.
   - Under `Identity & Access` (on the left side of the page), select `Service IDs` and click `Create`. Give a name and description, and click `Create`.
   - Make a note of the Service ID as shown below.
